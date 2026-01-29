@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description"
+        content="Free online Base64 encoder/decoder tools. Convert text, images, files, audio, video to Base64 and vice versa. 35+ tools in one page.">
+    <meta name="keywords" content="base64, encoder, decoder, image to base64, file to base64, online tools, free tools">
+    <meta name="author" content="OathanRex">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#4361ee">
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Base64 Tools Hub - 35+ Free Online Tools">
+    <meta property="og:description"
+        content="Convert text, images, files to Base64 instantly. Free, fast, and works offline.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://oathanrex.github.io/base64-tools">
+    <meta property="og:image" content="https://oathanrex.github.io/base64-tools/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Base64 Tools Hub">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Base64 Tools Hub - 35+ Free Online Tools">
+    <meta name="twitter:description"
+        content="Convert text, images, files to Base64 instantly. Free, fast, and works offline.">
+    <meta name="twitter:image" content="https://oathanrex.github.io/base64-tools/assets/og-image.png">
+
+    <title>Base64 Tools Hub | Free Online Encoder & Decoder</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%234361ee'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='45' font-weight='bold' fill='white' text-anchor='middle'%3EB64%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%234361ee'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='45' font-weight='bold' fill='white' text-anchor='middle'%3EB64%3C/text%3E%3C/svg%3E">
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="js/app.js" as="script">
+</head>
+
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="header-container">
+            <a href="#" class="logo" aria-label="Base64 Tools Hub - Home">
+                <div class="logo-icon" aria-hidden="true">B64</div>
+                <div class="logo-text">
+                    <span class="logo-title">Base64 Tools</span>
+                    <span class="logo-subtitle">Encode & Decode Everything</span>
+                </div>
+            </a>
+
+            <nav class="header-actions" role="navigation" aria-label="Header actions">
+                <button class="btn-icon" id="searchToggle" type="button" aria-label="Search tools"
+                    aria-haspopup="dialog" aria-expanded="false" title="Search Tools (Ctrl+K)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+
+                <button class="btn-icon" id="historyToggle" type="button" aria-label="View history" aria-haspopup="true"
+                    aria-expanded="false" title="History">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span class="history-badge" id="historyBadge" aria-hidden="true"></span>
+                </button>
+
+                <button class="btn-icon" id="themeToggle" type="button" aria-label="Toggle dark/light theme"
+                    title="Toggle Theme (Ctrl+D)">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42">
+                        </path>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+
+                <a href="https://github.com/oathanrex" target="_blank" rel="noopener noreferrer" class="btn-icon"
+                    aria-label="View source code on GitHub" title="View on GitHub">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Search Modal -->
+    <div class="modal" id="searchModal" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle" hidden>
+        <div class="modal-backdrop" aria-hidden="true"></div>
+        <div class="modal-content search-modal">
+            <h2 id="searchModalTitle" class="sr-only">Search Tools</h2>
+            <div class="search-input-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="search" id="searchInput" placeholder="Search tools... (e.g., image, text, file)"
+                    autocomplete="off" aria-label="Search tools" spellcheck="false">
+                <kbd aria-hidden="true">ESC</kbd>
+            </div>
+            <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+        </div>
+    </div>
+
+    <!-- History Sidebar -->
+    <aside class="sidebar" id="historySidebar" role="complementary" aria-label="History panel" hidden>
+        <div class="sidebar-header">
+            <h2>Recent Operations</h2>
+            <button class="btn-icon btn-sm" id="clearHistory" type="button" aria-label="Clear all history"
+                title="Clear History">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    aria-hidden="true">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="sidebar-content" id="historyList" role="list" aria-label="History items"></div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content" role="main">
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs" role="tablist" aria-label="Tool categories">
+            <div class="nav-tabs-container">
+                <button class="nav-tab active" data-category="all" role="tab" aria-selected="true"
+                    aria-controls="toolsGrid" id="tab-all">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span>All Tools</span>
+                </button>
+                <button class="nav-tab" data-category="text" role="tab" aria-selected="false" aria-controls="toolsGrid"
+                    id="tab-text">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                        <line x1="9" y1="20" x2="15" y2="20"></line>
+                        <line x1="12" y1="4" x2="12" y2="20"></line>
+                    </svg>
+                    <span>Text</span>
+                </button>
+                <button class="nav-tab" data-category="file" role="tab" aria-selected="false" aria-controls="toolsGrid"
+                    id="tab-file">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                        <polyline points="13 2 13 9 20 9"></polyline>
+                    </svg>
+                    <span>File</span>
+                </button>
+                <button class="nav-tab" data-category="image" role="tab" aria-selected="false" aria-controls="toolsGrid"
+                    id="tab-image">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>Image</span>
+                </button>
+                <button class="nav-tab" data-category="audio" role="tab" aria-selected="false" aria-controls="toolsGrid"
+                    id="tab-audio">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <path d="M9 18V5l12-2v13"></path>
+                        <circle cx="6" cy="18" r="3"></circle>
+                        <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                    <span>Audio/Video</span>
+                </button>
+                <button class="nav-tab" data-category="document" role="tab" aria-selected="false"
+                    aria-controls="toolsGrid" id="tab-document">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    <span>Document</span>
+                </button>
+                <button class="nav-tab" data-category="developer" role="tab" aria-selected="false"
+                    aria-controls="toolsGrid" id="tab-developer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    <span>Developer</span>
+                </button>
+                <button class="nav-tab" data-category="security" role="tab" aria-selected="false"
+                    aria-controls="toolsGrid" id="tab-security">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <span>Security</span>
+                </button>
+                <button class="nav-tab" data-category="utility" role="tab" aria-selected="false"
+                    aria-controls="toolsGrid" id="tab-utility">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
+                    <span>Utility</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Tools Grid -->
+        <section class="tools-grid" id="toolsGrid" role="tabpanel" aria-labelledby="tab-all">
+            <!-- Tools will be dynamically inserted here -->
+        </section>
+
+        <!-- Tool Workspace -->
+        <section class="workspace" id="workspace" aria-label="Tool workspace" hidden>
+            <div class="workspace-header">
+                <button class="btn-back" id="backToTools" type="button" aria-label="Back to tools list">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Back to Tools</span>
+                </button>
+                <div class="workspace-title">
+                    <h1 id="currentToolName">Text to Base64</h1>
+                    <p id="currentToolDescription">Convert plain text to Base64 encoded string</p>
+                </div>
+            </div>
+
+            <div class="workspace-content" id="workspaceContent">
+                <!-- Dynamic tool content will be inserted here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div class="modal" id="shortcutsModal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle" hidden>
+        <div class="modal-backdrop" aria-hidden="true"></div>
+        <div class="modal-content shortcuts-modal">
+            <div class="modal-header">
+                <h2 id="shortcutsTitle">Keyboard Shortcuts</h2>
+                <button class="btn-icon btn-sm modal-close" type="button" aria-label="Close shortcuts dialog">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="shortcuts-list">
+                <div class="shortcut-item">
+                    <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
+                    <span class="shortcut-action">Execute encode/decode</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></span>
+                    <span class="shortcut-action">Copy output</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>K</kbd></span>
+                    <span class="shortcut-action">Open search</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>D</kbd></span>
+                    <span class="shortcut-action">Toggle theme</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>L</kbd></span>
+                    <span class="shortcut-action">Clear all</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-keys"><kbd>Escape</kbd></span>
+                    <span class="shortcut-action">Close modal / Go back</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-keys"><kbd>?</kbd></span>
+                    <span class="shortcut-action">Show this help</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="footer-container">
+            <nav class="footer-links" aria-label="Social links">
+                <a href="https://oathanrex.blogspot.com" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span>Blog</span>
+                </a>
+                <a href="https://www.buymeacoffee.com/oathanrex" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                        <line x1="6" y1="1" x2="6" y2="4"></line>
+                        <line x1="10" y1="1" x2="10" y2="4"></line>
+                        <line x1="14" y1="1" x2="14" y2="4"></line>
+                    </svg>
+                    <span>Support Me</span>
+                </a>
+                <a href="https://oathanrex.github.io" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span>Portfolio</span>
+                </a>
+                <a href="https://codepen.io/oathanrex" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                        <line x1="12" y1="22" x2="12" y2="15.5"></line>
+                        <polyline points="22 8.5 12 15.5 2 8.5"></polyline>
+                        <polyline points="2 15.5 12 8.5 22 15.5"></polyline>
+                        <line x1="12" y1="2" x2="12" y2="8.5"></line>
+                    </svg>
+                    <span>CodePen</span>
+                </a>
+                <a href="https://youtube.com/@oathanrex" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        aria-hidden="true">
+                        <path
+                            d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z">
+                        </path>
+                        <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                    </svg>
+                    <span>YouTube</span>
+                </a>
+            </nav>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2024</span> OathanRex. All rights reserved.</p>
+                <button class="btn-text" id="showShortcuts" type="button">
+                    <kbd aria-hidden="true">?</kbd> Keyboard Shortcuts
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js" defer></script>
+</body>
+
+</html>
