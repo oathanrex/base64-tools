@@ -31,7 +31,7 @@ const CONFIG = {
     }
 };
 
-// Tool definitions
+// Tool definitions (38 Production-Grade Client-Side Tools)
 const TOOLS = Object.freeze([
     // Text Tools
     {
@@ -86,9 +86,23 @@ const TOOLS = Object.freeze([
         icon: 'download'
     },
     {
+        id: 'pdf-to-base64',
+        name: 'PDF to Base64',
+        description: 'Convert PDF documents to Base64 Data URI',
+        category: 'file',
+        icon: 'file'
+    },
+    {
+        id: 'base64-to-pdf',
+        name: 'Base64 to PDF',
+        description: 'Preview and download PDF documents from Base64',
+        category: 'file',
+        icon: 'download'
+    },
+    {
         id: 'batch-file-encoder',
         name: 'Batch File Encoder',
-        description: 'Encode multiple files at once',
+        description: 'Encode multiple files simultaneously',
         category: 'file',
         icon: 'files'
     },
@@ -122,19 +136,40 @@ const TOOLS = Object.freeze([
         category: 'image',
         icon: 'code'
     },
+    {
+        id: 'batch-image-encoder',
+        name: 'Batch Image Encoder',
+        description: 'Encode multiple image assets at once',
+        category: 'image',
+        icon: 'files'
+    },
 
     // Audio/Video Tools
     {
         id: 'audio-to-base64',
         name: 'Audio to Base64',
-        description: 'Convert audio files (MP3, WAV) to Base64',
+        description: 'Convert audio files (MP3, WAV, OGG) to Base64',
+        category: 'audio',
+        icon: 'music'
+    },
+    {
+        id: 'base64-to-audio',
+        name: 'Base64 to Audio',
+        description: 'Play and download audio from Base64 string',
         category: 'audio',
         icon: 'music'
     },
     {
         id: 'video-to-base64',
         name: 'Video to Base64',
-        description: 'Convert video files to Base64',
+        description: 'Convert video files (MP4, WebM) to Base64',
+        category: 'audio',
+        icon: 'video'
+    },
+    {
+        id: 'base64-to-video',
+        name: 'Base64 to Video',
+        description: 'Play and download video from Base64 string',
         category: 'audio',
         icon: 'video'
     },
@@ -143,67 +178,102 @@ const TOOLS = Object.freeze([
     {
         id: 'json-to-base64',
         name: 'JSON to Base64',
-        description: 'Encode JSON data to Base64',
+        description: 'Encode formatted JSON data to Base64',
         category: 'document',
         icon: 'braces'
     },
     {
         id: 'base64-to-json',
         name: 'Base64 to JSON',
-        description: 'Decode Base64 to formatted JSON',
+        description: 'Decode Base64 to formatted, prettified JSON',
         category: 'document',
         icon: 'braces'
     },
     {
         id: 'xml-to-base64',
         name: 'XML to Base64',
-        description: 'Encode XML data to Base64',
+        description: 'Encode XML documents to Base64',
         category: 'document',
         icon: 'code'
+    },
+    {
+        id: 'base64-to-xml',
+        name: 'Base64 to XML',
+        description: 'Decode Base64 to formatted XML document',
+        category: 'document',
+        icon: 'code'
+    },
+    {
+        id: 'csv-to-base64',
+        name: 'CSV to Base64',
+        description: 'Encode CSV spreadsheet text to Base64',
+        category: 'document',
+        icon: 'file'
+    },
+    {
+        id: 'base64-to-csv',
+        name: 'Base64 to CSV',
+        description: 'Decode Base64 to tabular CSV spreadsheet',
+        category: 'document',
+        icon: 'file'
     },
 
     // Developer Tools
     {
         id: 'data-uri-generator',
         name: 'Data URI Generator',
-        description: 'Generate complete data URIs with MIME type',
+        description: 'Generate complete data URIs with custom MIME types',
         category: 'developer',
         icon: 'link'
     },
     {
         id: 'mime-detector',
         name: 'MIME Type Detector',
-        description: 'Auto-detect MIME type from Base64',
+        description: 'Auto-detect MIME type & magic bytes from Base64',
         category: 'developer',
         icon: 'search'
     },
     {
         id: 'base64-validator',
         name: 'Base64 Validator',
-        description: 'Check if string is valid Base64',
+        description: 'Inspect Base64 validity, alphabet, & padding',
         category: 'developer',
         icon: 'check-circle'
     },
     {
         id: 'length-calculator',
         name: 'Size Calculator',
-        description: 'Calculate encoded/decoded sizes',
+        description: 'Calculate encoded/decoded size & 33% inflation',
         category: 'developer',
         icon: 'calculator'
+    },
+    {
+        id: 'base64-diff',
+        name: 'Base64 Diff Tool',
+        description: 'Compare two Base64 payloads with mismatch detection',
+        category: 'developer',
+        icon: 'layers'
     },
 
     // Security Tools
     {
         id: 'jwt-decoder',
         name: 'JWT Decoder',
-        description: 'Decode JWT token parts (Header, Payload)',
+        description: 'Decode JWT token parts (Header, Payload, Claims)',
         category: 'security',
         icon: 'key'
     },
     {
         id: 'basic-auth-generator',
         name: 'Basic Auth Generator',
-        description: 'Create HTTP Basic Auth headers',
+        description: 'Create HTTP Basic Authorization headers',
+        category: 'security',
+        icon: 'lock'
+    },
+    {
+        id: 'base64-hash',
+        name: 'Base64 + Hash Digest',
+        description: 'Calculate SHA-256, SHA-512, SHA-1 & MD5 hashes',
         category: 'security',
         icon: 'lock'
     },
@@ -212,30 +282,44 @@ const TOOLS = Object.freeze([
     {
         id: 'bulk-encoder',
         name: 'Bulk Encoder',
-        description: 'Encode multiple strings at once',
+        description: 'Encode multiple strings or lines at once',
         category: 'utility',
         icon: 'layers'
     },
     {
         id: 'bulk-decoder',
         name: 'Bulk Decoder',
-        description: 'Decode multiple Base64 strings at once',
+        description: 'Decode multiple Base64 strings or lines at once',
         category: 'utility',
         icon: 'layers'
     },
     {
         id: 'base64-to-hex',
         name: 'Base64 to Hex',
-        description: 'Convert Base64 to Hexadecimal',
+        description: 'Convert Base64 string to Hexadecimal bytes',
         category: 'utility',
         icon: 'hash'
     },
     {
         id: 'hex-to-base64',
         name: 'Hex to Base64',
-        description: 'Convert Hexadecimal to Base64',
+        description: 'Convert Hexadecimal bytes to Base64 string',
         category: 'utility',
         icon: 'hash'
+    },
+    {
+        id: 'binary-to-base64',
+        name: 'Binary to Base64',
+        description: 'Convert 8-bit binary bits (0100...) to Base64',
+        category: 'utility',
+        icon: 'code'
+    },
+    {
+        id: 'base64-to-binary',
+        name: 'Base64 to Binary',
+        description: 'Convert Base64 string to 8-bit binary bits',
+        category: 'utility',
+        icon: 'code'
     }
 ]);
 
@@ -279,7 +363,7 @@ const state = {
     currentCategory: 'all',
     currentTool: null,
     history: [],
-    theme: 'light',
+    theme: 'dark',
     isProcessing: false
 };
 
@@ -1010,7 +1094,7 @@ function loadTheme() {
 
         applyTheme();
     } catch (e) {
-        state.theme = 'light';
+        state.theme = 'dark';
         applyTheme();
     }
 }
@@ -1038,7 +1122,7 @@ function applyTheme() {
     document.documentElement.setAttribute('data-theme', state.theme);
 
     // Update theme-color meta tag
-    const themeColor = state.theme === 'dark' ? '#1a1a2e' : '#ffffff';
+    const themeColor = state.theme === 'dark' ? '#0b1114' : '#f8fafc';
     let metaTheme = document.querySelector('meta[name="theme-color"]');
     if (metaTheme) {
         metaTheme.setAttribute('content', themeColor);
@@ -1125,20 +1209,38 @@ function getToolTemplate(toolId) {
         'live-encoder': createLiveEncoderTemplate(),
         'file-to-base64': createFileEncoderTemplate(),
         'base64-to-file': createFileDecoderTemplate(),
+        'pdf-to-base64': createPdfEncoderTemplate(),
+        'base64-to-pdf': createPdfDecoderTemplate(),
+        'batch-file-encoder': createBatchFileTemplate(),
         'image-to-base64': createImageEncoderTemplate(),
         'base64-to-image': createImageDecoderTemplate(),
         'image-to-css': createImageToCssTemplate(),
         'image-to-html': createImageToHtmlTemplate(),
+        'batch-image-encoder': createBatchImageTemplate(),
+        'audio-to-base64': createAudioEncoderTemplate(),
+        'base64-to-audio': createAudioDecoderTemplate(),
+        'video-to-base64': createVideoEncoderTemplate(),
+        'base64-to-video': createVideoDecoderTemplate(),
         'json-to-base64': createJsonEncoderTemplate(),
         'base64-to-json': createJsonDecoderTemplate(),
+        'xml-to-base64': createXmlEncoderTemplate(),
+        'base64-to-xml': createXmlDecoderTemplate(),
+        'csv-to-base64': createCsvEncoderTemplate(),
+        'base64-to-csv': createCsvDecoderTemplate(),
+        'data-uri-generator': createDataUriTemplate(),
+        'mime-detector': createMimeDetectorTemplate(),
         'base64-validator': createValidatorTemplate(),
         'length-calculator': createCalculatorTemplate(),
+        'base64-diff': createDiffTemplate(),
         'jwt-decoder': createJwtDecoderTemplate(),
         'basic-auth-generator': createBasicAuthTemplate(),
+        'base64-hash': createHashTemplate(),
+        'bulk-encoder': createBulkTemplate('encode'),
+        'bulk-decoder': createBulkTemplate('decode'),
         'base64-to-hex': createHexConverterTemplate('base64-to-hex'),
         'hex-to-base64': createHexConverterTemplate('hex-to-base64'),
-        'bulk-encoder': createBulkTemplate('encode'),
-        'bulk-decoder': createBulkTemplate('decode')
+        'binary-to-base64': createBinaryTemplate('encode'),
+        'base64-to-binary': createBinaryTemplate('decode')
     };
 
     return templates[toolId] || createDefaultTemplate();
@@ -1829,6 +1931,630 @@ function createBulkTemplate(mode) {
     `;
 }
 
+
+function createPdfEncoderTemplate() {
+    return `
+        <div class="file-upload-area" id="fileDropZone" role="button" tabindex="0" aria-label="Drop PDF document here or click to browse">
+            <div class="file-upload-icon">${ICONS.file}</div>
+            <p class="file-upload-text">Drag & drop a PDF file here or click to browse</p>
+            <p class="file-upload-hint">Supports: .pdf documents up to ${formatFileSize(CONFIG.MAX_FILE_SIZE)}</p>
+            <input type="file" id="fileInput" class="file-upload-input" accept="application/pdf" aria-hidden="true">
+        </div>
+        <div id="filePreviewContainer"></div>
+        <div id="progressContainer" hidden>
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+                </div>
+                <p class="progress-text" id="progressText">Processing PDF...</p>
+            </div>
+        </div>
+        <div class="tool-panel" style="margin-top: var(--spacing-4);">
+            <div class="panel-header">
+                <span class="panel-title">${ICONS.code} Base64 Data URI Output</span>
+                <div class="panel-actions">
+                    <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy" aria-label="Copy to clipboard">${ICONS.copy}</button>
+                    <button class="btn-icon btn-sm" data-action="download-text" type="button" title="Download" aria-label="Download as text file">${ICONS.download}</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <textarea id="outputText" placeholder="Base64 Data URI for PDF will appear here..." readonly aria-label="Base64 PDF Output"></textarea>
+            </div>
+            <div class="panel-footer">
+                <span id="outputStats">0 characters | 0 bytes</span>
+            </div>
+        </div>
+    `;
+}
+
+function createPdfDecoderTemplate() {
+    return `
+        <div class="tool-panel">
+            <div class="panel-header">
+                <span class="panel-title">${ICONS.code} PDF Base64 Input</span>
+                <div class="panel-actions">
+                    <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste" aria-label="Paste from clipboard">${ICONS.paste}</button>
+                    <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear" aria-label="Clear input">${ICONS.clear}</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <textarea id="inputText" placeholder="Paste Base64 encoded PDF string (with or without data:application/pdf;base64, prefix)..." aria-label="PDF Base64 Input"></textarea>
+            </div>
+            <div class="panel-footer">
+                <span id="inputStats">0 characters | 0 bytes</span>
+            </div>
+        </div>
+        <div class="tool-actions" style="margin-top: var(--spacing-4);">
+            <button class="btn btn-primary" data-action="preview-pdf" type="button">
+                ${ICONS.search} Preview PDF Document
+            </button>
+            <button class="btn btn-secondary" data-action="download-pdf" type="button">
+                ${ICONS.download} Download as .pdf File
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+        <div id="pdfPreviewContainer"></div>
+    `;
+}
+
+function createAudioEncoderTemplate() {
+    return `
+        <div class="file-upload-area" id="fileDropZone" role="button" tabindex="0" aria-label="Drop audio file here or click to browse">
+            <div class="file-upload-icon">${ICONS.music}</div>
+            <p class="file-upload-text">Drag & drop an Audio file here or click to browse</p>
+            <p class="file-upload-hint">Supports: MP3, WAV, OGG, AAC, FLAC (Max: ${formatFileSize(CONFIG.MAX_FILE_SIZE)})</p>
+            <input type="file" id="fileInput" class="file-upload-input" accept="audio/*" aria-hidden="true">
+        </div>
+        <div id="filePreviewContainer"></div>
+        <div id="progressContainer" hidden>
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+                </div>
+                <p class="progress-text" id="progressText">Processing Audio...</p>
+            </div>
+        </div>
+        <div class="tool-panel" style="margin-top: var(--spacing-4);">
+            <div class="panel-header">
+                <span class="panel-title">${ICONS.code} Base64 Audio Output</span>
+                <div class="panel-actions">
+                    <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy">${ICONS.copy}</button>
+                    <button class="btn-icon btn-sm" data-action="download-text" type="button" title="Download">${ICONS.download}</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <textarea id="outputText" placeholder="Base64 encoded audio string will appear here..." readonly aria-label="Base64 Audio Output"></textarea>
+            </div>
+            <div class="panel-footer">
+                <span id="outputStats">0 characters | 0 bytes</span>
+            </div>
+        </div>
+    `;
+}
+
+function createAudioDecoderTemplate() {
+    return `
+        <div class="tool-panel">
+            <div class="panel-header">
+                <span class="panel-title">${ICONS.code} Base64 Audio Input</span>
+                <div class="panel-actions">
+                    <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste" aria-label="Paste from clipboard">${ICONS.paste}</button>
+                    <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear" aria-label="Clear input">${ICONS.clear}</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <textarea id="inputText" placeholder="Paste Base64 audio string (or data:audio/mp3;base64,...)..." aria-label="Base64 Audio Input"></textarea>
+            </div>
+            <div class="panel-footer">
+                <span id="inputStats">0 characters | 0 bytes</span>
+            </div>
+        </div>
+        <div class="tool-actions" style="margin-top: var(--spacing-4);">
+            <button class="btn btn-primary" data-action="play-audio" type="button">
+                ${ICONS.music} Decode &amp; Play Audio
+            </button>
+            <button class="btn btn-secondary" data-action="download-audio" type="button">
+                ${ICONS.download} Download Audio (.mp3)
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+        <div id="audioPreviewContainer"></div>
+    `;
+}
+
+function createVideoEncoderTemplate() {
+    return `
+        <div class="file-upload-area" id="fileDropZone" role="button" tabindex="0" aria-label="Drop video file here or click to browse">
+            <div class="file-upload-icon">${ICONS.video}</div>
+            <p class="file-upload-text">Drag & drop a Video file here or click to browse</p>
+            <p class="file-upload-hint">Supports: MP4, WebM, OGG (Max: ${formatFileSize(CONFIG.MAX_FILE_SIZE)})</p>
+            <input type="file" id="fileInput" class="file-upload-input" accept="video/*" aria-hidden="true">
+        </div>
+        <div id="filePreviewContainer"></div>
+        <div id="progressContainer" hidden>
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+                </div>
+                <p class="progress-text" id="progressText">Processing Video...</p>
+            </div>
+        </div>
+        <div class="tool-panel" style="margin-top: var(--spacing-4);">
+            <div class="panel-header">
+                <span class="panel-title">${ICONS.code} Base64 Video Output</span>
+                <div class="panel-actions">
+                    <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy">${ICONS.copy}</button>
+                    <button class="btn-icon btn-sm" data-action="download-text" type="button" title="Download">${ICONS.download}</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <textarea id="outputText" placeholder="Base64 encoded video string will appear here..." readonly aria-label="Base64 Video Output"></textarea>
+            </div>
+            <div class="panel-footer">
+                <span id="outputStats">0 characters | 0 bytes</span>
+            </div>
+        </div>
+    `;
+}
+
+function createVideoDecoderTemplate() {
+    return `
+        <div class="tool-panel">
+            <div class="panel-header">
+                <span class="panel-title">${ICONS.code} Base64 Video Input</span>
+                <div class="panel-actions">
+                    <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste" aria-label="Paste from clipboard">${ICONS.paste}</button>
+                    <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear" aria-label="Clear input">${ICONS.clear}</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <textarea id="inputText" placeholder="Paste Base64 video string (or data:video/mp4;base64,...)..." aria-label="Base64 Video Input"></textarea>
+            </div>
+            <div class="panel-footer">
+                <span id="inputStats">0 characters | 0 bytes</span>
+            </div>
+        </div>
+        <div class="tool-actions" style="margin-top: var(--spacing-4);">
+            <button class="btn btn-primary" data-action="play-video" type="button">
+                ${ICONS.video} Decode &amp; Play Video
+            </button>
+            <button class="btn btn-secondary" data-action="download-video" type="button">
+                ${ICONS.download} Download Video (.mp4)
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+        <div id="videoPreviewContainer"></div>
+    `;
+}
+
+function createXmlEncoderTemplate() {
+    return `
+        <div class="tool-panels">
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} XML Input</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste">${ICONS.paste}</button>
+                        <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear">${ICONS.clear}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="inputText" placeholder="<?xml version=\"1.0\"?>\n<root>\n  <item>Data</item>\n</root>" aria-label="XML Input"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="inputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} Base64 Output</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy">${ICONS.copy}</button>
+                        <button class="btn-icon btn-sm" data-action="download-text" type="button" title="Download">${ICONS.download}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="outputText" placeholder="Base64 encoded XML will appear here..." readonly aria-label="Base64 Output"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="outputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+        </div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" data-action="encode" type="button">
+                ${ICONS.zap} Encode XML to Base64
+            </button>
+            <button class="btn btn-secondary" data-action="format-xml" type="button">
+                ${ICONS.braces} Format XML
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+    `;
+}
+
+function createXmlDecoderTemplate() {
+    return `
+        <div class="tool-panels">
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} Base64 XML Input</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste">${ICONS.paste}</button>
+                        <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear">${ICONS.clear}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="inputText" placeholder="Enter Base64 encoded XML string..." aria-label="Base64 XML Input"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="inputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} Formatted XML Output</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy">${ICONS.copy}</button>
+                        <button class="btn-icon btn-sm" data-action="download-text" type="button" title="Download">${ICONS.download}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="outputText" placeholder="Decoded XML will appear here..." readonly aria-label="XML Output"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="outputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+        </div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" data-action="decode-xml" type="button">
+                ${ICONS.zap} Decode to Formatted XML
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+    `;
+}
+
+function createCsvEncoderTemplate() {
+    return `
+        <div class="tool-panels">
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.file} CSV Data Input</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste">${ICONS.paste}</button>
+                        <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear">${ICONS.clear}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="inputText" placeholder="id,name,role\n1,Oathan,Engineer\n2,Rex,Architect" aria-label="CSV Input"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="inputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} Base64 Output</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy">${ICONS.copy}</button>
+                        <button class="btn-icon btn-sm" data-action="download-text" type="button" title="Download">${ICONS.download}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="outputText" placeholder="Base64 encoded CSV will appear here..." readonly aria-label="Base64 CSV Output"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="outputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+        </div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" data-action="encode" type="button">
+                ${ICONS.zap} Encode CSV to Base64
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+    `;
+}
+
+function createCsvDecoderTemplate() {
+    return `
+        <div class="tool-panels">
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} Base64 CSV Input</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste">${ICONS.paste}</button>
+                        <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear">${ICONS.clear}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="inputText" placeholder="Paste Base64 encoded CSV string..." aria-label="Base64 CSV Input"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="inputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.file} Decoded CSV Output</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy">${ICONS.copy}</button>
+                        <button class="btn-icon btn-sm" data-action="download-text" type="button" title="Download">${ICONS.download}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="outputText" placeholder="Decoded CSV will appear here..." readonly aria-label="Decoded CSV Output"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="outputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+        </div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" data-action="decode" type="button">
+                ${ICONS.zap} Decode from Base64
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+    `;
+}
+
+function createDataUriTemplate() {
+    return `
+        <div class="options-panel" style="margin-bottom: var(--spacing-4);">
+            <div class="options-title">MIME &amp; Format Configuration</div>
+            <div class="options-grid">
+                <div class="option-item">
+                    <label for="dataUriMimeSelect">Media Type:</label>
+                    <select id="dataUriMimeSelect">
+                        <option value="image/png">image/png (PNG Image)</option>
+                        <option value="image/jpeg">image/jpeg (JPEG Image)</option>
+                        <option value="image/svg+xml">image/svg+xml (SVG Vector)</option>
+                        <option value="image/webp">image/webp (WebP Image)</option>
+                        <option value="application/pdf">application/pdf (PDF Document)</option>
+                        <option value="application/json">application/json (JSON)</option>
+                        <option value="text/plain;charset=utf-8">text/plain (Plain Text)</option>
+                        <option value="text/html;charset=utf-8">text/html (HTML Document)</option>
+                        <option value="audio/mpeg">audio/mpeg (MP3 Audio)</option>
+                        <option value="video/mp4">video/mp4 (MP4 Video)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="tool-panels">
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} Raw Base64 Payload</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste">${ICONS.paste}</button>
+                        <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear">${ICONS.clear}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="inputText" placeholder="Paste raw Base64 payload (without data: prefix)..." aria-label="Raw Base64 Payload"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="inputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.link} Formatted Data URI</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy">${ICONS.copy}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="outputText" placeholder="data:image/png;base64,iVBORw0K... will appear here" readonly aria-label="Formatted Data URI"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="outputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+        </div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" data-action="generate-data-uri" type="button">
+                ${ICONS.zap} Generate Data URI
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+    `;
+}
+
+function createMimeDetectorTemplate() {
+    return `
+        <div class="tool-panel">
+            <div class="panel-header">
+                <span class="panel-title">${ICONS.search} Base64 String to Inspect</span>
+                <div class="panel-actions">
+                    <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste">${ICONS.paste}</button>
+                    <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear">${ICONS.clear}</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <textarea id="inputText" placeholder="Paste any Base64 encoded string here (e.g. /9j/4..., iVBORw..., JVBERi...)..." aria-label="Base64 String for MIME Inspection"></textarea>
+            </div>
+            <div class="panel-footer">
+                <span id="inputStats">0 characters | 0 bytes</span>
+            </div>
+        </div>
+        <div class="tool-actions" style="margin-top: var(--spacing-4);">
+            <button class="btn btn-primary" data-action="detect-mime" type="button">
+                ${ICONS.search} Inspect Magic Bytes &amp; MIME
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear
+            </button>
+        </div>
+        <div id="mimeInspectionResult"></div>
+    `;
+}
+
+function createBatchFileTemplate() {
+    return `
+        <div class="file-upload-area" id="batchDropZone" role="button" tabindex="0" aria-label="Drop multiple files here">
+            <div class="file-upload-icon">${ICONS.files}</div>
+            <p class="file-upload-text">Drag & drop multiple files here or click to browse</p>
+            <p class="file-upload-hint">Upload multiple files simultaneously for batch Base64 encoding</p>
+            <input type="file" id="batchFileInput" class="file-upload-input" multiple aria-hidden="true">
+        </div>
+        <div id="batchTableResult"></div>
+    `;
+}
+
+function createBatchImageTemplate() {
+    return `
+        <div class="file-upload-area" id="batchDropZone" role="button" tabindex="0" aria-label="Drop multiple images here">
+            <div class="file-upload-icon">${ICONS.image}</div>
+            <p class="file-upload-text">Drag & drop multiple images here or click to browse</p>
+            <p class="file-upload-hint">Supports: PNG, JPG, GIF, WebP, SVG for batch processing</p>
+            <input type="file" id="batchFileInput" class="file-upload-input" multiple accept="image/*" aria-hidden="true">
+        </div>
+        <div id="batchTableResult"></div>
+    `;
+}
+
+function createDiffTemplate() {
+    return `
+        <div class="tool-panels">
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} Base64 String A</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear">${ICONS.clear}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="inputText" placeholder="Paste first Base64 string..." aria-label="First Base64 string"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="inputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} Base64 String B</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" id="clearInputB" type="button" title="Clear">${ICONS.clear}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="inputTextB" placeholder="Paste second Base64 string..." aria-label="Second Base64 string"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="outputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+        </div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" data-action="compute-diff" type="button">
+                ${ICONS.layers} Compare Base64 Payloads
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+        <div id="diffResultContainer"></div>
+    `;
+}
+
+function createHashTemplate() {
+    return `
+        <div class="tool-panel">
+            <div class="panel-header">
+                <span class="panel-title">${ICONS.lock} Input Text or Base64 Payload</span>
+                <div class="panel-actions">
+                    <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste">${ICONS.paste}</button>
+                    <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear">${ICONS.clear}</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <textarea id="inputText" placeholder="Enter text or Base64 string to compute cryptographic digests..." aria-label="Input for Hashes"></textarea>
+            </div>
+            <div class="panel-footer">
+                <span id="inputStats">0 characters | 0 bytes</span>
+            </div>
+        </div>
+        <div class="tool-actions" style="margin-top: var(--spacing-4);">
+            <button class="btn btn-primary" data-action="compute-hashes" type="button">
+                ${ICONS.lock} Calculate Cryptographic Digests
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear
+            </button>
+        </div>
+        <div id="hashResultContainer"></div>
+    `;
+}
+
+function createBinaryTemplate(mode) {
+    const isEncode = mode === 'encode';
+    return `
+        <div class="tool-panels">
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} ${isEncode ? 'Binary Bits Input (0100...)' : 'Base64 Input'}</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="paste" type="button" title="Paste">${ICONS.paste}</button>
+                        <button class="btn-icon btn-sm" data-action="clear-input" type="button" title="Clear">${ICONS.clear}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="inputText" placeholder="${isEncode ? 'Enter 8-bit binary numbers (e.g. 01001000 01101111)...' : 'Enter Base64 string to convert to binary bits...'}" aria-label="Binary / Base64 Input"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="inputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+            <div class="tool-panel">
+                <div class="panel-header">
+                    <span class="panel-title">${ICONS.code} ${isEncode ? 'Base64 Output' : 'Binary Bits Output'}</span>
+                    <div class="panel-actions">
+                        <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy">${ICONS.copy}</button>
+                        <button class="btn-icon btn-sm" data-action="download-text" type="button" title="Download">${ICONS.download}</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <textarea id="outputText" placeholder="${isEncode ? 'Base64 output will appear here...' : '01001000 01101111... binary bits will appear here...'}" readonly aria-label="Binary / Base64 Output"></textarea>
+                </div>
+                <div class="panel-footer">
+                    <span id="outputStats">0 characters | 0 bytes</span>
+                </div>
+            </div>
+        </div>
+        <div class="tool-actions">
+            <button class="btn btn-primary" data-action="${isEncode ? 'binary-to-base64' : 'base64-to-binary'}" type="button">
+                ${ICONS.zap} ${isEncode ? 'Convert Binary to Base64' : 'Convert Base64 to Binary'}
+            </button>
+            <button class="btn btn-secondary" data-action="swap" type="button">
+                ${ICONS.swap} Swap
+            </button>
+            <button class="btn btn-secondary" data-action="clear-all" type="button">
+                ${ICONS.clear} Clear All
+            </button>
+        </div>
+    `;
+}
+
 function createDefaultTemplate() {
     return `
         <div class="tool-panels">
@@ -1983,6 +2709,270 @@ async function handleToolAction(action) {
                     downloadFile(outputText.value, 'base64-output.txt', 'text/plain');
                 } else {
                     showToast('Nothing to download', 'warning');
+                }
+                break;
+
+            case 'play-audio':
+                if (inputText) {
+                    validateInput(inputText.value, 'Audio Base64 input');
+                    let raw = inputText.value.trim();
+                    if (!raw.startsWith('data:')) {
+                        raw = 'data:audio/mp3;base64,' + raw;
+                    }
+                    const container = document.getElementById('audioPreviewContainer');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="media-preview-wrapper">
+                                <audio controls autoplay src="${raw}"></audio>
+                                <p style="font-size: var(--font-size-xs); color: var(--text-tertiary);">In-Browser HTML5 Audio Playback</p>
+                            </div>
+                        `;
+                    }
+                    showToast('Audio decoded & playback active!', 'success');
+                }
+                break;
+
+            case 'download-audio':
+                if (inputText) {
+                    validateInput(inputText.value, 'Audio Base64 input');
+                    let raw = inputText.value.trim();
+                    let b64 = raw.includes(',') ? raw.split(',')[1] : raw;
+                    const blob = base64ToBlob(b64, 'audio/mpeg');
+                    downloadBlob(blob, 'decoded-audio.mp3');
+                    showToast('Downloaded decoded audio!', 'success');
+                }
+                break;
+
+            case 'play-video':
+                if (inputText) {
+                    validateInput(inputText.value, 'Video Base64 input');
+                    let raw = inputText.value.trim();
+                    if (!raw.startsWith('data:')) {
+                        raw = 'data:video/mp4;base64,' + raw;
+                    }
+                    const container = document.getElementById('videoPreviewContainer');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="media-preview-wrapper">
+                                <video controls autoplay src="${raw}"></video>
+                                <p style="font-size: var(--font-size-xs); color: var(--text-tertiary);">In-Browser HTML5 Video Playback</p>
+                            </div>
+                        `;
+                    }
+                    showToast('Video decoded & playback active!', 'success');
+                }
+                break;
+
+            case 'download-video':
+                if (inputText) {
+                    validateInput(inputText.value, 'Video Base64 input');
+                    let raw = inputText.value.trim();
+                    let b64 = raw.includes(',') ? raw.split(',')[1] : raw;
+                    const blob = base64ToBlob(b64, 'video/mp4');
+                    downloadBlob(blob, 'decoded-video.mp4');
+                    showToast('Downloaded decoded video!', 'success');
+                }
+                break;
+
+            case 'preview-pdf':
+                if (inputText) {
+                    validateInput(inputText.value, 'PDF Base64 input');
+                    let raw = inputText.value.trim();
+                    if (!raw.startsWith('data:')) {
+                        raw = 'data:application/pdf;base64,' + raw;
+                    }
+                    const container = document.getElementById('pdfPreviewContainer');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="media-preview-wrapper">
+                                <iframe src="${raw}" title="PDF Document Preview"></iframe>
+                            </div>
+                        `;
+                    }
+                    showToast('PDF loaded for preview!', 'success');
+                }
+                break;
+
+            case 'download-pdf':
+                if (inputText) {
+                    validateInput(inputText.value, 'PDF Base64 input');
+                    let raw = inputText.value.trim();
+                    let b64 = raw.includes(',') ? raw.split(',')[1] : raw;
+                    const blob = base64ToBlob(b64, 'application/pdf');
+                    downloadBlob(blob, 'document.pdf');
+                    showToast('Downloaded decoded PDF document!', 'success');
+                }
+                break;
+
+            case 'format-xml':
+                if (inputText) {
+                    validateInput(inputText.value, 'XML input');
+                    try {
+                        let formatted = inputText.value.replace(/>\s*</g, '>\n<');
+                        inputText.value = formatted;
+                        updateStats();
+                        showToast('XML formatted cleanly!', 'success');
+                    } catch (e) {
+                        showToast('Could not format XML', 'warning');
+                    }
+                }
+                break;
+
+            case 'decode-xml':
+                if (inputText && outputText) {
+                    validateInput(inputText.value, 'Base64 input');
+                    const decoded = decodeBase64(inputText.value.trim());
+                    outputText.value = decoded.replace(/>\s*</g, '>\n<');
+                    updateStats();
+                    showToast('Decoded to formatted XML!', 'success');
+                }
+                break;
+
+            case 'generate-data-uri':
+                if (inputText && outputText) {
+                    validateInput(inputText.value, 'Base64 payload');
+                    const mime = document.getElementById('dataUriMimeSelect')?.value || 'image/png';
+                    let payload = inputText.value.trim();
+                    if (payload.startsWith('data:')) {
+                        payload = payload.split(',')[1] || payload;
+                    }
+                    outputText.value = `data:${mime};base64,${payload}`;
+                    updateStats();
+                    showToast('Data URI generated!', 'success');
+                }
+                break;
+
+            case 'detect-mime':
+                if (inputText) {
+                    validateInput(inputText.value, 'Base64 string');
+                    const clean = inputText.value.trim().replace(/^data:[^;]+;base64,/, '');
+                    const detected = detectMimeType(clean);
+                    const container = document.getElementById('mimeInspectionResult');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="mime-inspect-box">
+                                <h3 style="font-size: var(--font-size-base); color: var(--text-primary); margin-bottom: var(--spacing-2);">MIME Inspection Findings</h3>
+                                <div class="mime-detail-grid">
+                                    <div class="mime-detail-card">
+                                        <div class="mime-detail-label">Detected MIME Type</div>
+                                        <div class="mime-detail-value">${detected}</div>
+                                    </div>
+                                    <div class="mime-detail-card">
+                                        <div class="mime-detail-label">Magic Byte Prefix</div>
+                                        <div class="mime-detail-value">${clean.substring(0, 8)}</div>
+                                    </div>
+                                    <div class="mime-detail-card">
+                                        <div class="mime-detail-label">Valid Base64 Format</div>
+                                        <div class="mime-detail-value" style="color: ${isValidBase64(clean) ? 'var(--primary)' : 'var(--error-500)'};">${isValidBase64(clean) ? 'YES (RFC 4648 Compliant)' : 'NO (Invalid Padding/Chars)'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    showToast('Magic bytes inspected!', 'success');
+                }
+                break;
+
+            case 'compute-diff':
+                const textA = document.getElementById('inputText')?.value || '';
+                const textB = document.getElementById('inputTextB')?.value || '';
+                const diffBox = document.getElementById('diffResultContainer');
+                if (diffBox) {
+                    const lenA = textA.length;
+                    const lenB = textB.length;
+                    let matches = 0;
+                    const maxLen = Math.max(lenA, lenB);
+                    for (let i = 0; i < Math.min(lenA, lenB); i++) {
+                        if (textA[i] === textB[i]) matches++;
+                    }
+                    const matchPercent = maxLen > 0 ? ((matches / maxLen) * 100).toFixed(2) : 100;
+                    diffBox.innerHTML = `
+                        <div class="diff-container">
+                            <div class="diff-stats-banner">
+                                <span class="diff-stat-badge">${ICONS.layers} Match: ${matchPercent}%</span>
+                                <span>Length A: <strong>${lenA.toLocaleString()}</strong> chars</span>
+                                <span>Length B: <strong>${lenB.toLocaleString()}</strong> chars</span>
+                                <span>Delta: <strong>${Math.abs(lenA - lenB).toLocaleString()}</strong> chars</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                showToast('Diff analysis completed!', 'success');
+                break;
+
+            case 'compute-hashes':
+                if (inputText) {
+                    validateInput(inputText.value, 'Input');
+                    const textVal = inputText.value;
+                    const hashBox = document.getElementById('hashResultContainer');
+                    const enc = new TextEncoder();
+                    const data = enc.encode(textVal);
+
+                    // Web Crypto Digests
+                    Promise.all([
+                        crypto.subtle.digest('SHA-256', data),
+                        crypto.subtle.digest('SHA-512', data),
+                        crypto.subtle.digest('SHA-1', data)
+                    ]).then(([sha256Buf, sha512Buf, sha1Buf]) => {
+                        const toHex = (buffer) => Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+                        const sha256 = toHex(sha256Buf);
+                        const sha512 = toHex(sha512Buf);
+                        const sha1 = toHex(sha1Buf);
+
+                        if (hashBox) {
+                            hashBox.innerHTML = `
+                                <div class="hash-result-grid">
+                                    <div class="hash-row">
+                                        <span class="hash-label">SHA-256</span>
+                                        <span class="hash-val">${sha256}</span>
+                                    </div>
+                                    <div class="hash-row">
+                                        <span class="hash-label">SHA-512</span>
+                                        <span class="hash-val">${sha512}</span>
+                                    </div>
+                                    <div class="hash-row">
+                                        <span class="hash-label">SHA-1</span>
+                                        <span class="hash-val">${sha1}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        showToast('Cryptographic hashes calculated!', 'success');
+                    }).catch(e => {
+                        showToast('Failed to calculate hashes: ' + e.message, 'error');
+                    });
+                }
+                break;
+
+            case 'binary-to-base64':
+                if (inputText && outputText) {
+                    validateInput(inputText.value, 'Binary input');
+                    const cleanBin = inputText.value.replace(/[^01]/g, '');
+                    if (cleanBin.length % 8 !== 0) {
+                        showToast('Warning: Binary bit count is not a multiple of 8', 'warning');
+                    }
+                    let bytes = [];
+                    for (let i = 0; i < cleanBin.length; i += 8) {
+                        bytes.push(parseInt(cleanBin.substring(i, i + 8), 2));
+                    }
+                    const binaryString = String.fromCharCode.apply(null, bytes);
+                    outputText.value = btoa(binaryString);
+                    updateStats();
+                    showToast('Converted 8-bit binary to Base64!', 'success');
+                }
+                break;
+
+            case 'base64-to-binary':
+                if (inputText && outputText) {
+                    validateInput(inputText.value, 'Base64 input');
+                    const decoded = atob(inputText.value.trim().replace(/^data:[^;]+;base64,/, ''));
+                    let binOutput = [];
+                    for (let i = 0; i < decoded.length; i++) {
+                        binOutput.push(decoded.charCodeAt(i).toString(2).padStart(8, '0'));
+                    }
+                    outputText.value = binOutput.join(' ');
+                    updateStats();
+                    showToast('Converted Base64 to 8-bit binary sequence!', 'success');
                 }
                 break;
 
@@ -2662,6 +3652,36 @@ async function handleFileSelect(file) {
                     </div>
                 </div>
             `;
+        } else if (previewContainer && file.type.startsWith('audio/')) {
+            previewContainer.innerHTML = `
+                <div class="media-preview-wrapper">
+                    <audio controls src="${base64}"></audio>
+                    <div class="file-preview-info" style="margin-top: var(--spacing-2);">
+                        <div class="file-preview-name">${sanitizeHTML(file.name)}</div>
+                        <div class="file-preview-size">${formatFileSize(file.size)} | ${file.type}</div>
+                    </div>
+                </div>
+            `;
+        } else if (previewContainer && file.type.startsWith('video/')) {
+            previewContainer.innerHTML = `
+                <div class="media-preview-wrapper">
+                    <video controls src="${base64}"></video>
+                    <div class="file-preview-info" style="margin-top: var(--spacing-2);">
+                        <div class="file-preview-name">${sanitizeHTML(file.name)}</div>
+                        <div class="file-preview-size">${formatFileSize(file.size)} | ${file.type}</div>
+                    </div>
+                </div>
+            `;
+        } else if (previewContainer && file.type === 'application/pdf') {
+            previewContainer.innerHTML = `
+                <div class="media-preview-wrapper">
+                    <iframe src="${base64}" title="PDF Preview"></iframe>
+                    <div class="file-preview-info" style="margin-top: var(--spacing-2);">
+                        <div class="file-preview-name">${sanitizeHTML(file.name)}</div>
+                        <div class="file-preview-size">${formatFileSize(file.size)} | ${file.type}</div>
+                    </div>
+                </div>
+            `;
         } else if (filePreviewContainer) {
             filePreviewContainer.innerHTML = `
                 <div class="file-preview">
@@ -3335,7 +4355,9 @@ function init() {
         // Cache DOM elements
         cacheElements();
 
-        // Load saved preferences
+        setupGuideTabs();
+        setupBatchUpload();
+// Load saved preferences
         loadTheme();
         loadHistory();
 
@@ -3390,4 +4412,73 @@ if (typeof module !== 'undefined' && module.exports) {
         base64ToHex,
         decodeJWT
     };
+}
+
+function setupGuideTabs() {
+    document.querySelectorAll('.guide-nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.dataset.guideTab;
+            document.querySelectorAll('.guide-nav-btn').forEach(b => {
+                b.classList.toggle('active', b === btn);
+                b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+            });
+            document.querySelectorAll('.guide-pane').forEach(p => {
+                p.classList.toggle('active', p.id === `pane-${tabId}`);
+            });
+        });
+    });
+}
+
+function setupBatchUpload() {
+    document.addEventListener('change', (e) => {
+        if (e.target && e.target.id === 'batchFileInput') {
+            const files = Array.from(e.target.files);
+            const container = document.getElementById('batchTableResult');
+            if (!container || files.length === 0) return;
+
+            container.innerHTML = `
+                <div class="batch-table-container">
+                    <table class="batch-table">
+                        <thead>
+                            <tr>
+                                <th>File Name</th>
+                                <th>Size</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="batchTableBody"></tbody>
+                    </table>
+                </div>
+            `;
+
+            const tbody = document.getElementById('batchTableBody');
+            files.forEach((file, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${sanitizeHTML(file.name)}</strong></td>
+                    <td>${formatFileSize(file.size)}</td>
+                    <td><code>${file.type || 'unknown'}</code></td>
+                    <td id="batchStatus-${idx}">Processing...</td>
+                    <td id="batchAction-${idx}">-</td>
+                `;
+                tbody.appendChild(tr);
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const b64 = reader.result;
+                    const statusCell = document.getElementById(`batchStatus-${idx}`);
+                    const actionCell = document.getElementById(`batchAction-${idx}`);
+                    if (statusCell) statusCell.innerHTML = '<span style="color: var(--primary); font-weight: bold;">Ready</span>';
+                    if (actionCell) {
+                        actionCell.innerHTML = `
+                            <button class="btn btn-sm btn-primary" onclick="copyToClipboard('${b64}')">Copy</button>
+                        `;
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    });
 }
