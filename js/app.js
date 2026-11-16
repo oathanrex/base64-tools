@@ -466,7 +466,7 @@ function showToast(message, type = 'info') {
 
     // Close button handler
     const closeBtn = toast.querySelector('.toast-close');
-    closeBtn.addEventListener('click', () => removeToast(toast));
+    if (closeBtn) closeBtn.addEventListener('click', () => removeToast(toast));
 
     // Auto remove
     const timeoutId = setTimeout(() => removeToast(toast), CONFIG.TOAST_DURATION);
@@ -4397,244 +4397,6 @@ function logPerformance() {
     }
 }
 
-// ============================================
-// Initialization
-// ============================================
-
-/**
- * Hide loading overlay
- */
-function hideLoadingOverlay() {
-    if (elements.loadingOverlay) {
-        elements.loadingOverlay.classList.add('hidden');
-
-        // Remove from DOM after animation
-        setTimeout(() => {
-            elements.loadingOverlay.remove();
-        }, 500);
-    }
-}
-
-/**
- * Initialize the application
- */
-function init() {
-    try {
-        // Cache DOM elements
-        cacheElements();
-
-        setupGuideTabs();
-        setupBatchUpload();
-// Load saved preferences
-        loadTheme();
-        loadHistory();
-
-        // Render initial tools grid
-        renderToolsGrid('all');
-
-        // Setup event listeners
-        setupEventListeners();
-        setupKeyboardShortcuts();
-        setupErrorHandling();
-        setupOmniWorkbench();
-        setupSettingsModal();
-
-        // Hide loading overlay
-        hideLoadingOverlay();
-
-        // Optional: Register service worker
-        registerServiceWorker();
-
-        // Log performance
-        logPerformance();
-
-        // Log ready message
-        console.log('%c Base64 Tools Hub ',
-            'background: linear-gradient(135deg, #4361ee, #3f37c9); color: white; padding: 8px 16px; border-radius: 4px; font-weight: bold;'
-        );
-        console.log('Press ? for keyboard shortcuts');
-
-    } catch (error) {
-        console.error('Initialization error:', error);
-        showToast('Failed to initialize application', 'error');
-        hideLoadingOverlay();
-    }
-}
-
-// Start the application when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-} else {
-    init();
-}
-
-// Export for potential module usage
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        encodeBase64,
-        decodeBase64,
-        encodeUrlSafeBase64,
-        decodeUrlSafeBase64,
-        isValidBase64,
-        detectMimeType,
-        base64ToBlob,
-        hexToBase64,
-        base64ToHex,
-        decodeJWT
-    };
-}
-
-function setupGuideTabs() {
-    const tabs = [
-        { id: 'field-guide', name: 'Field Guide' },
-        { id: 'inflation-math', name: 'Inflation Math' },
-        { id: 'mime-signatures', name: 'MIME Signatures' },
-        { id: 'security-privacy', name: 'Security & Privacy' },
-        { id: 'url-safe', name: 'URL-Safe RFC 4648' },
-        { id: 'faq', name: 'Developer FAQ' }
-    ];
-
-    let currentIdx = 0;
-
-    function switchGuideTab(idx, scroll) {
-        if (idx < 0 || idx >= tabs.length) return;
-        currentIdx = idx;
-        const target = tabs[currentIdx];
-
-        // Update nav buttons
-        document.querySelectorAll('.guide-nav-btn').forEach((b, i) => {
-            const isActive = b.dataset.guideTab === target.id;
-            b.classList.toggle('active', isActive);
-            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
-        });
-
-        // Update panes
-        document.querySelectorAll('.guide-pane').forEach(p => {
-            p.classList.toggle('active', p.id === `pane-${target.id}`);
-        });
-
-        // Update dots
-        document.querySelectorAll('.guide-dot').forEach((dot, i) => {
-            dot.classList.toggle('active', i === currentIdx);
-        });
-
-        // Update counter
-        const counter = document.getElementById('guideCounter');
-        if (counter) counter.textContent = `${currentIdx + 1} / ${tabs.length}`;
-
-        // Update prev/next button labels & visibility
-        const prevBtn = document.getElementById('guidePrevBtn');
-        const nextBtn = document.getElementById('guideNextBtn');
-        const prevLabel = document.getElementById('guidePrevLabel');
-        const nextLabel = document.getElementById('guideNextLabel');
-
-        if (prevBtn) {
-            prevBtn.disabled = currentIdx === 0;
-            prevBtn.style.opacity = currentIdx === 0 ? '0.4' : '1';
-            prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
-            if (prevLabel && currentIdx > 0) {
-                prevLabel.textContent = `← ${tabs[currentIdx - 1].name}`;
-            } else if (prevLabel) {
-                prevLabel.textContent = 'Previous Section';
-            }
-        }
-
-        if (nextBtn) {
-            nextBtn.disabled = currentIdx === tabs.length - 1;
-            nextBtn.style.opacity = currentIdx === tabs.length - 1 ? '0.4' : '1';
-            nextBtn.style.pointerEvents = currentIdx === tabs.length - 1 ? 'none' : 'auto';
-            if (nextLabel && currentIdx < tabs.length - 1) {
-                nextLabel.textContent = `${tabs[currentIdx + 1].name} →`;
-            } else if (nextLabel) {
-                nextLabel.textContent = 'Next Section';
-            }
-        }
-
-        if (scroll) {
-            const guideCard = document.querySelector('.guide-card');
-            if (guideCard) {
-                guideCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-    }
-
-    // Attach click to nav buttons
-    document.querySelectorAll('.guide-nav-btn').forEach((btn, idx) => {
-        btn.addEventListener('click', () => switchGuideTab(idx, false));
-    });
-
-    // Attach click to prev/next buttons
-    document.getElementById('guidePrevBtn')?.addEventListener('click', () => {
-        if (currentIdx > 0) switchGuideTab(currentIdx - 1, true);
-    });
-
-    document.getElementById('guideNextBtn')?.addEventListener('click', () => {
-        if (currentIdx < tabs.length - 1) switchGuideTab(currentIdx + 1, true);
-    });
-
-    // Attach click to dots
-    document.querySelectorAll('.guide-dot').forEach((dot, idx) => {
-        dot.addEventListener('click', () => switchGuideTab(idx, false));
-    });
-
-    // Initialize state
-    switchGuideTab(0, false);
-}
-
-function setupBatchUpload() {
-    document.addEventListener('change', (e) => {
-        if (e.target && e.target.id === 'batchFileInput') {
-            const files = Array.from(e.target.files);
-            const container = document.getElementById('batchTableResult');
-            if (!container || files.length === 0) return;
-
-            container.innerHTML = `
-                <div class="batch-table-container">
-                    <table class="batch-table">
-                        <thead>
-                            <tr>
-                                <th>File Name</th>
-                                <th>Size</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="batchTableBody"></tbody>
-                    </table>
-                </div>
-            `;
-
-            const tbody = document.getElementById('batchTableBody');
-            files.forEach((file, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${sanitizeHTML(file.name)}</strong></td>
-                    <td>${formatFileSize(file.size)}</td>
-                    <td><code>${file.type || 'unknown'}</code></td>
-                    <td id="batchStatus-${idx}">Processing...</td>
-                    <td id="batchAction-${idx}">-</td>
-                `;
-                tbody.appendChild(tr);
-
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const b64 = reader.result;
-                    const statusCell = document.getElementById(`batchStatus-${idx}`);
-                    const actionCell = document.getElementById(`batchAction-${idx}`);
-                    if (statusCell) statusCell.innerHTML = '<span style="color: var(--primary); font-weight: bold;">Ready</span>';
-                    if (actionCell) {
-                        actionCell.innerHTML = `
-                            <button class="btn btn-sm btn-primary" onclick="copyToClipboard('${b64}')">Copy</button>
-                        `;
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-    });
-}
-
 
 // ============================================
 // Google-Grade Omni-Studio Architecture
@@ -5172,3 +4934,257 @@ function setupSettingsModal() {
         showToast('Preferences saved!', 'success');
     });
 }
+
+
+// Expose functions to global window for inline onclick handlers
+if (typeof window !== 'undefined') {
+    window.togglePinTool = togglePinTool;
+    window.openTool = openTool;
+}
+
+// ============================================
+// Initialization
+// ============================================
+
+/**
+ * Hide loading overlay
+ */
+function hideLoadingOverlay() {
+    if (elements.loadingOverlay) {
+        elements.loadingOverlay.classList.add('hidden');
+        elements.loadingOverlay.style.display = 'none';
+
+        // Remove from DOM after animation
+        setTimeout(() => {
+            if (elements.loadingOverlay) {
+                if (typeof elements.loadingOverlay.remove === 'function') {
+                    elements.loadingOverlay.remove();
+                } else if (elements.loadingOverlay.parentNode) {
+                    elements.loadingOverlay.parentNode.removeChild(elements.loadingOverlay);
+                }
+            }
+        }, 500);
+    }
+}
+
+/**
+ * Initialize the application
+ */
+function init() {
+    try {
+        // Cache DOM elements
+        cacheElements();
+
+        setupGuideTabs();
+        setupBatchUpload();
+// Load saved preferences
+        loadTheme();
+        loadHistory();
+
+        // Render initial tools grid
+        renderToolsGrid('all');
+
+        // Setup event listeners
+        setupEventListeners();
+        setupKeyboardShortcuts();
+        setupErrorHandling();
+        setupOmniWorkbench();
+        setupSettingsModal();
+
+        // Hide loading overlay
+        hideLoadingOverlay();
+
+        // Optional: Register service worker
+        registerServiceWorker();
+
+        // Log performance
+        logPerformance();
+
+        // Log ready message
+        console.log('%c Base64 Tools Hub ',
+            'background: linear-gradient(135deg, #4361ee, #3f37c9); color: white; padding: 8px 16px; border-radius: 4px; font-weight: bold;'
+        );
+        console.log('Press ? for keyboard shortcuts');
+
+    } catch (error) {
+        console.error('Initialization error:', error);
+        showToast('Failed to initialize application', 'error');
+        hideLoadingOverlay();
+    }
+}
+
+// Start the application when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+
+// Export for potential module usage
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        encodeBase64,
+        decodeBase64,
+        encodeUrlSafeBase64,
+        decodeUrlSafeBase64,
+        isValidBase64,
+        detectMimeType,
+        base64ToBlob,
+        hexToBase64,
+        base64ToHex,
+        decodeJWT
+    };
+}
+
+function setupGuideTabs() {
+    const tabs = [
+        { id: 'field-guide', name: 'Field Guide' },
+        { id: 'inflation-math', name: 'Inflation Math' },
+        { id: 'mime-signatures', name: 'MIME Signatures' },
+        { id: 'security-privacy', name: 'Security & Privacy' },
+        { id: 'url-safe', name: 'URL-Safe RFC 4648' },
+        { id: 'faq', name: 'Developer FAQ' }
+    ];
+
+    let currentIdx = 0;
+
+    function switchGuideTab(idx, scroll) {
+        if (idx < 0 || idx >= tabs.length) return;
+        currentIdx = idx;
+        const target = tabs[currentIdx];
+
+        // Update nav buttons
+        document.querySelectorAll('.guide-nav-btn').forEach((b, i) => {
+            const isActive = b.dataset.guideTab === target.id;
+            b.classList.toggle('active', isActive);
+            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        // Update panes
+        document.querySelectorAll('.guide-pane').forEach(p => {
+            p.classList.toggle('active', p.id === `pane-${target.id}`);
+        });
+
+        // Update dots
+        document.querySelectorAll('.guide-dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentIdx);
+        });
+
+        // Update counter
+        const counter = document.getElementById('guideCounter');
+        if (counter) counter.textContent = `${currentIdx + 1} / ${tabs.length}`;
+
+        // Update prev/next button labels & visibility
+        const prevBtn = document.getElementById('guidePrevBtn');
+        const nextBtn = document.getElementById('guideNextBtn');
+        const prevLabel = document.getElementById('guidePrevLabel');
+        const nextLabel = document.getElementById('guideNextLabel');
+
+        if (prevBtn) {
+            prevBtn.disabled = currentIdx === 0;
+            prevBtn.style.opacity = currentIdx === 0 ? '0.4' : '1';
+            prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
+            if (prevLabel && currentIdx > 0) {
+                prevLabel.textContent = `← ${tabs[currentIdx - 1].name}`;
+            } else if (prevLabel) {
+                prevLabel.textContent = 'Previous Section';
+            }
+        }
+
+        if (nextBtn) {
+            nextBtn.disabled = currentIdx === tabs.length - 1;
+            nextBtn.style.opacity = currentIdx === tabs.length - 1 ? '0.4' : '1';
+            nextBtn.style.pointerEvents = currentIdx === tabs.length - 1 ? 'none' : 'auto';
+            if (nextLabel && currentIdx < tabs.length - 1) {
+                nextLabel.textContent = `${tabs[currentIdx + 1].name} →`;
+            } else if (nextLabel) {
+                nextLabel.textContent = 'Next Section';
+            }
+        }
+
+        if (scroll) {
+            const guideCard = document.querySelector('.guide-card');
+            if (guideCard) {
+                guideCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }
+
+    // Attach click to nav buttons
+    document.querySelectorAll('.guide-nav-btn').forEach((btn, idx) => {
+        btn.addEventListener('click', () => switchGuideTab(idx, false));
+    });
+
+    // Attach click to prev/next buttons
+    document.getElementById('guidePrevBtn')?.addEventListener('click', () => {
+        if (currentIdx > 0) switchGuideTab(currentIdx - 1, true);
+    });
+
+    document.getElementById('guideNextBtn')?.addEventListener('click', () => {
+        if (currentIdx < tabs.length - 1) switchGuideTab(currentIdx + 1, true);
+    });
+
+    // Attach click to dots
+    document.querySelectorAll('.guide-dot').forEach((dot, idx) => {
+        dot.addEventListener('click', () => switchGuideTab(idx, false));
+    });
+
+    // Initialize state
+    switchGuideTab(0, false);
+}
+
+function setupBatchUpload() {
+    document.addEventListener('change', (e) => {
+        if (e.target && e.target.id === 'batchFileInput') {
+            const files = Array.from(e.target.files);
+            const container = document.getElementById('batchTableResult');
+            if (!container || files.length === 0) return;
+
+            container.innerHTML = `
+                <div class="batch-table-container">
+                    <table class="batch-table">
+                        <thead>
+                            <tr>
+                                <th>File Name</th>
+                                <th>Size</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="batchTableBody"></tbody>
+                    </table>
+                </div>
+            `;
+
+            const tbody = document.getElementById('batchTableBody');
+            files.forEach((file, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${sanitizeHTML(file.name)}</strong></td>
+                    <td>${formatFileSize(file.size)}</td>
+                    <td><code>${file.type || 'unknown'}</code></td>
+                    <td id="batchStatus-${idx}">Processing...</td>
+                    <td id="batchAction-${idx}">-</td>
+                `;
+                tbody.appendChild(tr);
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const b64 = reader.result;
+                    const statusCell = document.getElementById(`batchStatus-${idx}`);
+                    const actionCell = document.getElementById(`batchAction-${idx}`);
+                    if (statusCell) statusCell.innerHTML = '<span style="color: var(--primary); font-weight: bold;">Ready</span>';
+                    if (actionCell) {
+                        actionCell.innerHTML = `
+                            <button class="btn btn-sm btn-primary" onclick="copyToClipboard('${b64}')">Copy</button>
+                        `;
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    });
+}
+
+
