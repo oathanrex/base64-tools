@@ -109,6 +109,13 @@ const TOOLS = Object.freeze([
 
     // Image Tools
     {
+        id: 'font-to-base64',
+        name: 'Font to Base64 & Specimen',
+        description: 'Encode WOFF2, TTF, OTF to Base64 with live interactive typography specimen',
+        category: 'image',
+        icon: 'text'
+    },
+    {
         id: 'image-to-base64',
         name: 'Image to Base64',
         description: 'Convert image to Base64 data URI',
@@ -1166,7 +1173,10 @@ function renderToolsGrid(category = 'all') {
                     ${ICONS[tool.icon] || ICONS.file}
                 </div>
                 <div class="tool-info">
-                    <h3 class="tool-name">${sanitizeHTML(tool.name)}</h3>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <h3 class="tool-name">${sanitizeHTML(tool.name)}</h3>
+                        <button class="tool-star-btn ${(OMNI_STATE && OMNI_STATE.pinnedTools && OMNI_STATE.pinnedTools.includes(tool.id)) ? 'starred' : ''}" onclick="event.stopPropagation(); togglePinTool('${tool.id}')" title="Pin / Unpin">★</button>
+                    </div>
                     <p class="tool-description">${sanitizeHTML(tool.description)}</p>
                 </div>
             </div>
@@ -1212,6 +1222,7 @@ function getToolTemplate(toolId) {
         'pdf-to-base64': createPdfEncoderTemplate(),
         'base64-to-pdf': createPdfDecoderTemplate(),
         'batch-file-encoder': createBatchFileTemplate(),
+        'font-to-base64': createFontEncoderTemplate(),
         'image-to-base64': createImageEncoderTemplate(),
         'base64-to-image': createImageDecoderTemplate(),
         'image-to-css': createImageToCssTemplate(),
@@ -1259,7 +1270,7 @@ function createTextEncoderTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="${isEncode ? 'Enter text to encode to Base64...' : 'Enter Base64 string to decode...'}" aria-label="${isEncode ? 'Text input' : 'Base64 input'}"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="${isEncode ? 'Enter text to encode to Base64...' : 'Enter Base64 string to decode...'}" aria-label="${isEncode ? 'Text input' : 'Base64 input'}"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -1274,7 +1285,7 @@ function createTextEncoderTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="${isEncode ? 'Base64 encoded result will appear here...' : 'Decoded text will appear here...'}" readonly aria-label="${isEncode ? 'Base64 output' : 'Decoded text output'}"></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="${isEncode ? 'Base64 encoded result will appear here...' : 'Decoded text will appear here...'}" readonly aria-label="${isEncode ? 'Base64 output' : 'Decoded text output'}"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -1308,7 +1319,7 @@ function createUrlSafeTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="${isEncode ? 'Enter text to encode...' : 'Enter URL-safe Base64 string...'}"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="${isEncode ? 'Enter text to encode...' : 'Enter URL-safe Base64 string...'}"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -1322,7 +1333,7 @@ function createUrlSafeTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Result will appear here..." readonly></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Result will appear here..." readonly></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -1365,7 +1376,7 @@ function createLiveEncoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="Start typing... conversion happens in real-time"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="Start typing... conversion happens in real-time"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -1379,7 +1390,7 @@ function createLiveEncoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Output will appear here as you type..." readonly></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Output will appear here as you type..." readonly></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -1395,7 +1406,7 @@ function createFileEncoderTemplate() {
             <div class="file-upload-icon">${ICONS.upload}</div>
             <p class="file-upload-text">Drag & drop a file here or click to browse</p>
             <p class="file-upload-hint">Maximum file size: ${formatFileSize(CONFIG.MAX_FILE_SIZE)}</p>
-            <input type="file" id="fileInput" class="file-upload-input" aria-hidden="true">
+            <input name="fileInput" type="file" id="fileInput" class="file-upload-input" aria-hidden="true">
         </div>
         <div id="filePreviewContainer"></div>
         <div id="progressContainer" hidden>
@@ -1415,7 +1426,7 @@ function createFileEncoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="outputText" placeholder="Base64 encoded file will appear here..." readonly></textarea>
+                <textarea name="outputText" id="outputText" placeholder="Base64 encoded file will appear here..." readonly></textarea>
             </div>
             <div class="panel-footer">
                 <span id="outputStats">0 characters | 0 bytes</span>
@@ -1425,7 +1436,7 @@ function createFileEncoderTemplate() {
             <div class="options-title">Output Options</div>
             <div class="options-grid">
                 <div class="option-item">
-                    <input type="checkbox" id="includeDataUri" checked>
+                    <input name="includeDataUri" type="checkbox" id="includeDataUri" checked>
                     <label for="includeDataUri">Include Data URI prefix</label>
                 </div>
             </div>
@@ -1444,7 +1455,7 @@ function createFileDecoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="inputText" placeholder="Paste Base64 string here (with or without data URI prefix)..."></textarea>
+                <textarea name="inputText" id="inputText" placeholder="Paste Base64 string here (with or without data URI prefix)..."></textarea>
             </div>
             <div class="panel-footer">
                 <span id="inputStats">0 characters | 0 bytes</span>
@@ -1455,11 +1466,11 @@ function createFileDecoderTemplate() {
             <div class="options-grid">
                 <div class="option-item">
                     <label for="fileName">Filename:</label>
-                    <input type="text" id="fileName" value="download" placeholder="filename">
+                    <input name="fileName" type="text" id="fileName" value="download" placeholder="filename">
                 </div>
                 <div class="option-item">
                     <label for="mimeType">MIME Type:</label>
-                    <select id="mimeType">
+                    <select name="mimeType" id="mimeType">
                         <option value="auto">Auto-detect</option>
                         <option value="application/octet-stream">Binary</option>
                         <option value="text/plain">Text (.txt)</option>
@@ -1494,7 +1505,7 @@ function createImageEncoderTemplate() {
             <div class="file-upload-icon">${ICONS.upload}</div>
             <p class="file-upload-text">Drag & drop an image here or click to browse</p>
             <p class="file-upload-hint">Supports: PNG, JPEG, GIF, WebP, SVG</p>
-            <input type="file" id="fileInput" class="file-upload-input" accept="image/*">
+            <input name="fileInput" type="file" id="fileInput" class="file-upload-input" accept="image/*">
         </div>
         <div id="imagePreviewContainer"></div>
         <div class="tool-panel" style="margin-top: var(--spacing-4);">
@@ -1506,7 +1517,7 @@ function createImageEncoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="outputText" placeholder="Base64 encoded image will appear here..." readonly></textarea>
+                <textarea name="outputText" id="outputText" placeholder="Base64 encoded image will appear here..." readonly></textarea>
             </div>
             <div class="panel-footer">
                 <span id="outputStats">0 characters | 0 bytes</span>
@@ -1526,7 +1537,7 @@ function createImageDecoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="inputText" placeholder="Paste Base64 image string here..."></textarea>
+                <textarea name="inputText" id="inputText" placeholder="Paste Base64 image string here..."></textarea>
             </div>
             <div class="panel-footer">
                 <span id="inputStats">0 characters | 0 bytes</span>
@@ -1550,7 +1561,7 @@ function createImageToCssTemplate() {
             <div class="file-upload-icon">${ICONS.upload}</div>
             <p class="file-upload-text">Drag & drop an image here or click to browse</p>
             <p class="file-upload-hint">Supports: PNG, JPEG, GIF, WebP, SVG</p>
-            <input type="file" id="fileInput" class="file-upload-input" accept="image/*">
+            <input name="fileInput" type="file" id="fileInput" class="file-upload-input" accept="image/*">
         </div>
         <div id="imagePreviewContainer"></div>
         <div class="tool-panel" style="margin-top: var(--spacing-4);">
@@ -1561,7 +1572,7 @@ function createImageToCssTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="outputText" placeholder="CSS background-image code will appear here..." readonly></textarea>
+                <textarea name="outputText" id="outputText" placeholder="CSS background-image code will appear here..." readonly></textarea>
             </div>
             <div class="panel-footer">
                 <span id="outputStats">0 characters</span>
@@ -1576,7 +1587,7 @@ function createImageToHtmlTemplate() {
             <div class="file-upload-icon">${ICONS.upload}</div>
             <p class="file-upload-text">Drag & drop an image here or click to browse</p>
             <p class="file-upload-hint">Supports: PNG, JPEG, GIF, WebP, SVG</p>
-            <input type="file" id="fileInput" class="file-upload-input" accept="image/*">
+            <input name="fileInput" type="file" id="fileInput" class="file-upload-input" accept="image/*">
         </div>
         <div id="imagePreviewContainer"></div>
         <div class="options-panel" style="margin-top: var(--spacing-4);">
@@ -1584,15 +1595,15 @@ function createImageToHtmlTemplate() {
             <div class="options-grid">
                 <div class="option-item">
                     <label for="imgAlt">Alt Text:</label>
-                    <input type="text" id="imgAlt" value="Image" placeholder="Image description">
+                    <input name="imgAlt" type="text" id="imgAlt" value="Image" placeholder="Image description">
                 </div>
                 <div class="option-item">
                     <label for="imgClass">CSS Class:</label>
-                    <input type="text" id="imgClass" value="" placeholder="optional">
+                    <input name="imgClass" type="text" id="imgClass" value="" placeholder="optional">
                 </div>
                 <div class="option-item">
                     <label for="imgId">ID:</label>
-                    <input type="text" id="imgId" value="" placeholder="optional">
+                    <input name="imgId" type="text" id="imgId" value="" placeholder="optional">
                 </div>
             </div>
         </div>
@@ -1604,7 +1615,7 @@ function createImageToHtmlTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="outputText" placeholder="HTML img tag will appear here..." readonly></textarea>
+                <textarea name="outputText" id="outputText" placeholder="HTML img tag will appear here..." readonly></textarea>
             </div>
             <div class="panel-footer">
                 <span id="outputStats">0 characters</span>
@@ -1626,7 +1637,7 @@ function createJsonEncoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder='{"key": "value", "array": [1, 2, 3]}'></textarea>
+                    <textarea name="inputText" id="inputText" placeholder='{"key": "value", "array": [1, 2, 3]}'></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -1641,7 +1652,7 @@ function createJsonEncoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Base64 encoded JSON will appear here..." readonly></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Base64 encoded JSON will appear here..." readonly></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -1671,7 +1682,7 @@ function createJsonDecoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="Paste Base64 encoded JSON here..."></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="Paste Base64 encoded JSON here..."></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -1685,7 +1696,7 @@ function createJsonDecoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Decoded and formatted JSON will appear here..." readonly></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Decoded and formatted JSON will appear here..." readonly></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -1714,7 +1725,7 @@ function createValidatorTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="inputText" placeholder="Paste Base64 string to validate..."></textarea>
+                <textarea name="inputText" id="inputText" placeholder="Paste Base64 string to validate..."></textarea>
             </div>
             <div class="panel-footer">
                 <span id="inputStats">0 characters | 0 bytes</span>
@@ -1744,7 +1755,7 @@ function createCalculatorTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="Enter text or Base64 to calculate sizes..."></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="Enter text or Base64 to calculate sizes..."></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -1782,7 +1793,7 @@ function createJwtDecoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="inputText" placeholder="Paste your JWT token here (eyJ...)"></textarea>
+                <textarea name="inputText" id="inputText" placeholder="Paste your JWT token here (eyJ...)"></textarea>
             </div>
             <div class="panel-footer">
                 <span id="inputStats">0 characters</span>
@@ -1810,11 +1821,11 @@ function createBasicAuthTemplate() {
                 <div style="display: flex; flex-direction: column; gap: var(--spacing-4);">
                     <div>
                         <label for="authUsername" style="display: block; margin-bottom: var(--spacing-1); font-size: var(--font-size-sm); color: var(--text-secondary);">Username</label>
-                        <input type="text" id="authUsername" placeholder="Enter username" style="width: 100%; padding: var(--spacing-3); border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-base);">
+                        <input name="authUsername" type="text" id="authUsername" placeholder="Enter username" style="width: 100%; padding: var(--spacing-3); border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-base);">
                     </div>
                     <div>
                         <label for="authPassword" style="display: block; margin-bottom: var(--spacing-1); font-size: var(--font-size-sm); color: var(--text-secondary);">Password</label>
-                        <input type="password" id="authPassword" placeholder="Enter password" style="width: 100%; padding: var(--spacing-3); border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-base);">
+                        <input name="authPassword" type="password" id="authPassword" placeholder="Enter password" style="width: 100%; padding: var(--spacing-3); border: 1px solid var(--border-color); border-radius: var(--radius-lg); background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-base);">
                     </div>
                 </div>
             </div>
@@ -1827,7 +1838,7 @@ function createBasicAuthTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="outputText" placeholder="Authorization header will appear here..." readonly></textarea>
+                <textarea name="outputText" id="outputText" placeholder="Authorization header will appear here..." readonly></textarea>
             </div>
         </div>
         <div class="tool-actions" style="margin-top: var(--spacing-4);">
@@ -1854,7 +1865,7 @@ function createHexConverterTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="${isBase64ToHex ? 'Enter Base64 string...' : 'Enter hexadecimal string (e.g., 48656C6C6F)...'}"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="${isBase64ToHex ? 'Enter Base64 string...' : 'Enter hexadecimal string (e.g., 48656C6C6F)...'}"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -1868,7 +1879,7 @@ function createHexConverterTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Result will appear here..." readonly></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Result will appear here..." readonly></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -1899,7 +1910,7 @@ function createBulkTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="Enter multiple items, one per line..."></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="Enter multiple items, one per line..."></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 lines</span>
@@ -1913,7 +1924,7 @@ function createBulkTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Results will appear here, one per line..." readonly></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Results will appear here, one per line..." readonly></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 lines</span>
@@ -1938,7 +1949,7 @@ function createPdfEncoderTemplate() {
             <div class="file-upload-icon">${ICONS.file}</div>
             <p class="file-upload-text">Drag & drop a PDF file here or click to browse</p>
             <p class="file-upload-hint">Supports: .pdf documents up to ${formatFileSize(CONFIG.MAX_FILE_SIZE)}</p>
-            <input type="file" id="fileInput" class="file-upload-input" accept="application/pdf" aria-hidden="true">
+            <input name="fileInput" type="file" id="fileInput" class="file-upload-input" accept="application/pdf" aria-hidden="true">
         </div>
         <div id="filePreviewContainer"></div>
         <div id="progressContainer" hidden>
@@ -1958,7 +1969,7 @@ function createPdfEncoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="outputText" placeholder="Base64 Data URI for PDF will appear here..." readonly aria-label="Base64 PDF Output"></textarea>
+                <textarea name="outputText" id="outputText" placeholder="Base64 Data URI for PDF will appear here..." readonly aria-label="Base64 PDF Output"></textarea>
             </div>
             <div class="panel-footer">
                 <span id="outputStats">0 characters | 0 bytes</span>
@@ -1978,7 +1989,7 @@ function createPdfDecoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="inputText" placeholder="Paste Base64 encoded PDF string (with or without data:application/pdf;base64, prefix)..." aria-label="PDF Base64 Input"></textarea>
+                <textarea name="inputText" id="inputText" placeholder="Paste Base64 encoded PDF string (with or without data:application/pdf;base64, prefix)..." aria-label="PDF Base64 Input"></textarea>
             </div>
             <div class="panel-footer">
                 <span id="inputStats">0 characters | 0 bytes</span>
@@ -2005,7 +2016,7 @@ function createAudioEncoderTemplate() {
             <div class="file-upload-icon">${ICONS.music}</div>
             <p class="file-upload-text">Drag & drop an Audio file here or click to browse</p>
             <p class="file-upload-hint">Supports: MP3, WAV, OGG, AAC, FLAC (Max: ${formatFileSize(CONFIG.MAX_FILE_SIZE)})</p>
-            <input type="file" id="fileInput" class="file-upload-input" accept="audio/*" aria-hidden="true">
+            <input name="fileInput" type="file" id="fileInput" class="file-upload-input" accept="audio/*" aria-hidden="true">
         </div>
         <div id="filePreviewContainer"></div>
         <div id="progressContainer" hidden>
@@ -2025,7 +2036,7 @@ function createAudioEncoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="outputText" placeholder="Base64 encoded audio string will appear here..." readonly aria-label="Base64 Audio Output"></textarea>
+                <textarea name="outputText" id="outputText" placeholder="Base64 encoded audio string will appear here..." readonly aria-label="Base64 Audio Output"></textarea>
             </div>
             <div class="panel-footer">
                 <span id="outputStats">0 characters | 0 bytes</span>
@@ -2045,7 +2056,7 @@ function createAudioDecoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="inputText" placeholder="Paste Base64 audio string (or data:audio/mp3;base64,...)..." aria-label="Base64 Audio Input"></textarea>
+                <textarea name="inputText" id="inputText" placeholder="Paste Base64 audio string (or data:audio/mp3;base64,...)..." aria-label="Base64 Audio Input"></textarea>
             </div>
             <div class="panel-footer">
                 <span id="inputStats">0 characters | 0 bytes</span>
@@ -2072,7 +2083,7 @@ function createVideoEncoderTemplate() {
             <div class="file-upload-icon">${ICONS.video}</div>
             <p class="file-upload-text">Drag & drop a Video file here or click to browse</p>
             <p class="file-upload-hint">Supports: MP4, WebM, OGG (Max: ${formatFileSize(CONFIG.MAX_FILE_SIZE)})</p>
-            <input type="file" id="fileInput" class="file-upload-input" accept="video/*" aria-hidden="true">
+            <input name="fileInput" type="file" id="fileInput" class="file-upload-input" accept="video/*" aria-hidden="true">
         </div>
         <div id="filePreviewContainer"></div>
         <div id="progressContainer" hidden>
@@ -2092,7 +2103,7 @@ function createVideoEncoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="outputText" placeholder="Base64 encoded video string will appear here..." readonly aria-label="Base64 Video Output"></textarea>
+                <textarea name="outputText" id="outputText" placeholder="Base64 encoded video string will appear here..." readonly aria-label="Base64 Video Output"></textarea>
             </div>
             <div class="panel-footer">
                 <span id="outputStats">0 characters | 0 bytes</span>
@@ -2112,7 +2123,7 @@ function createVideoDecoderTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="inputText" placeholder="Paste Base64 video string (or data:video/mp4;base64,...)..." aria-label="Base64 Video Input"></textarea>
+                <textarea name="inputText" id="inputText" placeholder="Paste Base64 video string (or data:video/mp4;base64,...)..." aria-label="Base64 Video Input"></textarea>
             </div>
             <div class="panel-footer">
                 <span id="inputStats">0 characters | 0 bytes</span>
@@ -2145,7 +2156,7 @@ function createXmlEncoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="<?xml version=\"1.0\"?>\n<root>\n  <item>Data</item>\n</root>" aria-label="XML Input"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="<?xml version=\"1.0\"?>\n<root>\n  <item>Data</item>\n</root>" aria-label="XML Input"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -2160,7 +2171,7 @@ function createXmlEncoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Base64 encoded XML will appear here..." readonly aria-label="Base64 Output"></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Base64 encoded XML will appear here..." readonly aria-label="Base64 Output"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -2193,7 +2204,7 @@ function createXmlDecoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="Enter Base64 encoded XML string..." aria-label="Base64 XML Input"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="Enter Base64 encoded XML string..." aria-label="Base64 XML Input"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -2208,7 +2219,7 @@ function createXmlDecoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Decoded XML will appear here..." readonly aria-label="XML Output"></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Decoded XML will appear here..." readonly aria-label="XML Output"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -2238,7 +2249,7 @@ function createCsvEncoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="id,name,role\n1,Oathan,Engineer\n2,Rex,Architect" aria-label="CSV Input"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="id,name,role\n1,Oathan,Engineer\n2,Rex,Architect" aria-label="CSV Input"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -2253,7 +2264,7 @@ function createCsvEncoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Base64 encoded CSV will appear here..." readonly aria-label="Base64 CSV Output"></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Base64 encoded CSV will appear here..." readonly aria-label="Base64 CSV Output"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -2283,7 +2294,7 @@ function createCsvDecoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="Paste Base64 encoded CSV string..." aria-label="Base64 CSV Input"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="Paste Base64 encoded CSV string..." aria-label="Base64 CSV Input"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -2298,7 +2309,7 @@ function createCsvDecoderTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Decoded CSV will appear here..." readonly aria-label="Decoded CSV Output"></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Decoded CSV will appear here..." readonly aria-label="Decoded CSV Output"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -2323,7 +2334,7 @@ function createDataUriTemplate() {
             <div class="options-grid">
                 <div class="option-item">
                     <label for="dataUriMimeSelect">Media Type:</label>
-                    <select id="dataUriMimeSelect">
+                    <select name="dataUriMimeSelect" id="dataUriMimeSelect">
                         <option value="image/png">image/png (PNG Image)</option>
                         <option value="image/jpeg">image/jpeg (JPEG Image)</option>
                         <option value="image/svg+xml">image/svg+xml (SVG Vector)</option>
@@ -2348,7 +2359,7 @@ function createDataUriTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="Paste raw Base64 payload (without data: prefix)..." aria-label="Raw Base64 Payload"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="Paste raw Base64 payload (without data: prefix)..." aria-label="Raw Base64 Payload"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -2362,7 +2373,7 @@ function createDataUriTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="data:image/png;base64,iVBORw0K... will appear here" readonly aria-label="Formatted Data URI"></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="data:image/png;base64,iVBORw0K... will appear here" readonly aria-label="Formatted Data URI"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -2391,7 +2402,7 @@ function createMimeDetectorTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="inputText" placeholder="Paste any Base64 encoded string here (e.g. /9j/4..., iVBORw..., JVBERi...)..." aria-label="Base64 String for MIME Inspection"></textarea>
+                <textarea name="inputText" id="inputText" placeholder="Paste any Base64 encoded string here (e.g. /9j/4..., iVBORw..., JVBERi...)..." aria-label="Base64 String for MIME Inspection"></textarea>
             </div>
             <div class="panel-footer">
                 <span id="inputStats">0 characters | 0 bytes</span>
@@ -2415,7 +2426,7 @@ function createBatchFileTemplate() {
             <div class="file-upload-icon">${ICONS.files}</div>
             <p class="file-upload-text">Drag & drop multiple files here or click to browse</p>
             <p class="file-upload-hint">Upload multiple files simultaneously for batch Base64 encoding</p>
-            <input type="file" id="batchFileInput" class="file-upload-input" multiple aria-hidden="true">
+            <input name="batchFileInput" type="file" id="batchFileInput" class="file-upload-input" multiple aria-hidden="true">
         </div>
         <div id="batchTableResult"></div>
     `;
@@ -2427,7 +2438,7 @@ function createBatchImageTemplate() {
             <div class="file-upload-icon">${ICONS.image}</div>
             <p class="file-upload-text">Drag & drop multiple images here or click to browse</p>
             <p class="file-upload-hint">Supports: PNG, JPG, GIF, WebP, SVG for batch processing</p>
-            <input type="file" id="batchFileInput" class="file-upload-input" multiple accept="image/*" aria-hidden="true">
+            <input name="batchFileInput" type="file" id="batchFileInput" class="file-upload-input" multiple accept="image/*" aria-hidden="true">
         </div>
         <div id="batchTableResult"></div>
     `;
@@ -2444,7 +2455,7 @@ function createDiffTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="Paste first Base64 string..." aria-label="First Base64 string"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="Paste first Base64 string..." aria-label="First Base64 string"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -2458,7 +2469,7 @@ function createDiffTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputTextB" placeholder="Paste second Base64 string..." aria-label="Second Base64 string"></textarea>
+                    <textarea name="inputTextB" id="inputTextB" placeholder="Paste second Base64 string..." aria-label="Second Base64 string"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -2488,7 +2499,7 @@ function createHashTemplate() {
                 </div>
             </div>
             <div class="panel-body">
-                <textarea id="inputText" placeholder="Enter text or Base64 string to compute cryptographic digests..." aria-label="Input for Hashes"></textarea>
+                <textarea name="inputText" id="inputText" placeholder="Enter text or Base64 string to compute cryptographic digests..." aria-label="Input for Hashes"></textarea>
             </div>
             <div class="panel-footer">
                 <span id="inputStats">0 characters | 0 bytes</span>
@@ -2519,7 +2530,7 @@ function createBinaryTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="${isEncode ? 'Enter 8-bit binary numbers (e.g. 01001000 01101111)...' : 'Enter Base64 string to convert to binary bits...'}" aria-label="Binary / Base64 Input"></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="${isEncode ? 'Enter 8-bit binary numbers (e.g. 01001000 01101111)...' : 'Enter Base64 string to convert to binary bits...'}" aria-label="Binary / Base64 Input"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -2534,7 +2545,7 @@ function createBinaryTemplate(mode) {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="${isEncode ? 'Base64 output will appear here...' : '01001000 01101111... binary bits will appear here...'}" readonly aria-label="Binary / Base64 Output"></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="${isEncode ? 'Base64 output will appear here...' : '01001000 01101111... binary bits will appear here...'}" readonly aria-label="Binary / Base64 Output"></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -2555,6 +2566,38 @@ function createBinaryTemplate(mode) {
     `;
 }
 
+
+function createFontEncoderTemplate() {
+    return `
+        <div class="file-upload-area" id="fileDropZone" role="button" tabindex="0" aria-label="Drop font file here or click to browse">
+            <div class="file-upload-icon">${ICONS.text}</div>
+            <p class="file-upload-text">Drag & drop a Font file here (WOFF2, WOFF, TTF, OTF)</p>
+            <p class="file-upload-hint">Generates CSS @font-face and launches live interactive typography tester</p>
+            <input name="fileInput" type="file" id="fileInput" class="file-upload-input" accept=".woff2,.woff,.ttf,.otf" aria-hidden="true">
+        </div>
+        <div id="filePreviewContainer"></div>
+        <div class="tool-panel" style="margin-top: var(--spacing-4);">
+            <div class="panel-header">
+                <span class="panel-title">${ICONS.code} CSS @font-face &amp; Data URI</span>
+                <div class="panel-actions">
+                    <button class="btn-icon btn-sm" data-action="copy" type="button" title="Copy" aria-label="Copy CSS">${ICONS.copy}</button>
+                    <button class="btn-icon btn-sm" data-action="download-text" type="button" title="Download">${ICONS.download}</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <textarea name="outputText" id="outputText" placeholder="CSS @font-face snippet will appear here upon font upload..." readonly aria-label="CSS font-face Output"></textarea>
+            </div>
+        </div>
+        <div class="font-specimen-box" id="fontSpecimenBox" style="display: none;">
+            <div class="options-title">Interactive Font Specimen Sandbox</div>
+            <p style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Edit text below to test your decoded font in real time:</p>
+            <div contenteditable="true" class="font-preview-editable" id="fontSpecimenEditable">
+                Sphinx of black quartz, judge my vow. 1234567890
+            </div>
+        </div>
+    `;
+}
+
 function createDefaultTemplate() {
     return `
         <div class="tool-panels">
@@ -2567,7 +2610,7 @@ function createDefaultTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="inputText" placeholder="Enter input..."></textarea>
+                    <textarea name="inputText" id="inputText" placeholder="Enter input..."></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="inputStats">0 characters | 0 bytes</span>
@@ -2581,7 +2624,7 @@ function createDefaultTemplate() {
                     </div>
                 </div>
                 <div class="panel-body">
-                    <textarea id="outputText" placeholder="Output will appear here..." readonly></textarea>
+                    <textarea name="outputText" id="outputText" placeholder="Output will appear here..." readonly></textarea>
                 </div>
                 <div class="panel-footer">
                     <span id="outputStats">0 characters | 0 bytes</span>
@@ -3633,6 +3676,27 @@ async function handleFileSelect(file) {
             if (id) attrs += ` id="${sanitizeHTML(id)}"`;
 
             output = `<img ${attrs}>`;
+        } else if (state.currentTool === 'font-to-base64') {
+            const ext = file.name.split('.').pop().toLowerCase();
+            const format = ext === 'woff2' ? 'woff2' : (ext === 'woff' ? 'woff' : (ext === 'otf' ? 'opentype' : 'truetype'));
+            const cleanFamilyName = file.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_") || 'CustomFont';
+            output = `@font-face {\n    font-family: '${cleanFamilyName}';\n    src: url('${base64}') format('${format}');\n    font-weight: normal;\n    font-style: normal;\n    font-display: swap;\n}\n\n/* Example CSS Usage */\n.custom-typography {\n    font-family: '${cleanFamilyName}', sans-serif;\n}`;
+
+            // Inject dynamic style rule for interactive font preview sandbox
+            let dynamicStyle = document.getElementById('dynamicFontSpecimenStyle');
+            if (!dynamicStyle) {
+                dynamicStyle = document.createElement('style');
+                dynamicStyle.id = 'dynamicFontSpecimenStyle';
+                document.head.appendChild(dynamicStyle);
+            }
+            dynamicStyle.textContent = `@font-face { font-family: '${cleanFamilyName}'; src: url('${base64}') format('${format}'); }`;
+
+            const fontSpecimenBox = document.getElementById('fontSpecimenBox');
+            const fontSpecimenEditable = document.getElementById('fontSpecimenEditable');
+            if (fontSpecimenBox && fontSpecimenEditable) {
+                fontSpecimenBox.style.display = 'block';
+                fontSpecimenEditable.style.fontFamily = `'${cleanFamilyName}', sans-serif`;
+            }
         }
 
         if (outputText) outputText.value = output;
@@ -4247,13 +4311,20 @@ function setupEventListeners() {
     }
 
     // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        // Only auto-switch if no saved preference
-        if (!localStorage.getItem(CONFIG.STORAGE_KEYS.THEME)) {
-            state.theme = e.matches ? 'dark' : 'light';
-            applyTheme();
+    const themeMediaQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    if (themeMediaQuery) {
+        const handleThemeChange = (e) => {
+            if (!localStorage.getItem(CONFIG.STORAGE_KEYS.THEME)) {
+                state.theme = e.matches ? 'dark' : 'light';
+                applyTheme();
+            }
+        };
+        if (themeMediaQuery.addEventListener) {
+            themeMediaQuery.addEventListener('change', handleThemeChange);
+        } else if (themeMediaQuery.addListener) {
+            themeMediaQuery.addListener(handleThemeChange);
         }
-    });
+    }
 
     // Update current year in footer
     if (elements.currentYear) {
@@ -4269,17 +4340,14 @@ function setupEventListeners() {
  * Register service worker for offline support
  */
 async function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        try {
-            // Only register if sw.js exists
-            const response = await fetch('sw.js', { method: 'HEAD' });
-            if (response.ok) {
-                await navigator.serviceWorker.register('sw.js');
-                console.log('Service Worker registered');
-            }
-        } catch (e) {
-            // Service worker not available, skip
-        }
+    if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+            console.log('ServiceWorker registered with scope:', reg.scope);
+            const statusText = document.getElementById('pwaStatusText');
+            if (statusText) statusText.textContent = 'Offline Ready';
+        }).catch(err => {
+            console.warn('ServiceWorker registration error:', err);
+        });
     }
 }
 
@@ -4368,6 +4436,8 @@ function init() {
         setupEventListeners();
         setupKeyboardShortcuts();
         setupErrorHandling();
+        setupOmniWorkbench();
+        setupSettingsModal();
 
         // Hide loading overlay
         hideLoadingOverlay();
@@ -4415,18 +4485,100 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 function setupGuideTabs() {
-    document.querySelectorAll('.guide-nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabId = btn.dataset.guideTab;
-            document.querySelectorAll('.guide-nav-btn').forEach(b => {
-                b.classList.toggle('active', b === btn);
-                b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
-            });
-            document.querySelectorAll('.guide-pane').forEach(p => {
-                p.classList.toggle('active', p.id === `pane-${tabId}`);
-            });
+    const tabs = [
+        { id: 'field-guide', name: 'Field Guide' },
+        { id: 'inflation-math', name: 'Inflation Math' },
+        { id: 'mime-signatures', name: 'MIME Signatures' },
+        { id: 'security-privacy', name: 'Security & Privacy' },
+        { id: 'url-safe', name: 'URL-Safe RFC 4648' },
+        { id: 'faq', name: 'Developer FAQ' }
+    ];
+
+    let currentIdx = 0;
+
+    function switchGuideTab(idx, scroll) {
+        if (idx < 0 || idx >= tabs.length) return;
+        currentIdx = idx;
+        const target = tabs[currentIdx];
+
+        // Update nav buttons
+        document.querySelectorAll('.guide-nav-btn').forEach((b, i) => {
+            const isActive = b.dataset.guideTab === target.id;
+            b.classList.toggle('active', isActive);
+            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
         });
+
+        // Update panes
+        document.querySelectorAll('.guide-pane').forEach(p => {
+            p.classList.toggle('active', p.id === `pane-${target.id}`);
+        });
+
+        // Update dots
+        document.querySelectorAll('.guide-dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentIdx);
+        });
+
+        // Update counter
+        const counter = document.getElementById('guideCounter');
+        if (counter) counter.textContent = `${currentIdx + 1} / ${tabs.length}`;
+
+        // Update prev/next button labels & visibility
+        const prevBtn = document.getElementById('guidePrevBtn');
+        const nextBtn = document.getElementById('guideNextBtn');
+        const prevLabel = document.getElementById('guidePrevLabel');
+        const nextLabel = document.getElementById('guideNextLabel');
+
+        if (prevBtn) {
+            prevBtn.disabled = currentIdx === 0;
+            prevBtn.style.opacity = currentIdx === 0 ? '0.4' : '1';
+            prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
+            if (prevLabel && currentIdx > 0) {
+                prevLabel.textContent = `← ${tabs[currentIdx - 1].name}`;
+            } else if (prevLabel) {
+                prevLabel.textContent = 'Previous Section';
+            }
+        }
+
+        if (nextBtn) {
+            nextBtn.disabled = currentIdx === tabs.length - 1;
+            nextBtn.style.opacity = currentIdx === tabs.length - 1 ? '0.4' : '1';
+            nextBtn.style.pointerEvents = currentIdx === tabs.length - 1 ? 'none' : 'auto';
+            if (nextLabel && currentIdx < tabs.length - 1) {
+                nextLabel.textContent = `${tabs[currentIdx + 1].name} →`;
+            } else if (nextLabel) {
+                nextLabel.textContent = 'Next Section';
+            }
+        }
+
+        if (scroll) {
+            const guideCard = document.querySelector('.guide-card');
+            if (guideCard) {
+                guideCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }
+
+    // Attach click to nav buttons
+    document.querySelectorAll('.guide-nav-btn').forEach((btn, idx) => {
+        btn.addEventListener('click', () => switchGuideTab(idx, false));
     });
+
+    // Attach click to prev/next buttons
+    document.getElementById('guidePrevBtn')?.addEventListener('click', () => {
+        if (currentIdx > 0) switchGuideTab(currentIdx - 1, true);
+    });
+
+    document.getElementById('guideNextBtn')?.addEventListener('click', () => {
+        if (currentIdx < tabs.length - 1) switchGuideTab(currentIdx + 1, true);
+    });
+
+    // Attach click to dots
+    document.querySelectorAll('.guide-dot').forEach((dot, idx) => {
+        dot.addEventListener('click', () => switchGuideTab(idx, false));
+    });
+
+    // Initialize state
+    switchGuideTab(0, false);
 }
 
 function setupBatchUpload() {
@@ -4480,5 +4632,543 @@ function setupBatchUpload() {
                 reader.readAsDataURL(file);
             });
         }
+    });
+}
+
+
+// ============================================
+// Google-Grade Omni-Studio Architecture
+// ============================================
+
+const OMNI_STATE = {
+    detectedType: 'plaintext',
+    activeCodeLang: 'javascript',
+    liveEnabled: true,
+    telemetry: {
+        throughput: 0,
+        ops: 0,
+        lastDuration: 0
+    },
+    settings: {
+        lineWrap: 'none',
+        padding: 'standard',
+        charset: 'utf-8'
+    },
+    pinnedTools: ['image-to-base64', 'base64-to-image', 'jwt-decoder', 'url-safe-encode']
+};
+
+/**
+ * Universal Input Format Detector
+ */
+function detectInputFormat(str) {
+    if (!str || !str.trim()) return { type: 'plaintext', label: 'Plain Text' };
+    const s = str.trim();
+
+    if (/^data:[a-zA-Z0-9\/+\-\.]+;base64,/i.test(s)) {
+        return { type: 'data-uri', label: 'Data URI' };
+    }
+    if (/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(s)) {
+        return { type: 'jwt', label: 'JWT Token' };
+    }
+    if (/^[01\s]{8,}$/.test(s) && !/[2-9a-zA-Z]/.test(s)) {
+        return { type: 'binary', label: '8-Bit Binary' };
+    }
+    const cleanHex = s.replace(/\s+/g, '');
+    if (/^[0-9a-fA-F]+$/.test(cleanHex) && cleanHex.length >= 4 && cleanHex.length % 2 === 0 && !/[g-zG-Z]/.test(s)) {
+        return { type: 'hex', label: 'Hexadecimal' };
+    }
+    if (isValidBase64(s)) {
+        if (/[-_]/.test(s)) return { type: 'base64-url', label: 'Base64 (URL-Safe)' };
+        return { type: 'base64', label: 'Base64 (Standard)' };
+    }
+    return { type: 'plaintext', label: 'Plain Text (UTF-8)' };
+}
+
+/**
+ * Update Session Telemetry HUD
+ */
+function recordTelemetry(bytesAdded, durationMs) {
+    OMNI_STATE.telemetry.throughput += bytesAdded;
+    OMNI_STATE.telemetry.ops += 1;
+    OMNI_STATE.telemetry.lastDuration = durationMs;
+
+    const elThroughput = document.getElementById('hudThroughput');
+    const elOps = document.getElementById('hudOpsCount');
+    const elLatency = document.getElementById('hudLatency');
+
+    if (elThroughput) elThroughput.textContent = formatFileSize(OMNI_STATE.telemetry.throughput);
+    if (elOps) elOps.textContent = `${OMNI_STATE.telemetry.ops} ops`;
+    if (elLatency) elLatency.textContent = `${durationMs < 1 ? '< 1' : durationMs.toFixed(1)} ms`;
+}
+
+/**
+ * Generate Multi-Language Code Snippets
+ */
+function generateCodeSnippet(lang, data, isDecode) {
+    const cleanData = (data || '').replace(/'/g, "\\'");
+    const previewData = cleanData.length > 80 ? cleanData.substring(0, 80) + '...' : cleanData;
+
+    switch (lang) {
+        case 'javascript':
+            return isDecode
+                ? `// Decode Base64 in JavaScript / TypeScript\nconst b64 = '${previewData}';\nconst decoded = decodeURIComponent(escape(atob(b64)));\nconsole.log(decoded);`
+                : `// Encode to Base64 in JavaScript / TypeScript\nconst text = '${previewData}';\nconst b64 = btoa(unescape(encodeURIComponent(text)));\nconsole.log(b64);`;
+
+        case 'python':
+            return isDecode
+                ? `# Decode Base64 in Python\nimport base64\n\nb64 = '${previewData}'\ndecoded = base64.b64decode(b64).decode('utf-8')\nprint(decoded)`
+                : `# Encode to Base64 in Python\nimport base64\n\ntext = '${previewData}'\nb64 = base64.b64encode(text.encode('utf-8')).decode('ascii')\nprint(b64)`;
+
+        case 'go':
+            return isDecode
+                ? `// Decode Base64 in Go\npackage main\nimport (\n    "encoding/base64"\n    "fmt"\n)\nfunc main() {\n    raw, _ := base64.StdEncoding.DecodeString("${previewData}")\n    fmt.Println(string(raw))\n}`
+                : `// Encode to Base64 in Go\npackage main\nimport (\n    "encoding/base64"\n    "fmt"\n)\nfunc main() {\n    encoded := base64.StdEncoding.EncodeToString([]byte("${previewData}"))\n    fmt.Println(encoded)\n}`;
+
+        case 'rust':
+            return isDecode
+                ? `// Decode Base64 in Rust\nuse base64::{Engine as _, engine::general_purpose::STANDARD};\n\nfn main() {\n    let bytes = STANDARD.decode("${previewData}").unwrap();\n    println!("{}", String::from_utf8(bytes).unwrap());\n}`
+                : `// Encode to Base64 in Rust\nuse base64::{Engine as _, engine::general_purpose::STANDARD};\n\nfn main() {\n    let encoded = STANDARD.encode("${previewData}");\n    println!("{}", encoded);\n}`;
+
+        case 'php':
+            return isDecode
+                ? `<?php\n$b64 = '${previewData}';\n$decoded = base64_decode($b64);\necho $decoded;\n?>`
+                : `<?php\n$text = '${previewData}';\n$b64 = base64_encode($text);\necho $b64;\n?>`;
+
+        case 'bash':
+            return isDecode
+                ? `# Decode in Bash / Terminal\necho -n "${previewData}" | base64 --decode`
+                : `# Encode in Bash / Terminal\necho -n "${previewData}" | base64`;
+
+        case 'html':
+            return cleanData.startsWith('data:image/')
+                ? `<!-- Inlined HTML Image Tag -->\n<img src="${previewData}" alt="Base64 Inlined Asset" width="auto" height="auto" />\n\n/* CSS Background Declaration */\n.element {\n    background-image: url('${previewData}');\n}`
+                : `<!-- HTML Download Link -->\n<a href="data:application/octet-stream;base64,${previewData}" download="asset.bin">Download Decoded Asset</a>`;
+
+        default:
+            return `// Code snippet for ${lang}`;
+    }
+}
+
+/**
+ * Setup Omni-Workbench Handlers
+ */
+function setupOmniWorkbench() {
+    const omniInput = document.getElementById('omniInput');
+    const omniOutput = document.getElementById('omniOutput');
+    const omniDetectedBadge = document.getElementById('omniDetectedBadge');
+    const omniDetectedType = document.getElementById('omniDetectedType');
+    const omniInputStats = document.getElementById('omniInputStats');
+    const omniOutputStats = document.getElementById('omniOutputStats');
+    const omniInflationStats = document.getElementById('omniInflationStats');
+    const omniCodeSnippet = document.getElementById('omniCodeSnippet');
+    const omniPreviewContainer = document.getElementById('omniPreviewContainer');
+    const omniSmartActionBtn = document.getElementById('omniSmartActionBtn');
+    const omniSmartActionText = document.getElementById('omniSmartActionText');
+    const omniSampleSelect = document.getElementById('omniSampleSelect');
+
+    if (!omniInput || !omniOutput) return;
+
+    // Load persisted settings
+    try {
+        const savedSettings = localStorage.getItem('b64-settings');
+        if (savedSettings) {
+            Object.assign(OMNI_STATE.settings, JSON.parse(savedSettings));
+        }
+    } catch(e) {}
+
+    // Load pinned tools
+    try {
+        const savedPinned = localStorage.getItem('b64-pinned-tools');
+        if (savedPinned) {
+            OMNI_STATE.pinnedTools = JSON.parse(savedPinned);
+        }
+    } catch(e) {}
+
+    renderPinnedTools();
+
+    function executeOmniConvert(targetAction) {
+        const t0 = performance.now();
+        const val = omniInput.value;
+        if (!val || !val.trim()) {
+            omniOutput.value = '';
+            if (omniPreviewContainer) {
+                omniPreviewContainer.style.display = 'none';
+                omniPreviewContainer.innerHTML = '';
+            }
+            updateOmniStats();
+            return;
+        }
+
+        const format = detectInputFormat(val);
+        OMNI_STATE.detectedType = format.type;
+
+        if (omniDetectedBadge) {
+            omniDetectedBadge.textContent = format.label;
+            omniDetectedBadge.className = `format-badge ${format.type}`;
+        }
+        if (omniDetectedType) {
+            omniDetectedType.textContent = `Detected: ${format.label}`;
+        }
+
+        // Determine action if auto
+        let action = targetAction;
+        if (!action || action === 'auto') {
+            if (format.type === 'base64' || format.type === 'base64-url' || format.type === 'data-uri') {
+                action = 'decode';
+            } else if (format.type === 'jwt') {
+                action = 'jwt';
+            } else if (format.type === 'hex') {
+                action = 'hex-to-b64';
+            } else if (format.type === 'binary') {
+                action = 'bin-to-b64';
+            } else {
+                action = 'encode';
+            }
+        }
+
+        let res = '';
+        let isDec = false;
+
+        try {
+            if (action === 'encode') {
+                res = encodeBase64(val);
+                // Apply line wrapping setting
+                if (OMNI_STATE.settings.lineWrap === '64') {
+                    res = res.replace(/(.{64})/g, '$1\n');
+                } else if (OMNI_STATE.settings.lineWrap === '76') {
+                    res = res.replace(/(.{76})/g, '$1\r\n');
+                }
+                // Apply padding setting
+                if (OMNI_STATE.settings.padding === 'unpadded') {
+                    res = res.replace(/=+$/, '');
+                }
+                isDec = false;
+            } else if (action === 'decode') {
+                let clean = val.trim().replace(/^data:[^;]+;base64,/, '');
+                res = decodeBase64(clean);
+                isDec = true;
+            } else if (action === 'url-safe-encode') {
+                res = encodeUrlSafeBase64(val);
+                isDec = false;
+            } else if (action === 'url-safe-decode') {
+                res = decodeUrlSafeBase64(val.trim());
+                isDec = true;
+            } else if (action === 'to-hex') {
+                const b64 = format.type === 'base64' ? val.trim() : encodeBase64(val);
+                res = base64ToHex(b64);
+                isDec = false;
+            } else if (action === 'hex-to-b64') {
+                res = hexToBase64(val.trim());
+                isDec = true;
+            } else if (action === 'to-binary') {
+                const b64 = format.type === 'base64' ? val.trim() : encodeBase64(val);
+                const decoded = atob(b64);
+                let bin = [];
+                for (let i = 0; i < decoded.length; i++) {
+                    bin.push(decoded.charCodeAt(i).toString(2).padStart(8, '0'));
+                }
+                res = bin.join(' ');
+                isDec = false;
+            } else if (action === 'bin-to-b64') {
+                const cleanBin = val.replace(/[^01]/g, '');
+                let bytes = [];
+                for (let i = 0; i < cleanBin.length; i += 8) {
+                    bytes.push(parseInt(cleanBin.substring(i, i + 8), 2));
+                }
+                res = btoa(String.fromCharCode.apply(null, bytes));
+                isDec = false;
+            } else if (action === 'sha256') {
+                const enc = new TextEncoder();
+                crypto.subtle.digest('SHA-256', enc.encode(val)).then(buf => {
+                    const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+                    omniOutput.value = hex;
+                    updateOmniStats();
+                });
+                return;
+            } else if (action === 'jwt') {
+                const parts = val.trim().split('.');
+                if (parts.length === 3) {
+                    try {
+                        const h = JSON.parse(decodeBase64(parts[0].replace(/-/g, '+').replace(/_/g, '/')));
+                        const p = JSON.parse(decodeBase64(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+                        res = JSON.stringify({ Header: h, Payload: p }, null, 2);
+                        
+                        // Render visual JWT view
+                        if (omniPreviewContainer) {
+                            const expTime = p.exp ? new Date(p.exp * 1000).toLocaleString() : 'Never';
+                            const isExpired = p.exp ? (Date.now() > p.exp * 1000) : false;
+                            omniPreviewContainer.style.display = 'block';
+                            omniPreviewContainer.innerHTML = `
+                                <div class="jwt-viewer-container">
+                                    <div class="jwt-token-strip">
+                                        <span class="jwt-part-header">${sanitizeHTML(parts[0])}</span>.<span class="jwt-part-payload">${sanitizeHTML(parts[1])}</span>.<span class="jwt-part-sig">${sanitizeHTML(parts[2])}</span>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; align-items: center; margin-top: 8px;">
+                                        <span class="jwt-status-badge ${isExpired ? 'expired' : 'active'}">
+                                            ${isExpired ? 'EXPIRED' : 'ACTIVE TOKEN'}
+                                        </span>
+                                        <span style="font-size: var(--font-size-xs); color: var(--text-secondary);">Expires: ${expTime}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    } catch(e) {
+                        res = 'Invalid JWT payload';
+                    }
+                }
+            }
+
+            omniOutput.value = res;
+
+            // Visual media preview in omni output if Data URI
+            if (format.type === 'data-uri' || val.trim().startsWith('data:image/')) {
+                if (omniPreviewContainer) {
+                    omniPreviewContainer.style.display = 'block';
+                    omniPreviewContainer.innerHTML = `
+                        <div class="media-preview-wrapper">
+                            <img src="${val.trim()}" alt="Visual Preview" style="max-height: 200px; max-width: 100%; border-radius: 8px;">
+                        </div>
+                    `;
+                }
+            } else if (action !== 'jwt' && omniPreviewContainer) {
+                omniPreviewContainer.style.display = 'none';
+            }
+
+            const t1 = performance.now();
+            recordTelemetry(new Blob([val]).size, t1 - t0);
+            updateOmniStats();
+
+            // Update code snippet
+            if (omniCodeSnippet) {
+                omniCodeSnippet.textContent = generateCodeSnippet(OMNI_STATE.activeCodeLang, res || val, isDec);
+            }
+
+            // Update smart action text
+            if (omniSmartActionText) {
+                omniSmartActionText.textContent = isDec ? 'Encode' : 'Decode';
+            }
+
+        } catch (err) {
+            omniOutput.value = `Error: ${err.message}`;
+        }
+    }
+
+    function updateOmniStats() {
+        const inBytes = new Blob([omniInput.value]).size;
+        const outBytes = new Blob([omniOutput.value]).size;
+
+        if (omniInputStats) {
+            omniInputStats.textContent = `${omniInput.value.length.toLocaleString()} chars | ${formatFileSize(inBytes)}`;
+        }
+        if (omniOutputStats) {
+            omniOutputStats.textContent = `${omniOutput.value.length.toLocaleString()} chars | ${formatFileSize(outBytes)}`;
+        }
+        if (omniInflationStats && inBytes > 0 && outBytes > 0) {
+            const ratio = (outBytes / inBytes).toFixed(2);
+            const deltaPercent = (((outBytes - inBytes) / inBytes) * 100).toFixed(1);
+            omniInflationStats.textContent = `Ratio: ${ratio}x (${deltaPercent >= 0 ? '+' : ''}${deltaPercent}%)`;
+        }
+    }
+
+    // Input events
+    omniInput.addEventListener('input', () => {
+        if (OMNI_STATE.liveEnabled) {
+            executeOmniConvert('auto');
+        } else {
+            const format = detectInputFormat(omniInput.value);
+            if (omniDetectedBadge) {
+                omniDetectedBadge.textContent = format.label;
+                omniDetectedBadge.className = `format-badge ${format.type}`;
+            }
+            updateOmniStats();
+        }
+    });
+
+    // Sample Selector
+    if (omniSampleSelect) {
+        omniSampleSelect.addEventListener('change', () => {
+            const val = omniSampleSelect.value;
+            const samples = {
+                text: "Sphinx of black quartz, judge my vow! 🚀 Engineering by Oathan Rex.",
+                base64: "U3BoaW54IG9mIGJsYWNrIHF1YXJ0eiwganVkZ2UgbXkgdm93ISDwn5mpIEVuZ2luZWVyaW5nIGJ5IE9hdGhhbiBSZXgu",
+                jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik9hdGhhbiBSZXgiLCJyb2xlIjoiQXJjaGl0ZWN0IiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE5MTYyMzkwMjJ9.4z7y6_P4qVf66Hl3pYj6iU8XWwL8Y4z0_QW5iX_Z5bE",
+                'data-uri': "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                hex: "4f 61 74 68 61 6e 20 52 65 78 20 53 74 75 64 69 6f",
+                binary: "01001111 01100001 01110100 01101000 01100001 01101110"
+            };
+            if (samples[val]) {
+                omniInput.value = samples[val];
+                executeOmniConvert('auto');
+            }
+            omniSampleSelect.selectedIndex = 0;
+        });
+    }
+
+    // Button Click Handlers
+    document.getElementById('omniSmartActionBtn')?.addEventListener('click', () => executeOmniConvert('auto'));
+    document.getElementById('omniEncodeBtn')?.addEventListener('click', () => executeOmniConvert('encode'));
+    document.getElementById('omniDecodeBtn')?.addEventListener('click', () => executeOmniConvert('decode'));
+    document.getElementById('omniUrlSafeEncodeBtn')?.addEventListener('click', () => executeOmniConvert('url-safe-encode'));
+    document.getElementById('omniToHexBtn')?.addEventListener('click', () => executeOmniConvert('to-hex'));
+    document.getElementById('omniToBinaryBtn')?.addEventListener('click', () => executeOmniConvert('to-binary'));
+    document.getElementById('omniSha256Btn')?.addEventListener('click', () => executeOmniConvert('sha256'));
+
+    document.getElementById('omniLiveToggle')?.addEventListener('change', (e) => {
+        OMNI_STATE.liveEnabled = e.target.checked;
+        if (OMNI_STATE.liveEnabled) executeOmniConvert('auto');
+    });
+
+    document.getElementById('omniClearBtn')?.addEventListener('click', () => {
+        omniInput.value = '';
+        omniOutput.value = '';
+        if (omniPreviewContainer) {
+            omniPreviewContainer.style.display = 'none';
+            omniPreviewContainer.innerHTML = '';
+        }
+        updateOmniStats();
+    });
+
+    document.getElementById('omniCopyBtn')?.addEventListener('click', () => {
+        if (omniOutput.value) {
+            copyToClipboard(omniOutput.value);
+            showToast('Result copied to clipboard!', 'success');
+        } else {
+            showToast('Nothing to copy', 'warning');
+        }
+    });
+
+    document.getElementById('omniDownloadBtn')?.addEventListener('click', () => {
+        if (omniOutput.value) {
+            downloadFile(omniOutput.value, 'base64-result.txt', 'text/plain');
+        }
+    });
+
+    document.getElementById('omniSwapBtn')?.addEventListener('click', () => {
+        const temp = omniInput.value;
+        omniInput.value = omniOutput.value;
+        omniOutput.value = temp;
+        executeOmniConvert('auto');
+    });
+
+    document.getElementById('omniPasteBtn')?.addEventListener('click', async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            omniInput.value = text;
+            executeOmniConvert('auto');
+        } catch(e) {
+            showToast('Please use Ctrl+V to paste', 'info');
+        }
+    });
+
+    // File Upload in Omni
+    const omniUploadBtn = document.getElementById('omniUploadBtn');
+    const omniFileInput = document.getElementById('omniFileInput');
+    if (omniUploadBtn && omniFileInput) {
+        omniUploadBtn.addEventListener('click', () => omniFileInput.click());
+        omniFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    omniInput.value = reader.result;
+                    executeOmniConvert('auto');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Code Snippet Tabs
+    document.querySelectorAll('.code-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.code-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            OMNI_STATE.activeCodeLang = btn.dataset.codeLang;
+            if (omniCodeSnippet) {
+                omniCodeSnippet.textContent = generateCodeSnippet(OMNI_STATE.activeCodeLang, omniOutput.value || omniInput.value, false);
+            }
+        });
+    });
+
+    document.getElementById('omniCopyCodeBtn')?.addEventListener('click', () => {
+        if (omniCodeSnippet?.textContent) {
+            copyToClipboard(omniCodeSnippet.textContent);
+            showToast('Code snippet copied!', 'success');
+        }
+    });
+}
+
+/**
+ * Render Pinned Tools Section
+ */
+function renderPinnedTools() {
+    const container = document.getElementById('pinnedGrid');
+    if (!container) return;
+
+    const pinnedList = TOOLS.filter(t => OMNI_STATE.pinnedTools.includes(t.id));
+    if (pinnedList.length === 0) {
+        container.innerHTML = '<p style="font-size: var(--font-size-xs); color: var(--text-tertiary); grid-column: 1 / -1;">No tools pinned yet. Click the star on any tool card below to pin it here.</p>';
+        return;
+    }
+
+    container.innerHTML = pinnedList.map(t => `
+        <div class="pinned-card" onclick="openTool('${t.id}')">
+            <div class="pinned-card-info">
+                <div class="tool-icon" style="width: 32px; height: 32px;">
+                    ${ICONS[t.icon] || ICONS.file}
+                </div>
+                <div>
+                    <h4 style="font-size: var(--font-size-xs); font-weight: 700; color: var(--text-primary);">${sanitizeHTML(t.name)}</h4>
+                    <span style="font-size: 11px; color: var(--text-tertiary); text-transform: uppercase;">${t.category}</span>
+                </div>
+            </div>
+            <button class="tool-star-btn starred" onclick="event.stopPropagation(); togglePinTool('${t.id}')" title="Unpin tool">★</button>
+        </div>
+    `).join('');
+}
+
+function togglePinTool(toolId) {
+    if (OMNI_STATE.pinnedTools.includes(toolId)) {
+        OMNI_STATE.pinnedTools = OMNI_STATE.pinnedTools.filter(id => id !== toolId);
+    } else {
+        OMNI_STATE.pinnedTools.push(toolId);
+    }
+    localStorage.setItem('b64-pinned-tools', JSON.stringify(OMNI_STATE.pinnedTools));
+    renderPinnedTools();
+    renderToolsGrid(state.currentCategory || 'all');
+    showToast('Updated pinned tools', 'info');
+}
+
+/**
+ * Preferences Modal Handlers
+ */
+function setupSettingsModal() {
+    const modal = document.getElementById('settingsModal');
+    const toggle = document.getElementById('settingsToggle');
+    const closeBtn = document.getElementById('closeSettingsModal');
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    const wrapSel = document.getElementById('settingLineWrap');
+    const padSel = document.getElementById('settingPadding');
+    const charSel = document.getElementById('settingCharset');
+
+    if (!modal || !toggle) return;
+
+    toggle.addEventListener('click', () => {
+        if (wrapSel) wrapSel.value = OMNI_STATE.settings.lineWrap;
+        if (padSel) padSel.value = OMNI_STATE.settings.padding;
+        if (charSel) charSel.value = OMNI_STATE.settings.charset;
+        modal.hidden = false;
+    });
+
+    closeBtn?.addEventListener('click', () => modal.hidden = true);
+    modal.querySelector('.modal-backdrop')?.addEventListener('click', () => modal.hidden = true);
+
+    saveBtn?.addEventListener('click', () => {
+        if (wrapSel) OMNI_STATE.settings.lineWrap = wrapSel.value;
+        if (padSel) OMNI_STATE.settings.padding = padSel.value;
+        if (charSel) OMNI_STATE.settings.charset = charSel.value;
+        localStorage.setItem('b64-settings', JSON.stringify(OMNI_STATE.settings));
+        modal.hidden = true;
+        showToast('Preferences saved!', 'success');
     });
 }

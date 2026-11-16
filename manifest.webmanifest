@@ -1,0 +1,19 @@
+{
+  "name": "Base64 Tools Studio | Oathan Rex",
+  "short_name": "Base64 Studio",
+  "description": "High-performance client-side Base64 tools suite, multimedia decoder, and cryptographic inspector.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b1114",
+  "theme_color": "#0b1114",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2310b981'/%3E%3Ctext x='50' y='68' font-family='sans-serif' font-size='45' font-weight='bold' fill='%230b1114' text-anchor='middle'%3EB64%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["developer", "utilities", "productivity"]
+}

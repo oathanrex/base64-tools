@@ -1,18 +1,19 @@
 <div align="center">
 
 # Base64 Tools Studio
-**High-Performance Client-Side Encoding, Decoding, and Cryptographic Analysis Hub**
+**Google-Grade Client-Side Encoding, Decoding, Cryptographic Analysis & Omni-Workbench Suite**
 
-[![Tools](https://img.shields.io/badge/Tools-38_Tools-10b981?style=for-the-badge&logoColor=white)](https://oathanrex.github.io/base64-tools/)
-[![Privacy](https://img.shields.io/badge/Privacy-100%25_Client--Side-059669?style=for-the-badge)](https://oathanrex.github.io/base64-tools/)
-[![RFC 4648](https://img.shields.io/badge/Standard-RFC_4648_Compliant-0d9488?style=for-the-badge)](https://oathanrex.github.io/base64-tools/)
-[![License](https://img.shields.io/badge/License-MIT-047857?style=for-the-badge)](LICENSE)
+[![Tools](https://img.shields.io/badge/Tools-40_Tools-10b981?style=for-the-badge&logoColor=white)](https://oathanrex.github.io/base64-tools/)
+[![PWA Ready](https://img.shields.io/badge/PWA-Offline_First-059669?style=for-the-badge)](https://oathanrex.github.io/base64-tools/)
+[![Privacy](https://img.shields.io/badge/Privacy-100%25_In--Memory-0d9488?style=for-the-badge)](https://oathanrex.github.io/base64-tools/)
+[![RFC 4648](https://img.shields.io/badge/Standard-RFC_4648_Compliant-047857?style=for-the-badge)](https://oathanrex.github.io/base64-tools/)
+[![License](https://img.shields.io/badge/License-MIT-10b981?style=for-the-badge)](LICENSE)
 
 *Engineered by [Oathan Rex](https://oathanrex.github.io)*
 
 ---
 
-[Launch Application](https://oathanrex.github.io/base64-tools/) • [Architecture Overview](#system-architecture) • [Tool Catalog](#production-tool-catalog) • [RFC 4648 Specifications](#rfc-4648-engineering-standards)
+[Launch Application](https://oathanrex.github.io/base64-tools/) • [Omni-Workbench](#universal-omni-workbench) • [Tool Catalog (40 Tools)](#production-tool-catalog) • [Engineering Guide](#practitioner-engineering-guide) • [RFC 4648 Specs](#rfc-4648-engineering-standards)
 
 </div>
 
@@ -20,37 +21,58 @@
 
 ## Executive Overview
 
-**Base64 Tools Studio** is an offline-first single-page engineering workbench providing **38 client-side conversion, inspection, and cryptographic digest tools** for raw data, multimedia, documents, and web protocols.
+**Base64 Tools Studio** is an offline-first single-page developer flagship suite providing **40 client-side conversion, inspection, and cryptographic digest tools** for raw data, multimedia, documents, and web protocols.
 
-Built from first principles with zero external runtime dependencies, the suite processes all transformations directly inside the browser's JavaScript V8 engine (Web Workers, `FileReader`, Web Crypto API `crypto.subtle`, and `TextEncoder`), ensuring complete data confidentiality and zero data leakage.
-
----
-
-## Architectural Principles
-
-```
-  ┌────────────────────────────────────────────────────────┐
-  │              Client-Side Browser Sandbox               │
-  ├───────────────────┬───────────────────┬────────────────┤
-  │   Text & Data     │    Media Stream   │  Crypto & AST  │
-  ├───────────────────┼───────────────────┼────────────────┤
-  │ • UTF-8 Encoder   │ • Audio Playback  │ • SHA-256 / 512│
-  │ • URL-Safe Engine │ • Video Canvas    │ • JWT Claims   │
-  │ • JSON/XML/CSV    │ • PDF Frame View  │ • Magic Bytes  │
-  └───────────────────┴───────────────────┴────────────────┘
-            │                   │                  │
-            ▼                   ▼                  ▼
-    [ Memory Array ]    [ Blob URL Cache ]   [ SubtleDigest ]
-```
-
-1. **Zero-Telemetry Confidentiality**: No payloads, images, tokens, or audio/video files ever leave the user's workstation. 100% memory isolation.
-2. **Chunked Streaming Pipeline**: Large file transformations utilize asynchronous chunking to prevent thread blocking and UI stutter.
-3. **Drafting Emerald & Mineral Slate Design**: Harmonized with the unified Oathan Rex ecosystem palette, featuring OKLCH contrast ratios meeting WCAG AAA accessibility criteria.
-4. **Offline Resilience**: Instantaneous execution with zero CDN runtime reliance and persistent local configuration.
+Built from first principles with **zero external runtime dependencies**, the suite processes all transformations directly inside the browser's JavaScript V8 engine (Web Workers, `FileReader`, Web Crypto API `crypto.subtle`, and `TextEncoder`), ensuring complete data confidentiality and zero server uploads.
 
 ---
 
-## Production Tool Catalog
+## What Makes This 10 / 10 Google-Grade
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                      Universal Omni-Workbench                          │
+├───────────────────┬───────────────────┬────────────────────────────────┤
+│   Auto-Detection  │  Session Telemetry│   Multi-Language Generator     │
+├───────────────────┼───────────────────┼────────────────────────────────┤
+│ • Plain Text      │ • Throughput HUD  │ • JavaScript / TypeScript      │
+│ • Base64 / URLSafe│ • Ops Counter     │ • Python, Go, Rust, PHP        │
+│ • Hex & 8-Bit Bin │ • Sub-ms Latency  │ • Bash / cURL, HTML / CSS      │
+│ • Data URI & JWT  │ • Memory Privacy  │ • One-Click Copy & Export      │
+└───────────────────┴───────────────────┴────────────────────────────────┘
+          │                   │                  │
+          ▼                   ▼                  ▼
+  [ 40 Studio Tools ]  [ PWA ServiceWorker ]  [ Interactive Sandboxes ]
+```
+
+1. **Universal Omni-Workbench**: Never guess which converter to use. Paste plain text, standard Base64, URL-Safe strings, Hex byte streams, 8-bit binary bits, Data URIs, or JSON Web Tokens (JWT) — the engine instantly detects the input format, selects the optimal conversion pathway, and generates production code snippets in 7 programming languages.
+2. **Session Telemetry & Health HUD**: Live hardware metrics displaying throughput volume, operation counts, sub-millisecond execution latency, and a verified 100% in-browser memory privacy guarantee.
+3. **Advanced Personalization**: Pin your most frequently used tools to the top of the interface with persistent local storage. Custom preferences allow configuring output line wrapping (64 chars RFC 2045, 76 chars RFC 1421), RFC 4648 §5 padding stripping, and character encodings.
+4. **40 Production Tools with Live Sandboxes**: Dedicated preview players for audio, video, PDFs, images, XML trees, CSV tables, and an interactive **Font to Base64 Typography Specimen Sandbox** where uploaded fonts are decoded and previewed in real-time.
+5. **Mobile-First UX & Stepper Navigation**: Two-column high-visibility grid on mobile screens with bottom Next/Previous steppers and progress dots so users never get lost in multi-section documentation.
+6. **Progressive Web App (PWA)**: Complete offline capability powered by a Cache-First Service Worker (`sw.js`) and modern web app manifest.
+
+---
+
+## Universal Omni-Workbench
+
+The primary workbench at the top of the application eliminates developer friction:
+
+- **Format Heuristic Classifier**: Instantly recognizes `plaintext`, `base64`, `base64-url`, `data-uri`, `jwt`, `hex`, and `binary`.
+- **Live Reactive Execution**: Automatically transforms payloads as you type with debounced performance optimization.
+- **Visual Previews**: Inline rendering for decoded images and color-coded JWT breakdown (Header, Payload, Signature) with token expiration countdown badges.
+- **Polyglot Code Generator**: Copy drop-in code snippets for:
+  - **JavaScript / TypeScript** (`atob`, `btoa`, `decodeURIComponent`)
+  - **Python** (`base64.b64decode`, `base64.b64encode`)
+  - **Go** (`base64.StdEncoding.DecodeString`)
+  - **Rust** (`base64::Engine::decode`)
+  - **PHP** (`base64_decode`, `base64_encode`)
+  - **Bash / Terminal** (`echo -n ... | base64 --decode`)
+  - **HTML / CSS** (`<img src="data:..." />`, `background-image: url(...)`)
+
+---
+
+## Production Tool Catalog (40 Tools)
 
 ### 1. Text & Encodings (5 Tools)
 - **Text to Base64**: Full UTF-8 multi-byte string serialization.
@@ -67,7 +89,8 @@ Built from first principles with zero external runtime dependencies, the suite p
 - **Batch File Encoder**: Multi-file queue processing with individual payload export.
 - **Batch Image Encoder**: Automated image asset matrix encoder.
 
-### 3. Image Studio (4 Tools)
+### 3. Image & Typography Studio (5 Tools)
+- **Font to Base64 & Specimen**: Encodes WOFF2, TTF, OTF to Base64 with live interactive typography specimen tester.
 - **Image to Base64**: Data URI generator for PNG, JPEG, GIF, WebP, and SVG.
 - **Base64 to Image**: Live visual rendering, dimension metrics, and download.
 - **Image to CSS Background**: Generates production-ready `background-image: url(...)` declarations.
@@ -99,12 +122,26 @@ Built from first principles with zero external runtime dependencies, the suite p
 - **Basic Auth Header Generator**: Generates RFC 7617 `Authorization: Basic <credentials>` headers.
 - **Base64 + Hash Digest**: Computes cryptographic fingerprints (SHA-256, SHA-512, SHA-1) using Web Crypto API.
 
-### 8. Byte & Bit Level Utilities (5 Tools)
+### 8. Byte & Bit Level Utilities (6 Tools)
 - **Bulk Encoder**: Multi-row batch encoder with delimiter controls.
 - **Bulk Decoder**: Multi-row batch decoder.
 - **Base64 to Hex**: Translates base64 characters into hexadecimal byte notations.
 - **Hex to Base64**: Converts hexadecimal byte streams into Base64 strings.
-- **Binary to Base64 & Inverse**: Bidirectional conversion between raw 8-bit binary bits (`01001000...`) and Base64.
+- **Binary to Base64**: Encodes raw 8-bit binary bits (`01001000...`) to Base64.
+- **Base64 to Binary**: Decodes Base64 into formatted 8-bit binary octets.
+
+---
+
+## Practitioner Engineering Guide
+
+The suite includes an interactive 6-part manual designed for software engineers and cybersecurity specialists:
+
+1. **Field Guide**: Core fundamentals of binary chunking (24 bits into four 6-bit index values) and when to inline vs. link assets.
+2. **The 33% Inflation Rule**: Exact mathematical calculations for transport overhead, GZIP interaction, and bandwidth cost mitigation.
+3. **MIME Magic Signatures**: Table of magic byte hexadecimal signatures (`PNG`, `JPEG`, `GIF`, `WebP`, `PDF`, `ZIP`, `Wasm`, `MP3`, `MP4`, `WOFF2`).
+4. **Security & JWT Privacy**: Deep dive into why Base64 is encoding rather than encryption, token leak prevention, and client-side memory safety.
+5. **URL-Safe RFC 4648 §5**: Detailed specification differences for query parameters and headers.
+6. **Developer FAQ**: Authoritative answers regarding file limits, padding repairs, and CSS inlining.
 
 ---
 
@@ -112,7 +149,7 @@ Built from first principles with zero external runtime dependencies, the suite p
 
 | Key Combination | Action Description |
 | :--- | :--- |
-| <kbd>Ctrl</kbd> + <kbd>K</kbd> | Global fuzzy search across all 38 tools |
+| <kbd>Ctrl</kbd> + <kbd>K</kbd> | Global fuzzy search across all 40 tools |
 | <kbd>Ctrl</kbd> + <kbd>Enter</kbd> | Trigger primary execution action (Encode / Decode) |
 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> | Copy active output payload to system clipboard |
 | <kbd>Ctrl</kbd> + <kbd>D</kbd> | Toggle light and dark theme mode |
@@ -133,16 +170,6 @@ $$\text{Inflation Factor} = \frac{4 - 3}{3} \times 100\% = 33.333\%$$
 - **Alphabet 0–61**: `[A-Za-z0-9]`
 - **RFC 4648 §4 (Standard)**: Index 62 = `+`, Index 63 = `/`, Pad = `=`
 - **RFC 4648 §5 (URL & Filename Safe)**: Index 62 = `-`, Index 63 = `_`, Unpadded
-
----
-
-## Verified Browser Compatibility
-
-- **Google Chrome**: 88+
-- **Mozilla Firefox**: 85+
-- **Apple Safari**: 14+
-- **Microsoft Edge**: 88+
-- **Mobile Browsers**: Chrome Mobile, Mobile Safari, Samsung Internet
 
 ---
 
