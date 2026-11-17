@@ -317,21 +317,21 @@
                 </div>
 
                 <!-- Action Ribbon -->
-                <div class="omni-action-ribbon">
-                    <div class="omni-action-buttons">
-                        <button class="btn-pill primary" id="omniSmartActionBtn" type="button">
+                <div class="omni-action-ribbon" role="toolbar" aria-label="Omni conversion actions">
+                    <div class="omni-action-buttons" role="group" aria-label="Conversion modes">
+                        <button class="btn-pill primary" id="omniSmartActionBtn" type="button" aria-pressed="true" title="Auto-detect format and convert intelligently (Default)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                             <span id="omniSmartActionText">Auto-Convert</span>
                         </button>
-                        <button class="btn-pill" id="omniEncodeBtn" type="button">Encode Base64</button>
-                        <button class="btn-pill" id="omniDecodeBtn" type="button">Decode Base64</button>
-                        <button class="btn-pill" id="omniUrlSafeEncodeBtn" type="button">URL-Safe</button>
-                        <button class="btn-pill" id="omniToHexBtn" type="button">To Hex</button>
-                        <button class="btn-pill" id="omniToBinaryBtn" type="button">To Binary</button>
-                        <button class="btn-pill" id="omniSha256Btn" type="button">SHA-256</button>
+                        <button class="btn-pill" id="omniEncodeBtn" type="button" aria-pressed="false" title="Force encode input into Base64 (RFC 4648)">Encode Base64</button>
+                        <button class="btn-pill" id="omniDecodeBtn" type="button" aria-pressed="false" title="Force decode Base64 into plaintext">Decode Base64</button>
+                        <button class="btn-pill" id="omniUrlSafeEncodeBtn" type="button" aria-pressed="false" title="Convert to/from URL-Safe Base64 (- and _ instead of + and /)">URL-Safe</button>
+                        <button class="btn-pill" id="omniToHexBtn" type="button" aria-pressed="false" title="Convert between Base64/Text and Hexadecimal">To Hex</button>
+                        <button class="btn-pill" id="omniToBinaryBtn" type="button" aria-pressed="false" title="Convert between Base64/Text and 8-bit Binary representation">To Binary</button>
+                        <button class="btn-pill" id="omniSha256Btn" type="button" aria-pressed="false" title="Generate SHA-256 cryptographic hash of input">SHA-256</button>
                     </div>
                     <div class="omni-options-group">
-                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;" title="Toggle real-time conversion as you type">
                             <input type="checkbox" id="omniLiveToggle" name="omniLiveToggle" checked>
                             <span>Live conversion</span>
                         </label>

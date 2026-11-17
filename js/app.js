@@ -4583,6 +4583,28 @@ function setupOmniWorkbench() {
 
     renderPinnedTools();
 
+    function updateActiveActionPill(act) {
+        const actionToId = {
+            'auto': 'omniSmartActionBtn',
+            'encode': 'omniEncodeBtn',
+            'decode': 'omniDecodeBtn',
+            'url-safe': 'omniUrlSafeEncodeBtn',
+            'url-safe-encode': 'omniUrlSafeEncodeBtn',
+            'url-safe-decode': 'omniUrlSafeEncodeBtn',
+            'to-hex': 'omniToHexBtn',
+            'hex-to-b64': 'omniToHexBtn',
+            'to-binary': 'omniToBinaryBtn',
+            'bin-to-b64': 'omniToBinaryBtn',
+            'sha256': 'omniSha256Btn'
+        };
+        const activeId = actionToId[act] || 'omniSmartActionBtn';
+        document.querySelectorAll('.omni-action-buttons .btn-pill').forEach(btn => {
+            const isMatch = btn.id === activeId;
+            btn.classList.toggle('primary', isMatch);
+            btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+        });
+    }
+
     function executeOmniConvert(targetAction) {
         const t0 = performance.now();
         const val = omniInput.value;
@@ -4593,6 +4615,7 @@ function setupOmniWorkbench() {
                 omniPreviewContainer.innerHTML = '';
             }
             updateOmniStats();
+            updateActiveActionPill(targetAction || 'auto');
             return;
         }
 
@@ -4622,6 +4645,7 @@ function setupOmniWorkbench() {
                 action = 'encode';
             }
         }
+        updateActiveActionPill(targetAction || 'auto');
 
         let res = '';
         let isDec = false;
@@ -4660,42 +4684,59 @@ function setupOmniWorkbench() {
                     res = decodeBase64(clean);
                 }
                 isDec = true;
-            } else if (action === 'url-safe-encode') {
-                res = encodeUrlSafeBase64(val);
-                isDec = false;
-            } else if (action === 'url-safe-decode') {
-                res = decodeUrlSafeBase64(val.trim());
-                isDec = true;
-            } else if (action === 'to-hex') {
-                const b64 = format.type === 'base64' ? val.trim() : encodeBase64(val);
-                res = base64ToHex(b64);
-                isDec = false;
-            } else if (action === 'hex-to-b64') {
-                res = hexToBase64(val.trim());
-                isDec = true;
-            } else if (action === 'to-binary') {
-                const b64 = format.type === 'base64' ? val.trim() : encodeBase64(val);
-                const decoded = atob(b64);
-                let bin = [];
-                for (let i = 0; i < decoded.length; i++) {
-                    bin.push(decoded.charCodeAt(i).toString(2).padStart(8, '0'));
+            } else if (action === 'url-safe' || action === 'url-safe-encode' || action === 'url-safe-decode') {
+                if (action === 'url-safe-decode' || (action === 'url-safe' && (format.type === 'base64-url' || format.type === 'base64'))) {
+                    res = decodeUrlSafeBase64(val.trim());
+                    isDec = true;
+                } else {
+                    res = encodeUrlSafeBase64(val);
+                    isDec = false;
                 }
-                res = bin.join(' ');
-                isDec = false;
-            } else if (action === 'bin-to-b64') {
-                const cleanBin = val.replace(/[^01]/g, '');
-                let bytes = [];
-                for (let i = 0; i < cleanBin.length; i += 8) {
-                    bytes.push(parseInt(cleanBin.substring(i, i + 8), 2));
+            } else if (action === 'to-hex' || action === 'hex-to-b64') {
+                if (action === 'hex-to-b64' || (action === 'to-hex' && format.type === 'hex')) {
+                    res = hexToBase64(val.trim());
+                    isDec = true;
+                } else {
+                    const b64 = format.type === 'base64' ? val.trim() : encodeBase64(val);
+                    res = base64ToHex(b64);
+                    isDec = false;
                 }
-                res = btoa(String.fromCharCode.apply(null, bytes));
-                isDec = false;
+            } else if (action === 'to-binary' || action === 'bin-to-b64') {
+                if (action === 'bin-to-b64' || (action === 'to-binary' && format.type === 'binary')) {
+                    const cleanBin = val.replace(/[^01]/g, '');
+                    let bytes = [];
+                    for (let i = 0; i < cleanBin.length; i += 8) {
+                        bytes.push(parseInt(cleanBin.substring(i, i + 8), 2));
+                    }
+                    res = btoa(String.fromCharCode.apply(null, bytes));
+                    isDec = true;
+                } else {
+                    const b64 = format.type === 'base64' ? val.trim() : encodeBase64(val);
+                    const decoded = atob(b64);
+                    let bin = [];
+                    for (let i = 0; i < decoded.length; i++) {
+                        bin.push(decoded.charCodeAt(i).toString(2).padStart(8, '0'));
+                    }
+                    res = bin.join(' ');
+                    isDec = false;
+                }
             } else if (action === 'sha256') {
                 const enc = new TextEncoder();
                 crypto.subtle.digest('SHA-256', enc.encode(val)).then(buf => {
                     const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
                     omniOutput.value = hex;
+                    if (omniPreviewContainer) {
+                        omniPreviewContainer.style.display = 'none';
+                        omniPreviewContainer.innerHTML = '';
+                    }
                     updateOmniStats();
+                    const t1 = performance.now();
+                    recordTelemetry(new Blob([val]).size, t1 - t0);
+                    if (omniCodeSnippet) {
+                        omniCodeSnippet.textContent = `// SHA-256 Hash of payload\n// Length: 64 characters (256 bits)\nconst hash = '${hex}';\nconsole.log(hash);`;
+                    }
+                }).catch(e => {
+                    omniOutput.value = `Error: ${e.message}`;
                 });
                 return;
             } else if (action === 'jwt') {
@@ -4756,9 +4797,9 @@ function setupOmniWorkbench() {
                 omniCodeSnippet.textContent = generateCodeSnippet(OMNI_STATE.activeCodeLang, res || val, isDec);
             }
 
-            // Update smart action text
+            // Auto-Convert pill retains clean label
             if (omniSmartActionText) {
-                omniSmartActionText.textContent = isDec ? 'Encode' : 'Decode';
+                omniSmartActionText.textContent = 'Auto-Convert';
             }
 
         } catch (err) {
@@ -4821,7 +4862,7 @@ function setupOmniWorkbench() {
     document.getElementById('omniSmartActionBtn')?.addEventListener('click', () => executeOmniConvert('auto'));
     document.getElementById('omniEncodeBtn')?.addEventListener('click', () => executeOmniConvert('encode'));
     document.getElementById('omniDecodeBtn')?.addEventListener('click', () => executeOmniConvert('decode'));
-    document.getElementById('omniUrlSafeEncodeBtn')?.addEventListener('click', () => executeOmniConvert('url-safe-encode'));
+    document.getElementById('omniUrlSafeEncodeBtn')?.addEventListener('click', () => executeOmniConvert('url-safe'));
     document.getElementById('omniToHexBtn')?.addEventListener('click', () => executeOmniConvert('to-hex'));
     document.getElementById('omniToBinaryBtn')?.addEventListener('click', () => executeOmniConvert('to-binary'));
     document.getElementById('omniSha256Btn')?.addEventListener('click', () => executeOmniConvert('sha256'));
