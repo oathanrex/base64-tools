@@ -60,59 +60,209 @@
 
     <!-- Schema.org JSON-LD Structured Data: WebApplication, FAQPage, HowTo -->
     <script type="application/ld+json">
-      [
-        {
-          "@context": "https://schema.org",
-          "@type": "WebApplication",
-          "name": "Base64 Tools Studio",
-          "alternateName": "Online Base64 Encoder & Decoder Suite",
-          "url": "https://oathanrex.github.io/base64-tools/",
-          "applicationCategory": "DeveloperApplication",
-          "operatingSystem": "All modern web browsers",
-          "description": "High-performance client-side Base64 tools suite. Convert text, images, files, audio, video, PDF, hashes, and JWTs client-side with 100% in-browser memory privacy.",
-          "author": {
-            "@type": "Person",
-            "name": "Oathan Rex",
-            "url": "https://oathanrex.github.io"
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "What is Base64 encoding?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Base64 is a binary-to-text encoding scheme that translates arbitrary binary data into an ASCII string format using 64 safe characters (A-Z, a-z, 0-9, +, /). It allows binary assets such as images and audio to be transmitted safely across text-based protocols like HTML, CSS, JSON, and email."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Why does Base64 increase file size by ~33%?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Every 3 binary bytes (24 bits) are divided into four 6-bit chunks. Each 6-bit chunk maps to one Base64 character. Because 4 characters are required to represent 3 bytes of data, the encoded output is exactly 4/3 (~133.33%) of the original binary size."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Is my data private when using Base64 Tools Studio?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes, 100%. All conversions, file readings, hashing, and decodings happen entirely inside your local browser memory using modern Web APIs (FileReader, Web Crypto, TextEncoder). No payloads or files are ever uploaded to any external server."
-              }
-            }
-          ]
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "@id": "https://oathanrex.github.io/base64-tools/#webapp",
+    "name": "Base64 Tools Studio",
+    "alternateName": ["Universal Base64 Encoder & Decoder", "Base64 Forensic Studio", "RFC 4648 Online Workbench"],
+    "url": "https://oathanrex.github.io/base64-tools/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All modern web browsers (Chrome, Edge, Firefox, Safari, Brave, Opera)",
+    "description": "Enterprise-grade client-side Base64 engineering workbench. Zero-latency bidirectional encoding and decoding, forensic binary metadata inspection, RFC 4648 URL-safe conversion, JWT payload analysis, and pixelated visual media preview. 100% private in-memory execution with zero server transmission.",
+    "softwareVersion": "3.8.0",
+    "author": {
+      "@type": "Person",
+      "@id": "https://oathanrex.github.io/#author",
+      "name": "Oathan Rex",
+      "url": "https://oathanrex.github.io",
+      "jobTitle": "Senior Software Architect & Full-Stack Systems Engineer"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Bidirectional RFC 4648 Section 4 and Section 5 URL-Safe encoding and decoding",
+      "Forensic binary file signature inspection and MIME type auto-detection",
+      "Pixelated visual media reconstruction stage with 128px zoom for 1x1 tracking pixels",
+      "In-memory JWT token claims and header inspection",
+      "Bitstream Hex and Binary array serialization",
+      "Cryptographic SHA-256 hash generation directly in browser memory via Web Crypto API",
+      "Zero-latency live conversion with robust multi-byte UTF-8 emoji support",
+      "Offline Progressive Web App (PWA) with Service Worker background caching"
+    ],
+    "browserRequirements": "Requires HTML5 Canvas, Web Crypto API, TextEncoder/TextDecoder, and FileReader API."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "@id": "https://oathanrex.github.io/base64-tools/#techarticle",
+    "headline": "The Definitive Base64 Engineering Manual: RFC 4648 Mechanics, 33.34% Data Inflation Calculus & Forensic Binary Inspection",
+    "alternativeHeadline": "Production-Grade Engineering Guide to Binary-to-Text Serialization, Data URIs, Magic Byte Signatures, and Memory Architecture",
+    "image": "https://oathanrex.github.io/base64-tools/assets/og-image.png",
+    "author": {
+      "@type": "Person",
+      "@id": "https://oathanrex.github.io/#author",
+      "name": "Oathan Rex",
+      "url": "https://oathanrex.github.io",
+      "jobTitle": "Senior Software Architect"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Base64 Tools Studio",
+      "url": "https://oathanrex.github.io/base64-tools/"
+    },
+    "datePublished": "2024-02-10T08:00:00+00:00",
+    "dateModified": "2026-03-31T12:00:00+00:00",
+    "description": "Comprehensive engineering manual covering the bitwise mechanics of RFC 4648 Base64, the mathematical derivation of the 33.34% payload inflation penalty, HTTP/2 multiplexing tradeoffs, forensic magic header byte inspection, and production implementation across JavaScript, Python, Go, Rust, and PHP.",
+    "keywords": [
+      "Base64",
+      "RFC 4648",
+      "Base64URL",
+      "Data URI",
+      "Binary to Text",
+      "Payload Inflation",
+      "Magic Bytes",
+      "JWT Decoder",
+      "Client-Side Privacy",
+      "Web Crypto API"
+    ],
+    "inLanguage": "en-US",
+    "mainEntityOfPage": "https://oathanrex.github.io/base64-tools/"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": "https://oathanrex.github.io/base64-tools/#breadcrumbs",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://oathanrex.github.io/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Base64 Tools Studio",
+        "item": "https://oathanrex.github.io/base64-tools/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Engineering Practitioner Guide",
+        "item": "https://oathanrex.github.io/base64-tools/#practitionerGuide"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://oathanrex.github.io/base64-tools/#faq",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Base64 encoding and why is it used instead of raw binary?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Base64 is a binary-to-text encoding algorithm specified in RFC 4648 that translates raw binary data into a restricted 64-character subset of printable US-ASCII characters (A-Z, a-z, 0-9, +, /). It prevents binary data corruption when transmitted across protocols historically built for 7-bit ASCII text, such as SMTP email, HTTP header values, JSON strings, and XML documents."
         }
-      ]
-    </script>
+      },
+      {
+        "@type": "Question",
+        "name": "Why does Base64 increase file size by exactly 33.34%?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Computers store data in 8-bit bytes (octets). Because 2^6 = 64, each Base64 character can only convey 6 bits of information. The algorithm groups 3 raw bytes (24 bits) into 4 six-bit chunks. Because 4 output characters (4 bytes = 32 bits) are needed to represent 3 input bytes (24 bits), the serialized string is mathematically 4/3 (~133.33%) of the source payload, resulting in a minimum 33.34% data expansion overhead."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between RFC 4648 Section 4 and Section 5 (URL-Safe Base64)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Standard Base64 (RFC 4648 §4) utilizes '+' and '/' characters, which have reserved syntactic meanings in URLs (where '+' is decoded as whitespace and '/' acts as a directory route delimiter). URL-Safe Base64 (RFC 4648 §5, also known as Base64URL) substitutes '+' with '-' (hyphen) and '/' with '_' (underscore), and typically omits '=' padding characters to prevent parsing failures in OAuth tokens, JWTs, and REST API query strings."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does window.btoa() throw a DOMException on UTF-8 strings or emojis, and how do I fix it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The legacy browser btoa() function only supports 8-bit Latin-1 (code points 0x00 to 0xFF). Multibyte characters like emojis, accents, and non-Latin scripts exceed 255 and trigger an unhandled DOMException: The string to be encoded contains characters outside of the Latin1 range. The modern standard fix uses new TextEncoder().encode(str) to yield a Uint8Array of UTF-8 octets, which can then be converted to Base64 safely without exceptions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can corrupted Base64 strings with missing padding (= or ==) be repaired automatically?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. If the only issue is missing '=' padding, the string length modulo 4 determines the remedy: if len % 4 === 2, append '=='; if len % 4 === 3, append '='; if len % 4 === 0, no padding was required. However, if characters inside the payload were truncated, shifted, or mutated, data integrity cannot be mathematically recovered."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it safe to store passwords or sensitive data in Base64?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Base64 is an encoding format, NOT an encryption cipher. It provides zero confidentiality, zero security, and zero cryptographic entropy. Anyone with access to a Base64 string can instantly decode it to original plaintext without any private key. Sensitive secrets must always be encrypted using authenticated algorithms like AES-256-GCM or ChaCha20-Poly1305 before transmission."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I decode a Base64 image back into a downloadable binary Blob in JavaScript?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "To convert Base64 to a Blob: strip any 'data:*/*;base64,' prefix, decode using atob() or a custom byte-array decoder, copy the character byte values into a Uint8Array, and pass it to new Blob([byteArray], { type: mimeType }). A temporary Object URL can then be created via URL.createObjectURL(blob) to trigger an instant download or display."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When should I inline images using Base64 Data URIs in CSS, and when should I avoid it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Inline Data URIs are optimal for micro-assets (< 2 KB) such as critical icons, spinners, and tiny placeholder blurhashes because eliminating an HTTP roundtrip saves more latency than the 33% byte overhead costs. Avoid inlining images larger than 10 KB or recurring assets, because inlined Base64 bloats CSS size, delays CSSOM parsing, blocks First Contentful Paint (FCP), and cannot be independently cached by the browser."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I identify file MIME types (PNG, JPEG, WebP, PDF) from Base64 strings without a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "All binary files begin with unique magic byte headers. Because Base64 maps 3 binary bytes to 4 characters deterministically, the opening characters of a Base64 string indicate the file format: 'iVBORw0K' indicates PNG, '/9j/' indicates JPEG, 'R0lGOD' indicates GIF, 'UklGR' indicates WebP, and 'JVBERi' indicates PDF. Base64 Tools Studio inspects these magic bytes client-side instantly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the maximum file size I can encode in this Base64 Studio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our studio supports files up to 50MB directly in client memory. Because processing occurs entirely within the browser's JavaScript V8/SpiderMonkey engine, processing capacity depends on available device RAM. We utilize HTML5 FileReader chunking to avoid locking the UI main thread."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data uploaded or sent to any server when using this Base64 tool?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. 100% of encoding, decoding, hash calculation, and media rendering is executed strictly inside your local browser memory using modern Web APIs (FileReader, Web Crypto, TextEncoder). Zero bytes are transmitted to any external backend, ensuring total zero-trust data privacy for confidential tokens, proprietary files, and keys."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I handle Base64 decoding in CLI / terminal scripts on Linux and macOS?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "On Linux systems use: echo -n 'payload' | base64 -d. On macOS (BSD base64) use: echo -n 'payload' | base64 -D. For URL-Safe strings without padding, normalize with tr '-_' '+/' before piping to base64 -d: echo -n 'url_safe_string' | tr -- '-_' '+/' | base64 -d."
+        }
+      }
+    ]
+  }
+]
+</script>
 
     <link rel="manifest" href="manifest.webmanifest">
     <!-- Styles -->
@@ -571,22 +721,102 @@
                     </button>
                 </div>
 
-                <!-- Tab 1: Field Guide -->
+                                <!-- Tab 1: Field Guide -->
                 <div class="guide-pane active" id="pane-field-guide" role="tabpanel">
                     <div class="guide-prose">
-                        <h3>What is Base64 and How Does It Work?</h3>
-                        <p>Base64 is a binary-to-text encoding algorithm specified in <strong>RFC 4648</strong> designed to represent raw binary sequences using a restricted alphabet of 64 printable US-ASCII characters: <code>A-Z</code> (indexes 0–25), <code>a-z</code> (indexes 26–51), <code>0-9</code> (indexes 52–61), <code>+</code> (index 62), and <code>/</code> (index 63).</p>
-                        
-                        <h3>The 6-Bit Mathematical Core</h3>
-                        <p>Modern computers store data in 8-bit bytes (octets). Because 2<sup>6</sup> = 64, each Base64 character represents exactly <strong>6 bits of information</strong>. To convert raw binary to Base64:</p>
-                        <ol>
-                            <li>The input byte stream is divided into groups of <strong>3 bytes (24 bits)</strong>.</li>
-                            <li>The 24 continuous bits are split into <strong>four 6-bit numbers</strong>.</li>
-                            <li>Each 6-bit integer (value 0 to 63) is mapped directly to its corresponding character in the Base64 alphabet table.</li>
-                        </ol>
+                        <h3>1. Modern Base64 Architecture &amp; The RFC 4648 Standard</h3>
+                        <p><strong>Base64</strong> is a standardized binary-to-text serialization algorithm specified formally in <strong>IETF RFC 4648</strong> (and historically defined in RFC 2045 for MIME transmission). Its fundamental engineering purpose is to transport arbitrary sequences of 8-bit binary octets—such as raw compiled executables, cryptographic keys, compressed archives, and bitmap imagery—safely across legacy transport layers and protocol channels designed exclusively for printable 7-bit US-ASCII text.</p>
+                        <p>Protocols including SMTP (Simple Mail Transfer Protocol), HTTP request header values, REST JSON payloads, XML document models, and CSS stylesheets treat certain control bytes (like null bytes <code>0x00</code>, line feeds <code>
+</code>, and EOF markers) as protocol terminators or delimiters. Base64 guarantees safe, lossless transport by restricting its output to an unambiguous alphabet of 64 printable characters:</p>
+                        <ul>
+                            <li><code>A–Z</code> (ASCII 65–90, mapping to 6-bit values <code>0</code> through <code>25</code>)</li>
+                            <li><code>a–z</code> (ASCII 97–122, mapping to 6-bit values <code>26</code> through <code>51</code>)</li>
+                            <li><code>0–9</code> (ASCII 48–57, mapping to 6-bit values <code>52</code> through <code>61</code>)</li>
+                            <li><code>+</code> (ASCII 43, mapping to 6-bit value <code>62</code>)</li>
+                            <li><code>/</code> (ASCII 47, mapping to 6-bit value <code>63</code>)</li>
+                        </ul>
 
-                        <div class="guide-callout">
-                            <strong>Padding Logic (= and ==):</strong> When the total length of the binary payload is not divisible by 3, trailing bytes remain. If 1 byte remains (8 bits), 4 zero bits are appended to create two 6-bit numbers, followed by two <code>==</code> padding characters. If 2 bytes remain (16 bits), 2 zero bits are appended to form three 6-bit numbers, followed by one <code>=</code> padding character.
+                        <h3>2. The Bitwise Mechanics: 8-Bit Octets to 6-Bit Sextets</h3>
+                        <p>Standard computer memory architecture operates on <strong>8-bit bytes (octets)</strong>, representing integer values from 0 to 255. Because <strong>2<sup>6</sup> = 64</strong>, each Base64 printable glyph conveys exactly <strong>6 bits of information (a sextet)</strong>. To convert raw binary into printable text, the algorithm concatenates 3 consecutive 8-bit bytes into a continuous 24-bit bitstream, and then divides that stream into 4 distinct 6-bit chunks:</p>
+
+                        <div class="guide-code-block">
+Binary Bitstream Transformation (3 Bytes in → 4 Glyphs out):
+========================================================================================
+Source Bytes:          [  Byte 0 (8 bits)  ]   [  Byte 1 (8 bits)  ]   [  Byte 2 (8 bits)  ]
+Bitstream:             b7 b6 b5 b4 b3 b2 b1 b0 c7 c6 c5 c4 c3 c2 c1 c0 d7 d6 d5 d4 d3 d2 d1 d0
+Bit Division:          |--- 6 bits ---|--- 6 bits ---|--- 6 bits ---|--- 6 bits ---|
+Base64 Sextets:        [  Sextet 0  ]   [  Sextet 1  ]   [  Sextet 2  ]   [  Sextet 3  ]
+Output Characters:          Char 0           Char 1           Char 2           Char 3
+                        </div>
+
+                        <p>The bitwise shifting operations implemented in low-level systems (C, Go, Rust, V8 engine) are derived as follows:</p>
+                        <div class="guide-code-block">
+uint8_t sextet0 = (byte0 &gt;&gt; 2) &amp; 0x3F;
+uint8_t sextet1 = ((byte0 &amp; 0x03) &lt;&lt; 4) | ((byte1 &gt;&gt; 4) &amp; 0x0F);
+uint8_t sextet2 = ((byte1 &amp; 0x0F) &lt;&lt; 2) | ((byte2 &gt;&gt; 6) &amp; 0x03);
+uint8_t sextet3 = byte2 &amp; 0x3F;
+                        </div>
+
+                        <h3>3. Concrete Execution Trace: Encoding "Man" → "TWFu"</h3>
+                        <table class="guide-table">
+                            <thead>
+                                <tr>
+                                    <th>Step</th>
+                                    <th>Component 1</th>
+                                    <th>Component 2</th>
+                                    <th>Component 3</th>
+                                    <th>Component 4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Original Text</strong></td>
+                                    <td><code>'M'</code></td>
+                                    <td><code>'a'</code></td>
+                                    <td><code>'n'</code></td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ASCII / Decimal</strong></td>
+                                    <td><code>77</code></td>
+                                    <td><code>97</code></td>
+                                    <td><code>110</code></td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Binary (8-bit)</strong></td>
+                                    <td><code>01001101</code></td>
+                                    <td><code>01100001</code></td>
+                                    <td><code>01101110</code></td>
+                                    <td>Combined: <code>010011010110000101101110</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sextets (6-bit)</strong></td>
+                                    <td><code>010011</code> (19)</td>
+                                    <td><code>010110</code> (22)</td>
+                                    <td><code>000101</code> (5)</td>
+                                    <td><code>101110</code> (46)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Base64 Character</strong></td>
+                                    <td><code>'T'</code></td>
+                                    <td><code>'W'</code></td>
+                                    <td><code>'F'</code></td>
+                                    <td><code>'u'</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>4. Boundary Alignment &amp; Padding Semantics (= and ==)</h3>
+                        <p>Because real-world payloads rarely divide evenly into multiples of 3 bytes, the stream remainder modulo 3 determines trailing padding characters:</p>
+                        <ul>
+                            <li><strong>Remainder = 0 bytes (Len % 3 == 0):</strong> The binary stream terminates cleanly on a 24-bit boundary. Exactly zero <code>=</code> padding characters are appended.</li>
+                            <li><strong>Remainder = 1 byte (Len % 3 == 1):</strong> 8 bits of data remain. Two 6-bit sextets are formed by right-padding 4 zero bits. The missing 2 sextets are filled with two <code>==</code> padding characters (e.g., <code>"M"</code> → <code>"TQ=="</code>).</li>
+                            <li><strong>Remainder = 2 bytes (Len % 3 == 2):</strong> 16 bits of data remain. Three 6-bit sextets are formed by right-padding 2 zero bits. The single missing sextet is filled with one <code>=</code> padding character (e.g., <code>"Ma"</code> → <code>"TWE="</code>).</li>
+                        </ul>
+
+                        <div class="guide-callout warning">
+                            <strong>The JavaScript UTF-8 Multibyte Trap:</strong> Standard browser <code>window.btoa()</code> expects binary Latin-1 characters (code points 0 to 255). Passing multibyte Unicode characters like emojis (<code>🔥</code>, <code>🚀</code>) or international scripts (e.g. Hindi, Japanese, Cyrillic) triggers a fatal <code>DOMException: The string to be encoded contains characters outside of the Latin1 range</code>. Our Studio bypasses this using modern <code>new TextEncoder().encode(input)</code> byte chunking, guaranteeing 100% crash-free Unicode conversion.
                         </div>
                     </div>
                 </div>
@@ -594,190 +824,382 @@
                 <!-- Tab 2: The 33% Inflation Rule -->
                 <div class="guide-pane" id="pane-inflation-math" role="tabpanel">
                     <div class="guide-prose">
-                        <h3>Why Base64 Increases File Size by 33.34%</h3>
-                        <p>Because Base64 requires 4 printable ASCII characters (4 bytes = 32 bits) to represent every 3 original binary bytes (24 bits), the serialized string is mathematically <strong>4/3 ≈ 133.33%</strong> of the source size.</p>
+                        <h3>1. The Mathematical Law of Base64 Data Expansion</h3>
+                        <p>Every software architect must understand the immutable mathematical cost of Base64 serialization: <strong>Base64 strings consume exactly 33.34% more bytes than the raw binary source</strong>. This expansion is governed by the ratio of 6-bit encoding to 8-bit byte representation:</p>
 
                         <div class="guide-code-block">
-Mathematical Ratio:
-Raw Binary Size : Encoded Base64 Size = 3 bytes : 4 bytes
-Inflation Factor = (4 - 3) / 3 = 1 / 3 ≈ +33.333% (excluding data: URI header and line breaks)
+Mathematical Derivation:
+----------------------------------------------------------------------------------------
+Input Data Size:      3 binary octets = 3 bytes × 8 bits/byte = 24 bits
+Output Data Size:     4 ASCII glyphs  = 4 bytes × 8 bits/byte = 32 bits
+
+Size Expansion Ratio = 4 / 3 = 1.33333333... (133.34% of original size)
+Net Inflation Rate   = (32 - 24) / 24 = 8 / 24 = 1 / 3 ≈ +33.333%
                         </div>
 
-                        <h3>When Should You Inline Data URIs?</h3>
+                        <p>For any binary payload of <code>n</code> bytes, the exact output character length (including padding) is calculated as:</p>
+                        <div class="guide-code-block">
+OutputLength = 4 * ceil(n / 3) bytes
+                        </div>
+
+                        <h3>2. Hidden Payload Multipliers in Web Applications</h3>
+                        <p>In web browsers and production microservices, real-world overhead frequently exceeds 33.34% due to secondary serialization factors:</p>
+                        <ul>
+                            <li><strong>Data URI Scheme Prefix:</strong> Prepending <code>data:image/webp;base64,</code> or <code>data:application/pdf;base64,</code> injects an additional 21 to 32 bytes of static string overhead.</li>
+                            <li><strong>MIME / RFC 2045 Line Wrapping:</strong> Legacy MIME specifications mandate a Carriage Return + Line Feed (<code>
+</code>) after every 76 characters. For a 1 MB file, this inserts approximately 13,800 delimiter bytes (~2.6% additional bloat).</li>
+                            <li><strong>JSON Escaping:</strong> When embedding Base64 strings inside JSON payloads, quote delimiters and potential escape characters further inflate token boundaries.</li>
+                        </ul>
+
+                        <h3>3. Architectural Decision Matrix: When to Inline vs CDN Asset</h3>
                         <table class="guide-table">
                             <thead>
                                 <tr>
-                                    <th>Asset Type</th>
-                                    <th>Recommended Method</th>
-                                    <th>Architectural Rationale</th>
+                                    <th>Resource Archetype</th>
+                                    <th>Payload Threshold</th>
+                                    <th>Recommended Strategy</th>
+                                    <th>Performance &amp; Caching Rationale</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Micro-icons (&lt; 2 KB)</td>
-                                    <td>Data URI (Inlined)</td>
-                                    <td>Eliminates HTTP roundtrips; latency saved outweighs the 33% byte overhead.</td>
+                                    <td><strong>Micro-Icons &amp; Spinners</strong></td>
+                                    <td>&lt; 2 KB</td>
+                                    <td><span style="color:var(--primary); font-weight:600;">Inline Data URI</span></td>
+                                    <td>Eliminates TCP connection handshake and DNS latency. RTT savings dwarf the 33% byte penalty.</td>
                                 </tr>
                                 <tr>
-                                    <td>Hero / Photography (&gt; 10 KB)</td>
-                                    <td>External CDN Asset</td>
-                                    <td>Base64 bloats DOM size, degrades parser throughput, and bypasses browser asset caching.</td>
+                                    <td><strong>Critical Hero Photos</strong></td>
+                                    <td>&gt; 15 KB</td>
+                                    <td><span style="color:#ef4444; font-weight:600;">External CDN Asset</span></td>
+                                    <td>Inlining bloats HTML/CSS download time, delaying First Contentful Paint (FCP) and blocking DOM parsing.</td>
                                 </tr>
                                 <tr>
-                                    <td>Critical Path CSS Background</td>
-                                    <td>Data URI (Inlined)</td>
-                                    <td>Prevents Flash of Unstyled Content (FOUC) by ensuring the background loads with CSS.</td>
+                                    <td><strong>LQIP / BlurHash Placeholders</strong></td>
+                                    <td>&lt; 500 Bytes</td>
+                                    <td><span style="color:var(--primary); font-weight:600;">Inline Data URI</span></td>
+                                    <td>Renders immediate visual structure before the high-res external asset streams into memory.</td>
                                 </tr>
                                 <tr>
-                                    <td>WASM / Audio / Video</td>
-                                    <td>External Stream Fetch</td>
-                                    <td>Large Base64 strings cause severe main-thread garbage collection pressure.</td>
+                                    <td><strong>Web Fonts (WOFF2)</strong></td>
+                                    <td>20 KB – 120 KB</td>
+                                    <td><span style="color:#ef4444; font-weight:600;">External Preload</span></td>
+                                    <td>Inlined fonts in CSS cannot be cached independently when stylesheet rules change.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Audio, Video &amp; WASM</strong></td>
+                                    <td>&gt; 100 KB</td>
+                                    <td><span style="color:#ef4444; font-weight:600;">Streamed Fetch</span></td>
+                                    <td>Large Base64 strings trigger severe V8 heap fragmentation and garbage collection pauses.</td>
                                 </tr>
                             </tbody>
                         </table>
+
+                        <div class="guide-callout">
+                            <strong>HTTP/2 &amp; HTTP/3 Multiplexing Impact:</strong> In the era of HTTP/1.1, developers inlined images to circumvent the browser limit of 6 concurrent TCP connections per domain. Modern HTTP/2 and HTTP/3 protocols support fully multiplexed binary streams over a single connection with zero head-of-line blocking. Consequently, inlining assets larger than 2 KB is an obsolete practice that harms Core Web Vitals (LCP, FID, CLS).
+                        </div>
                     </div>
                 </div>
 
                 <!-- Tab 3: MIME Magic Signatures -->
                 <div class="guide-pane" id="pane-mime-signatures" role="tabpanel">
                     <div class="guide-prose">
-                        <h3>MIME Type Detection via Magic Byte Signatures</h3>
-                        <p>All binary files begin with distinctive magic byte sequences. Because the first few bytes are consistently aligned, you can identify the exact file format from the starting characters of its Base64 string:</p>
+                        <h3>1. How Magic Numbers Survive Base64 Serialization</h3>
+                        <p>Every standard binary file format begins with a unique, immutable sequence of identifier bytes known as <strong>Magic Bytes (or File Signatures)</strong>. Because Base64 deterministically transforms groups of 3 binary bytes into groups of 4 characters, the initial 3 to 6 bytes of any file format map to predictable starting prefixes in the resulting Base64 string.</p>
+                        <p>This allows forensic systems, firewalls, and our client-side Studio to instantly inspect and identify the underlying MIME type of an encoded string without relying on arbitrary file extensions or server headers.</p>
 
+                        <h3>2. The Universal Forensic Magic Byte Reference Matrix</h3>
                         <table class="guide-table">
                             <thead>
                                 <tr>
-                                    <th>File Format</th>
+                                    <th>File Type</th>
                                     <th>MIME Type</th>
-                                    <th>Hex Signature</th>
-                                    <th>Base64 Header Prefix</th>
+                                    <th>Magic Bytes (Hex)</th>
+                                    <th>Base64 Header Signature</th>
+                                    <th>Byte Offset / Specification</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>JPEG Image</strong></td>
-                                    <td><code>image/jpeg</code></td>
-                                    <td><code>FF D8 FF</code></td>
-                                    <td><code>/9j/4...</code></td>
-                                </tr>
-                                <tr>
                                     <td><strong>PNG Image</strong></td>
                                     <td><code>image/png</code></td>
-                                    <td><code>89 50 4E 47</code></td>
+                                    <td><code>89 50 4E 47 0D 0A 1A 0A</code></td>
                                     <td><code>iVBORw0K...</code></td>
+                                    <td>Bytes 0–7: <code>.PNG
+
+</code></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>GIF Image</strong></td>
-                                    <td><code>image/gif</code></td>
-                                    <td><code>47 49 46 38</code></td>
-                                    <td><code>R0lGOD...</code></td>
+                                    <td><strong>JPEG Image</strong></td>
+                                    <td><code>image/jpeg</code></td>
+                                    <td><code>FF D8 FF E0 / E1 / EE</code></td>
+                                    <td><code>/9j/4...</code> or <code>/9j/</code></td>
+                                    <td>Bytes 0–2: Start of Image (SOI) marker</td>
                                 </tr>
                                 <tr>
                                     <td><strong>WebP Image</strong></td>
                                     <td><code>image/webp</code></td>
-                                    <td><code>52 49 46 46</code></td>
-                                    <td><code>UklGR...</code></td>
+                                    <td><code>52 49 46 46 ... 57 45 42 50</code></td>
+                                    <td><code>UklGR...V0VCUA</code></td>
+                                    <td>RIFF container with WEBP chunk signature</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GIF Image</strong></td>
+                                    <td><code>image/gif</code></td>
+                                    <td><code>47 49 46 38 37 61 / 39 61</code></td>
+                                    <td><code>R0lGODlh</code> or <code>R0lGODdh</code></td>
+                                    <td>Bytes 0–5: <code>GIF87a</code> or <code>GIF89a</code> ASCII</td>
                                 </tr>
                                 <tr>
                                     <td><strong>PDF Document</strong></td>
                                     <td><code>application/pdf</code></td>
-                                    <td><code>25 50 44 46</code></td>
-                                    <td><code>JVBERi...</code></td>
+                                    <td><code>25 50 44 46 2D</code></td>
+                                    <td><code>JVBERi0...</code></td>
+                                    <td>Bytes 0–4: <code>%PDF-</code> header version</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>ZIP / Office XML</strong></td>
+                                    <td><strong>ZIP / DOCX / XLSX</strong></td>
                                     <td><code>application/zip</code></td>
                                     <td><code>50 4B 03 04</code></td>
-                                    <td><code>UEsDB...</code></td>
+                                    <td><code>UEsDBBQ...</code></td>
+                                    <td>PKZip local file header signature</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GZIP Archive</strong></td>
+                                    <td><code>application/gzip</code></td>
+                                    <td><code>1F 8B 08</code></td>
+                                    <td><code>H4sIC...</code></td>
+                                    <td>RFC 1952 compression identification</td>
                                 </tr>
                                 <tr>
                                     <td><strong>MP3 Audio</strong></td>
                                     <td><code>audio/mpeg</code></td>
-                                    <td><code>49 44 33</code></td>
-                                    <td><code>SUQz...</code></td>
+                                    <td><code>49 44 33</code> or <code>FF FB</code></td>
+                                    <td><code>SUQz...</code> or <code>//+...</code></td>
+                                    <td>ID3v2 metadata header or MPEG frame sync</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>MP4 Video</strong></td>
+                                    <td><strong>MP4 / MOV Video</strong></td>
                                     <td><code>video/mp4</code></td>
                                     <td><code>00 00 00 ... 66 74 79 70</code></td>
                                     <td><code>AAAA... / ftyp</code></td>
+                                    <td>ISO Base Media File Format box structure</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>WebAssembly</strong></td>
+                                    <td><code>application/wasm</code></td>
+                                    <td><code>00 61 73 6D 01 00 00 00</code></td>
+                                    <td><code>AGFzbQEAAAA...</code></td>
+                                    <td>Bytes 0–7: <code> asm</code> + WASM binary version 1</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>WOFF2 Font</strong></td>
+                                    <td><code>font/woff2</code></td>
+                                    <td><code>77 4F 46 32</code></td>
+                                    <td><code>d09GMg...</code></td>
+                                    <td>Bytes 0–3: <code>wOF2</code> ASCII identifier</td>
                                 </tr>
                             </tbody>
                         </table>
+
+                        <h3>3. Forensic Sniffing in Client-Side JavaScript</h3>
+                        <p>To inspect binary signatures without allocating full object strings, use modern typed byte slicing:</p>
+                        <div class="guide-code-block">
+function detectMimeType(uint8Array) {
+    const hex = Array.from(uint8Array.subarray(0, 8))
+        .map(b =&gt; b.toString(16).padStart(2, '0').toUpperCase())
+        .join(' ');
+
+    if (hex.startsWith('89 50 4E 47')) return 'image/png';
+    if (hex.startsWith('FF D8 FF'))    return 'image/jpeg';
+    if (hex.startsWith('47 49 46 38')) return 'image/gif';
+    if (hex.startsWith('25 50 44 46')) return 'application/pdf';
+    if (hex.startsWith('50 4B 03 04')) return 'application/zip';
+    if (hex.startsWith('00 61 73 6D')) return 'application/wasm';
+    return 'application/octet-stream';
+}
+                        </div>
                     </div>
                 </div>
 
                 <!-- Tab 4: Security & Privacy -->
                 <div class="guide-pane" id="pane-security-privacy" role="tabpanel">
                     <div class="guide-prose">
-                        <h3>Critical Rule: Base64 is NOT Encryption</h3>
+                        <h3>1. The Fundamental Security Axiom: Encoding is NOT Encryption</h3>
                         <div class="guide-callout warning">
-                            <strong>Security Advisory:</strong> Base64 is a bidirectional serialization format, NOT an encryption cipher. Anyone with access to a Base64 string can instantly decode it back to plaintext with zero cryptographic keys. Never transmit passwords or secrets in raw Base64 without TLS and symmetric/asymmetric encryption (e.g. AES-GCM, RSA).
+                            <strong>Critical Vulnerability Advisory:</strong> Base64 is a deterministic serialization format, NOT an encryption algorithm. It provides <strong>zero cryptographic confidentiality, zero authentication, and zero mathematical security</strong>. Any actor who intercepts a Base64 string can decode it back to plaintext in microseconds without a decryption key.
                         </div>
+                        <p>Transmitting passwords, API access keys, social security numbers, or health information in Base64 violates core compliance regulations including <strong>GDPR Article 32</strong>, <strong>PCI-DSS Requirement 3</strong>, and <strong>HIPAA Security Standards</strong>. Confidential data must always be encrypted with authenticated cryptographic ciphers (such as AES-256-GCM, ChaCha20-Poly1305, or RSA-OAEP) before serialization.</p>
 
-                        <h3>JSON Web Tokens (JWT) Architecture</h3>
-                        <p>JWTs rely on Base64URL encoding for their three constituent segments:</p>
+                        <h3>2. JWT (JSON Web Token) Security &amp; Token Snooping</h3>
+                        <p>JSON Web Tokens (RFC 7519) format access credentials into three Base64URL-encoded segments separated by periods:</p>
                         <div class="guide-code-block">
-&lt;Header: Base64URL(JSON)&gt;.&lt;Payload: Base64URL(JSON)&gt;.&lt;Cryptographic Signature&gt;
+&lt;Header: Base64URL(JSON)&gt; . &lt;Payload: Base64URL(JSON)&gt; . &lt;Cryptographic Signature&gt;
                         </div>
-                        <p>Our in-browser <strong>JWT Decoder</strong> inspects the header algorithm (e.g., <code>RS256</code>, <code>HS256</code>) and claims payload (e.g., <code>sub</code>, <code>exp</code>, <code>iat</code>) entirely in memory without contacting any remote authentication service.</p>
+                        <p>Because the middle segment (the payload) is merely encoded and <strong>not encrypted</strong>, any client, proxy, or reverse-proxy caching layer can inspect user emails, internal roles, and permissions. Ensure your backend never embeds sensitive secrets inside JWT claims, enforce strict signature verification, and use short expiration timestamps (<code>exp</code>).</p>
+
+                        <h3>3. Modern Base64 Attack Vectors &amp; Defenses</h3>
+                        <ul>
+                            <li><strong>Stored XSS via SVG Data URIs:</strong> An attacker uploading <code>data:image/svg+xml;base64,PHN2ZyBvbmxvYWQ9ImFsZXJ0KDEpIj4...</code> can execute arbitrary JavaScript within the domain's execution origin. Defend against this by serving user uploads via a dedicated, sandboxed domain (e.g. <code>usercontent.domain.com</code>) with header <code>Content-Security-Policy: sandbox;</code>.</li>
+                            <li><strong>Insecure Deserialization (RCE):</strong> APIs that accept Base64-encoded serialized binary objects (e.g., Python <code>pickle</code>, PHP <code>unserialize()</code>, Java <code>readObject()</code>) are vulnerable to remote code execution. Always validate schemas with strict JSON models rather than binary language serializers.</li>
+                            <li><strong>WAF Evasion via Chunking:</strong> Attackers frequently split malicious payloads across Base64 strings to evade legacy pattern-matching web application firewalls. Modern zero-trust gateways decode Base64 before evaluating threat heuristics.</li>
+                        </ul>
+
+                        <h3>4. Our Zero-Trust Client-Side Privacy Guarantee</h3>
+                        <p>Unlike conventional web utilities that transmit your files and clipboard contents to remote backend servers for processing, <strong>Base64 Tools Studio executes 100% inside your local web browser's RAM</strong>. We leverage native client APIs—<code>window.crypto.subtle</code> for SHA-256 hashing, <code>FileReader</code> for streaming files, and <code>TextEncoder</code> for UTF-8 conversion.</p>
+                        <p>Zero payloads leave your machine. You can verify this independently by opening your browser's Developer Tools (F12) → Network Tab: no outgoing HTTP requests are dispatched during any encoding or decoding operation.</p>
                     </div>
                 </div>
 
                 <!-- Tab 5: URL-Safe RFC 4648 -->
                 <div class="guide-pane" id="pane-url-safe" role="tabpanel">
                     <div class="guide-prose">
-                        <h3>Standard Base64 vs URL-Safe Base64</h3>
-                        <p>Standard Base64 (RFC 4648 §4) uses characters <code>+</code> and <code>/</code>, which possess special reserved meanings in URIs and file system paths:</p>
+                        <h3>1. Why Standard Base64 Breaks URLs, REST APIs, &amp; Paths</h3>
+                        <p>Standard Base64 (RFC 4648 §4) utilizes two characters that possess reserved semantic behaviors in web protocols:</p>
                         <ul>
-                            <li>In URI query parameters, <code>+</code> is interpreted as an encoded space character (<code>%20</code>).</li>
-                            <li>In REST paths and URLs, <code>/</code> acts as a directory hierarchy separator.</li>
-                            <li>Padding characters (<code>=</code>) are treated as query assignment operators.</li>
+                            <li><strong>The <code>+</code> (plus) character:</strong> In URL query parameters (RFC 1866 / <code>application/x-www-form-urlencoded</code>), the plus sign is formally decoded as a whitespace character (ASCII 32). Transmitting <code>token=a+b</code> causes the backend to receive <code>a b</code>, corrupting your payload.</li>
+                            <li><strong>The <code>/</code> (forward slash) character:</strong> Web servers, routing libraries, and reverse proxies parse slashes as filesystem directory delimiters, destroying RESTful routes (e.g., <code>/api/verify/TWF/u</code>).</li>
+                            <li><strong>The <code>=</code> (equals) character:</strong> In query strings and OAuth redirect URIs, <code>=</code> is reserved for key-value pair separation, causing HTTP parameter pollution vulnerabilities.</li>
                         </ul>
 
-                        <h3>RFC 4648 §5 (Base64URL) Substitution Table</h3>
+                        <h3>2. The RFC 4648 §5 (Base64URL) Specification</h3>
+                        <p>To eliminate URL and filename collisions, RFC 4648 Section 5 establishes the <strong>Base64URL</strong> standard by modifying the final two alphabet entries and dispensing with padding:</p>
                         <table class="guide-table">
                             <thead>
                                 <tr>
-                                    <th>Standard Base64</th>
-                                    <th>URL-Safe Base64</th>
-                                    <th>Why the change was mandated</th>
+                                    <th>Standard Base64 (RFC 4648 §4)</th>
+                                    <th>URL-Safe Base64 (RFC 4648 §5)</th>
+                                    <th>Architectural Necessity</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><code>+</code> (plus)</td>
-                                    <td><code>-</code> (minus)</td>
-                                    <td>Prevents query string decoders from converting '+' into whitespace.</td>
+                                    <td><code>+</code> (ASCII 43)</td>
+                                    <td><code>-</code> (Hyphen, ASCII 45)</td>
+                                    <td>Prevents query string deserializers from converting data into whitespace.</td>
                                 </tr>
                                 <tr>
-                                    <td><code>/</code> (slash)</td>
-                                    <td><code>_</code> (underscore)</td>
-                                    <td>Prevents web servers and proxies from parsing '/' as URL paths.</td>
+                                    <td><code>/</code> (ASCII 47)</td>
+                                    <td><code>_</code> (Underscore, ASCII 95)</td>
+                                    <td>Guarantees compatibility with filesystem paths, URIs, and REST routes.</td>
                                 </tr>
                                 <tr>
-                                    <td><code>=</code> (padding)</td>
-                                    <td>Stripped (unpadded)</td>
-                                    <td>Eliminates query parameter key-value confusion in OAuth and OpenID tokens.</td>
+                                    <td><code>=</code> (Padding)</td>
+                                    <td><strong>Omitted / Stripped</strong></td>
+                                    <td>Prevents parsing conflicts with query parameter key-value assignment operators.</td>
                                 </tr>
                             </tbody>
                         </table>
+
+                        <h3>3. Cross-Platform Production Engineering Cookbook</h3>
+                        <p>Production-ready, battle-tested code snippets implementing RFC 4648 Section 5 URL-safe encoding with error resilience across major enterprise stacks:</p>
+
+                        <p><strong>JavaScript / TypeScript (Browser &amp; Node.js):</strong></p>
+                        <div class="guide-code-block">
+// Node.js (v14.18+) Native Buffer Base64URL
+const toBase64Url = (str) => Buffer.from(str, 'utf-8').toString('base64url');
+const fromBase64Url = (b64url) => Buffer.from(b64url, 'base64url').toString('utf-8');
+
+// Browser Standard Web API (UTF-8 safe, unpadded)
+function base64UrlEncode(str) {
+    const bytes = new TextEncoder().encode(str);
+    const binStr = Array.from(bytes, b => String.fromCharCode(b)).join('');
+    return btoa(binStr).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+                        </div>
+
+                        <p><strong>Python 3:</strong></p>
+                        <div class="guide-code-block">
+import base64
+
+def to_base64_url(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b'=').decode('ascii')
+
+def from_base64_url(s: str) -> bytes:
+    # Restore missing '=' padding before decoding
+    padding = '=' * (-len(s) % 4)
+    return base64.urlsafe_b64decode(s + padding)
+                        </div>
+
+                        <p><strong>Go (Golang):</strong></p>
+                        <div class="guide-code-block">
+package main
+import "encoding/base64"
+
+// Go standard library provides optimized native URL encoding
+func ToBase64URL(data []byte) string {
+    return base64.RawURLEncoding.EncodeToString(data) // Raw = unpadded
+}
+
+func FromBase64URL(s string) ([]byte, error) {
+    return base64.RawURLEncoding.DecodeString(s)
+}
+                        </div>
+
+                        <p><strong>Rust:</strong></p>
+                        <div class="guide-code-block">
+use base64::prelude::*;
+
+fn encode_url_safe(data: &amp;[u8]) -&gt; String {
+    BASE64_URL_SAFE_NO_PAD.encode(data)
+}
+
+fn decode_url_safe(s: &amp;str) -&gt; Result&lt;Vec&lt;u8&gt;, base64::DecodeError&gt; {
+    BASE64_URL_SAFE_NO_PAD.decode(s)
+}
+                        </div>
+
+                        <p><strong>Bash / Linux Terminal:</strong></p>
+                        <div class="guide-code-block">
+# Encode standard string to URL-Safe Base64 without padding
+echo -n "Hello World" | base64 -w 0 | tr '+/' '-_' | tr -d '='
+
+# Decode URL-Safe Base64 string in Linux CLI
+echo -n "SGVsbG8gV29ybGQ" | tr -- '-_' '+/' | base64 -d
+                        </div>
                     </div>
                 </div>
 
                 <!-- Tab 6: Developer FAQ -->
                 <div class="guide-pane" id="pane-faq" role="tabpanel">
                     <div class="guide-prose">
-                        <h3>Frequently Asked Engineering Questions</h3>
+                        <h3>Frequently Asked Engineering Questions (People Also Ask)</h3>
                         
-                        <p><strong>Q: What is the maximum file size I can encode in Base64 Tools Studio?</strong><br>
-                        A: Up to 50MB per file. Because all encoding runs client-side in your browser's V8 engine, performance depends strictly on available device RAM. We utilize chunked streaming via the modern HTML5 <code>FileReader</code> API to prevent UI freezing.</p>
+                        <p><strong>Q1: What is Base64 encoding and why is it used instead of raw binary?</strong><br>
+                        A: Base64 is an RFC 4648 binary-to-text algorithm that represents raw 8-bit bytes using 64 printable US-ASCII characters (<code>A-Z</code>, <code>a-z</code>, <code>0-9</code>, <code>+</code>, <code>/</code>). It prevents binary data corruption across transmission channels historically designed for text, such as SMTP email headers, JSON payloads, XML nodes, and HTTP cookies.</p>
 
-                        <p><strong>Q: Can corrupted Base64 strings be repaired?</strong><br>
-                        A: If the string length is not a multiple of 4, you can often restore validity by appending one or two <code>=</code> characters. However, if inner characters were truncated or flipped, data integrity will be lost.</p>
+                        <p><strong>Q2: Why does Base64 increase file size by exactly 33.34%?</strong><br>
+                        A: Computers store data in 8-bit bytes. Because each Base64 character only holds 6 bits of entropy (2<sup>6</sup> = 64), 4 Base64 characters (4 bytes = 32 bits) are mathematically required to encode 3 binary bytes (24 bits). The ratio is <code>4 / 3 = 1.3333...</code>, representing a net 33.34% data inflation penalty.</p>
 
-                        <p><strong>Q: How do I embed a Base64 image in CSS?</strong><br>
-                        A: Use the Data URI syntax within the <code>url()</code> property: <code>background-image: url('data:image/png;base64,iVBORw0K...');</code>. You can also generate this directly using our <strong>Image to CSS Background</strong> tool.</p>
+                        <p><strong>Q3: What is the difference between standard Base64 and URL-Safe Base64?</strong><br>
+                        A: Standard Base64 (RFC 4648 §4) uses <code>+</code> and <code>/</code> with <code>=</code> padding. URL-Safe Base64 (RFC 4648 §5 / Base64URL) substitutes <code>+</code> with <code>-</code> (hyphen) and <code>/</code> with <code>_</code> (underscore), and omits trailing <code>=</code> padding. This prevents URL query parameter collisions and REST path delimiter breakage in tokens and JWTs.</p>
+
+                        <p><strong>Q4: Why does window.btoa() throw a DOMException on UTF-8 strings or emojis?</strong><br>
+                        A: The browser built-in <code>btoa()</code> expects 8-bit Latin-1 strings (code points 0 to 255). Multibyte UTF-8 characters like emojis (<code>🔥</code>) or Asian/Arabic/Indic alphabets exceed code point 255 and trigger <code>DOMException: The string to be encoded contains characters outside of the Latin1 range</code>. Use <code>new TextEncoder().encode(str)</code> with typed byte chunking to encode Unicode safely.</p>
+
+                        <p><strong>Q5: Can corrupted Base64 strings with missing padding (= or ==) be repaired automatically?</strong><br>
+                        A: Yes, if the only defect is missing padding. In Base64, string length modulo 4 must equal 0. If <code>len % 4 === 2</code>, append <code>==</code>. If <code>len % 4 === 3</code>, append <code>=</code>. If internal characters have been mutated or dropped, binary integrity cannot be mathematically recovered.</p>
+
+                        <p><strong>Q6: Is it safe to store passwords or sensitive data in Base64?</strong><br>
+                        A: Absolutely not. Base64 is an open encoding scheme, NOT encryption. Anyone with access to the string can decode it back to plaintext instantly without a secret key. Never store passwords, tokens, or PII in raw Base64 without using authenticated encryption (e.g. AES-256-GCM).</p>
+
+                        <p><strong>Q7: How do I decode a Base64 image back into a downloadable binary Blob in JavaScript?</strong><br>
+                        A: Strip the <code>data:*/*;base64,</code> prefix, decode the Base64 string into a byte array, populate a <code>Uint8Array</code>, and wrap it with <code>new Blob([uint8Array], { type: mimeType })</code>. Generate an ephemeral object URL via <code>URL.createObjectURL(blob)</code> to prompt a file download or set an <code>&lt;img src&gt;</code>.</p>
+
+                        <p><strong>Q8: When should I inline images using Base64 Data URIs in CSS, and when should I avoid it?</strong><br>
+                        A: Inline micro-assets (&lt; 2 KB) such as SVG icons or placeholder blurhashes to eliminate network round-trip overhead. Avoid inlining photos or assets larger than 10 KB, as they inflate stylesheet sizes, block First Contentful Paint (FCP), degrade parser performance, and bypass browser asset caching.</p>
+
+                        <p><strong>Q9: How can I identify file MIME types (PNG, JPEG, WebP, PDF) from Base64 strings without a server?</strong><br>
+                        A: By inspecting magic byte headers. The first 3 to 6 bytes of a binary file map deterministically to the first 4 to 8 characters of its Base64 string: <code>iVBORw0K</code> = PNG, <code>/9j/</code> = JPEG, <code>R0lGOD</code> = GIF, <code>UklGR</code> = WebP, and <code>JVBERi</code> = PDF. Our studio performs this client-side inspection in real time.</p>
+
+                        <p><strong>Q10: What is the maximum file size I can encode in this Base64 Studio?</strong><br>
+                        A: Up to 50MB per file. Because all encoding and decoding runs in-memory inside the browser's JavaScript engine, capacity is determined by your system RAM. We utilize non-blocking HTML5 <code>FileReader</code> streaming to prevent UI freezes.</p>
+
+                        <p><strong>Q11: Is my data uploaded or sent to any server when using this Base64 tool?</strong><br>
+                        A: Zero bytes are ever transmitted to any external server. 100% of data processing, cryptographic hashing, and media reconstruction occurs exclusively inside your browser's local RAM. Our architecture is verifiable via browser DevTools network inspection.</p>
+
+                        <p><strong>Q12: How do I handle Base64 decoding in CLI / terminal scripts on Linux and macOS?</strong><br>
+                        A: On Linux, execute: <code>echo -n "payload" | base64 -d</code>. On macOS (BSD base64), execute: <code>echo -n "payload" | base64 -D</code>. For URL-Safe strings without padding, normalize with <code>tr -- '-_' '+/'</code> before piping to <code>base64 -d</code>.</p>
                     </div>
                 </div>
 
