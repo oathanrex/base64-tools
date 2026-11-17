@@ -601,18 +601,18 @@ function isValidBase64(str) {
     if (!str || typeof str !== 'string') return false;
 
     try {
-        // Remove whitespace and newlines
-        const cleaned = str.replace(/[\s\n\r]/g, '');
+        let cleaned = str.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\s\n\r]/g, '');
+        if (!cleaned || cleaned.length < 2) return false;
 
-        // Check for valid Base64 characters
-        const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+        const base64Regex = /^[A-Za-z0-9+/\-_]+={0,2}$/;
         if (!base64Regex.test(cleaned)) return false;
 
-        // Check length is multiple of 4 (with padding)
-        if (cleaned.length % 4 !== 0) return false;
+        let normalized = cleaned.replace(/-/g, '+').replace(/_/g, '/');
+        while (normalized.length % 4 !== 0) {
+            normalized += '=';
+        }
 
-        // Try to decode
-        atob(cleaned);
+        atob(normalized);
         return true;
     } catch (e) {
         return false;
@@ -652,18 +652,26 @@ function decodeBase64(base64) {
     }
 
     try {
-        // Remove whitespace
-        const cleaned = base64.replace(/[\s\n\r]/g, '');
+        let cleaned = base64.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\s\n\r]/g, '');
+        cleaned = cleaned.replace(/-/g, '+').replace(/_/g, '/');
+        while (cleaned.length % 4 !== 0) {
+            cleaned += '=';
+        }
 
-        // Decode and handle Unicode
-        const utf8Bytes = atob(cleaned);
-        return decodeURIComponent(
-            utf8Bytes.split('').map(c =>
-                '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-            ).join('')
-        );
+        const rawBytes = atob(cleaned);
+
+        try {
+            return decodeURIComponent(
+                rawBytes.split('').map(c =>
+                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join('')
+            );
+        } catch (utfErr) {
+            // Binary media or Latin-1 payload fallback
+            return rawBytes;
+        }
     } catch (e) {
-        throw new Error('Failed to decode: Invalid Base64 string');
+        throw new Error('Failed to decode: Invalid Base64 sequence');
     }
 }
 
@@ -689,14 +697,11 @@ function decodeUrlSafeBase64(base64) {
         throw new Error('Input must be a string');
     }
 
-    let str = base64
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
+    let cleaned = base64.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\s\n\r]/g, '');
+    let str = cleaned.replace(/-/g, '+').replace(/_/g, '/');
 
-    // Add padding if needed
-    const pad = str.length % 4;
-    if (pad) {
-        str += '='.repeat(4 - pad);
+    while (str.length % 4 !== 0) {
+        str += '=';
     }
 
     return decodeBase64(str);
@@ -745,21 +750,23 @@ function fileToBase64(file, onProgress = null) {
  */
 function base64ToBlob(base64, mimeType = 'application/octet-stream') {
     try {
-        // Extract base64 data from data URI if present
         let base64Data = base64;
 
         if (base64.includes(',')) {
             const parts = base64.split(',');
             base64Data = parts[1];
 
-            // Extract MIME type from data URI if not provided
             if (mimeType === 'application/octet-stream') {
                 const mimeMatch = parts[0].match(/data:([^;]+)/);
                 if (mimeMatch) mimeType = mimeMatch[1];
             }
         }
 
-        // Decode Base64
+        base64Data = (base64Data || '').trim().replace(/[\s\n\r]/g, '').replace(/-/g, '+').replace(/_/g, '/');
+        while (base64Data.length % 4 !== 0) {
+            base64Data += '=';
+        }
+
         const byteCharacters = atob(base64Data);
         const byteNumbers = new Uint8Array(byteCharacters.length);
 
@@ -885,13 +892,24 @@ function hexToBase64(hex) {
  * @returns {string} Hexadecimal string
  */
 function base64ToHex(base64) {
-    if (!isValidBase64(base64)) {
+    if (typeof base64 !== 'string') {
+        throw new Error('Input must be a string');
+    }
+
+    let cleaned = base64.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\s\n\r]/g, '');
+    cleaned = cleaned.replace(/-/g, '+').replace(/_/g, '/');
+    while (cleaned.length % 4 !== 0) {
+        cleaned += '=';
+    }
+
+    let binary;
+    try {
+        binary = atob(cleaned);
+    } catch (e) {
         throw new Error('Invalid Base64 string');
     }
 
-    const binary = atob(base64.replace(/[\s\n\r]/g, ''));
     let hex = '';
-
     for (let i = 0; i < binary.length; i++) {
         hex += binary.charCodeAt(i).toString(16).padStart(2, '0');
     }
@@ -4671,8 +4689,8 @@ function setupOmniWorkbench() {
                 }
                 isDec = false;
             } else if (action === 'decode') {
-                let clean = val.trim().replace(/^data:[^;]+;base64,/, '');
-                clean = clean.replace(/[\r\n\s]/g, '');
+                let clean = val.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\r\n\s]/g, '');
+                clean = clean.replace(/-/g, '+').replace(/_/g, '/');
                 while (clean.length % 4 !== 0) {
                     clean += '=';
                 }
@@ -4685,9 +4703,15 @@ function setupOmniWorkbench() {
                 }
                 isDec = true;
             } else if (action === 'url-safe' || action === 'url-safe-encode' || action === 'url-safe-decode') {
-                if (action === 'url-safe-decode' || (action === 'url-safe' && (format.type === 'base64-url' || format.type === 'base64'))) {
-                    res = decodeUrlSafeBase64(val.trim());
-                    isDec = true;
+                let clean = val.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\s\r\n]/g, '');
+                if (format.type === 'base64-url' || (isValidBase64(clean) && /[-_]/.test(clean))) {
+                    let std = clean.replace(/-/g, '+').replace(/_/g, '/');
+                    while (std.length % 4 !== 0) std += '=';
+                    res = std;
+                    isDec = false;
+                } else if (format.type === 'base64' || format.type === 'data-uri' || isValidBase64(clean)) {
+                    res = clean.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+                    isDec = false;
                 } else {
                     res = encodeUrlSafeBase64(val);
                     isDec = false;
@@ -4697,7 +4721,15 @@ function setupOmniWorkbench() {
                     res = hexToBase64(val.trim());
                     isDec = true;
                 } else {
-                    const b64 = format.type === 'base64' ? val.trim() : encodeBase64(val);
+                    let clean = val.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\s\r\n]/g, '');
+                    let b64 = '';
+                    if (isValidBase64(clean)) {
+                        clean = clean.replace(/-/g, '+').replace(/_/g, '/');
+                        while (clean.length % 4 !== 0) clean += '=';
+                        b64 = clean;
+                    } else {
+                        b64 = encodeBase64(val);
+                    }
                     res = base64ToHex(b64);
                     isDec = false;
                 }
@@ -4711,7 +4743,15 @@ function setupOmniWorkbench() {
                     res = btoa(String.fromCharCode.apply(null, bytes));
                     isDec = true;
                 } else {
-                    const b64 = format.type === 'base64' ? val.trim() : encodeBase64(val);
+                    let clean = val.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\s\r\n]/g, '');
+                    let b64 = '';
+                    if (isValidBase64(clean)) {
+                        clean = clean.replace(/-/g, '+').replace(/_/g, '/');
+                        while (clean.length % 4 !== 0) clean += '=';
+                        b64 = clean;
+                    } else {
+                        b64 = encodeBase64(val);
+                    }
                     const decoded = atob(b64);
                     let bin = [];
                     for (let i = 0; i < decoded.length; i++) {
@@ -4753,12 +4793,12 @@ function setupOmniWorkbench() {
                             const isExpired = p.exp ? (Date.now() > p.exp * 1000) : false;
                             omniPreviewContainer.style.display = 'block';
                             omniPreviewContainer.innerHTML = `
-                                <div class="jwt-viewer-container">
-                                    <div class="jwt-token-strip">
-                                        <span class="jwt-part-header">${sanitizeHTML(parts[0])}</span>.<span class="jwt-part-payload">${sanitizeHTML(parts[1])}</span>.<span class="jwt-part-sig">${sanitizeHTML(parts[2])}</span>
+                                <div class="jwt-viewer-container" style="padding: 12px; background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                                    <div class="jwt-token-strip" style="font-family: var(--font-mono); font-size: var(--font-size-xs); word-break: break-all;">
+                                        <span class="jwt-part-header" style="color: #ef4444; font-weight: 600;">${sanitizeHTML(parts[0])}</span>.<span class="jwt-part-payload" style="color: #8b5cf6; font-weight: 600;">${sanitizeHTML(parts[1])}</span>.<span class="jwt-part-sig" style="color: #06b6d4; font-weight: 600;">${sanitizeHTML(parts[2])}</span>
                                     </div>
                                     <div style="display: flex; gap: 8px; align-items: center; margin-top: 8px;">
-                                        <span class="jwt-status-badge ${isExpired ? 'expired' : 'active'}">
+                                        <span class="jwt-status-badge ${isExpired ? 'expired' : 'active'}" style="padding: 2px 8px; border-radius: var(--radius-full); font-size: 11px; font-weight: 700; background: ${isExpired ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)'}; color: ${isExpired ? '#ef4444' : '#10b981'};">
                                             ${isExpired ? 'EXPIRED' : 'ACTIVE TOKEN'}
                                         </span>
                                         <span style="font-size: var(--font-size-xs); color: var(--text-secondary);">Expires: ${expTime}</span>
@@ -4774,18 +4814,25 @@ function setupOmniWorkbench() {
 
             omniOutput.value = res;
 
-            // Visual media preview in omni output if Data URI
-            if (format.type === 'data-uri' || val.trim().startsWith('data:image/')) {
+            // Visual media preview in omni output if Data URI or Image Base64
+            const rawClean = val.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\s\r\n]/g, '');
+            const mime = detectMimeType(val.trim().startsWith('data:') ? val.trim() : rawClean) || 'application/octet-stream';
+            const isImage = format.type === 'data-uri' || val.trim().startsWith('data:image/') || mime.startsWith('image/');
+
+            if (isImage && (action === 'decode' || action === 'auto')) {
+                const imgSrc = val.trim().startsWith('data:') ? val.trim() : `data:${mime || 'image/png'};base64,${rawClean}`;
                 if (omniPreviewContainer) {
                     omniPreviewContainer.style.display = 'block';
                     omniPreviewContainer.innerHTML = `
-                        <div class="media-preview-wrapper">
-                            <img src="${val.trim()}" alt="Visual Preview" style="max-height: 200px; max-width: 100%; border-radius: 8px;">
+                        <div class="media-preview-wrapper" style="padding: 12px; background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center;">
+                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary); margin-bottom: 8px; font-weight: 600;">Decoded Visual Media Preview:</div>
+                            <img src="${imgSrc}" alt="Decoded Visual Preview" style="max-height: 220px; max-width: 100%; border-radius: 6px; box-shadow: var(--shadow-md); margin: 0 auto; display: block;" onerror="this.parentElement.style.display='none'">
                         </div>
                     `;
                 }
             } else if (action !== 'jwt' && omniPreviewContainer) {
                 omniPreviewContainer.style.display = 'none';
+                omniPreviewContainer.innerHTML = '';
             }
 
             const t1 = performance.now();
@@ -4804,6 +4851,11 @@ function setupOmniWorkbench() {
 
         } catch (err) {
             omniOutput.value = `Error: ${err.message}`;
+            if (omniPreviewContainer) {
+                omniPreviewContainer.style.display = 'none';
+                omniPreviewContainer.innerHTML = '';
+            }
+            updateOmniStats();
         }
     }
 
@@ -4826,15 +4878,76 @@ function setupOmniWorkbench() {
 
     // Input events
     omniInput.addEventListener('input', () => {
+        const val = omniInput.value;
+        const format = detectInputFormat(val);
+        OMNI_STATE.detectedType = format.type;
+
+        if (omniDetectedBadge) {
+            omniDetectedBadge.textContent = format.label;
+            omniDetectedBadge.className = `format-badge ${format.type}`;
+        }
+        if (omniDetectedType) {
+            omniDetectedType.textContent = `Detected: ${format.label}`;
+        }
+
+        const inBytes = new Blob([val]).size;
+        if (omniInputStats) {
+            omniInputStats.textContent = `${val.length.toLocaleString()} chars | ${formatFileSize(inBytes)}`;
+        }
+
         if (OMNI_STATE.liveEnabled) {
             executeOmniConvert('auto');
         } else {
-            const format = detectInputFormat(omniInput.value);
-            if (omniDetectedBadge) {
-                omniDetectedBadge.textContent = format.label;
-                omniDetectedBadge.className = `format-badge ${format.type}`;
+            if (!val || !val.trim()) {
+                omniOutput.value = '';
+                if (omniPreviewContainer) {
+                    omniPreviewContainer.style.display = 'none';
+                    omniPreviewContainer.innerHTML = '';
+                }
+                updateOmniStats();
             }
-            updateOmniStats();
+        }
+    });
+
+    // Keyboard Shortcut (Ctrl/Cmd + Enter to execute when live conversion is off)
+    omniInput.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            e.preventDefault();
+            executeOmniConvert('auto');
+        }
+    });
+
+    // Drag and Drop files directly into omniInput
+    ['dragenter', 'dragover'].forEach(eventName => {
+        omniInput.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            omniInput.classList.add('drag-over');
+        });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        omniInput.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            omniInput.classList.remove('drag-over');
+        });
+    });
+
+    omniInput.addEventListener('drop', (e) => {
+        const files = e.dataTransfer?.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const reader = new FileReader();
+            reader.onload = () => {
+                omniInput.value = reader.result;
+                executeOmniConvert('auto');
+            };
+            if (file.type.startsWith('text/') || file.type === 'application/json') {
+                reader.readAsText(file);
+            } else {
+                reader.readAsDataURL(file);
+            }
         }
     });
 
@@ -4869,7 +4982,12 @@ function setupOmniWorkbench() {
 
     document.getElementById('omniLiveToggle')?.addEventListener('change', (e) => {
         OMNI_STATE.liveEnabled = e.target.checked;
-        if (OMNI_STATE.liveEnabled) executeOmniConvert('auto');
+        if (OMNI_STATE.liveEnabled) {
+            executeOmniConvert('auto');
+            showToast('Live conversion enabled', 'info');
+        } else {
+            showToast('Live conversion paused — Click any action button or press Ctrl+Enter to convert', 'info');
+        }
     });
 
     document.getElementById('omniClearBtn')?.addEventListener('click', () => {
@@ -4892,14 +5010,38 @@ function setupOmniWorkbench() {
     });
 
     document.getElementById('omniDownloadBtn')?.addEventListener('click', () => {
-        if (omniOutput.value) {
-            downloadFile(omniOutput.value, 'base64-result.txt', 'text/plain');
+        const out = omniOutput.value;
+        if (!out) {
+            showToast('Nothing to download', 'warning');
+            return;
         }
+
+        const inVal = omniInput.value.trim();
+        const rawClean = inVal.replace(/^data:[^;]+;base64,/i, '').replace(/[\s\r\n]/g, '');
+        const mime = detectMimeType(inVal.startsWith('data:') ? inVal : rawClean);
+
+        if (mime && mime.startsWith('image/') && (OMNI_STATE.detectedType === 'data-uri' || OMNI_STATE.detectedType === 'base64')) {
+            const ext = mime.split('/')[1]?.split('+')[0] || 'png';
+            try {
+                const blob = base64ToBlob(rawClean, mime);
+                downloadFile(blob, `decoded-media.${ext}`, mime);
+                showToast(`Downloaded decoded-media.${ext}`, 'success');
+                return;
+            } catch (e) {}
+        }
+
+        downloadFile(out, 'base64-result.txt', 'text/plain');
+        showToast('Result downloaded', 'success');
     });
 
     document.getElementById('omniSwapBtn')?.addEventListener('click', () => {
+        const outVal = omniOutput.value;
+        if (!outVal || outVal.startsWith('Error:')) {
+            showToast('Cannot swap empty or error result', 'warning');
+            return;
+        }
         const temp = omniInput.value;
-        omniInput.value = omniOutput.value;
+        omniInput.value = outVal;
         omniOutput.value = temp;
         executeOmniConvert('auto');
     });
