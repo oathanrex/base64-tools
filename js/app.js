@@ -403,6 +403,10 @@ function cacheElements() {
     elements.showShortcuts = document.getElementById('showShortcuts');
     elements.toastContainer = document.getElementById('toastContainer');
     elements.currentYear = document.getElementById('currentYear');
+    elements.settingsModal = document.getElementById('settingsModal');
+    elements.settingsToggle = document.getElementById('settingsToggle');
+    elements.closeSettingsModal = document.getElementById('closeSettingsModal');
+    elements.saveSettingsBtn = document.getElementById('saveSettingsBtn');
 }
 
 // ============================================
@@ -4286,6 +4290,34 @@ function setupEventListeners() {
     elements.shortcutsModal?.querySelector('.modal-backdrop')?.addEventListener('click', closeShortcutsModal);
     elements.shortcutsModal?.querySelector('.modal-close')?.addEventListener('click', closeShortcutsModal);
 
+    // Preferences / Settings modal
+    elements.settingsToggle?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openSettingsModal();
+    });
+    elements.closeSettingsModal?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeSettingsModal();
+    });
+    elements.settingsModal?.querySelector('.modal-backdrop')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeSettingsModal();
+    });
+    elements.saveSettingsBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        saveSettingsModal();
+    });
+
+    // Delegated click listener for settings toggle (catches button or inner SVG path)
+    document.addEventListener('click', (e) => {
+        if (e.target && e.target.closest('#settingsToggle')) {
+            e.preventDefault();
+            e.stopPropagation();
+            openSettingsModal();
+        }
+    });
+
     // Click outside sidebar to close
     document.addEventListener('click', (e) => {
         if (elements.historySidebar?.classList.contains('active')) {
@@ -4345,6 +4377,7 @@ async function registerServiceWorker() {
     if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
         navigator.serviceWorker.register('./sw.js').then(reg => {
             console.log('ServiceWorker registered with scope:', reg.scope);
+            try { reg.update(); } catch(e) {}
             const statusText = document.getElementById('pwaStatusText');
             if (statusText) statusText.textContent = 'Offline Ready';
         }).catch(err => {
@@ -4595,12 +4628,18 @@ function setupOmniWorkbench() {
 
         try {
             if (action === 'encode') {
-                res = encodeBase64(val);
+                if (OMNI_STATE.settings.charset === 'ascii') {
+                    res = btoa(val.replace(/[^\x00-\x7F]/g, ''));
+                } else if (OMNI_STATE.settings.charset === 'latin1') {
+                    res = btoa(val);
+                } else {
+                    res = encodeBase64(val);
+                }
                 // Apply line wrapping setting
                 if (OMNI_STATE.settings.lineWrap === '64') {
-                    res = res.replace(/(.{64})/g, '$1\n');
+                    res = res.replace(/(.{64})/g, '$1\n').trim();
                 } else if (OMNI_STATE.settings.lineWrap === '76') {
-                    res = res.replace(/(.{76})/g, '$1\r\n');
+                    res = res.replace(/(.{76})/g, '$1\r\n').trim();
                 }
                 // Apply padding setting
                 if (OMNI_STATE.settings.padding === 'unpadded') {
@@ -4609,7 +4648,17 @@ function setupOmniWorkbench() {
                 isDec = false;
             } else if (action === 'decode') {
                 let clean = val.trim().replace(/^data:[^;]+;base64,/, '');
-                res = decodeBase64(clean);
+                clean = clean.replace(/[\r\n\s]/g, '');
+                while (clean.length % 4 !== 0) {
+                    clean += '=';
+                }
+                if (OMNI_STATE.settings.charset === 'ascii') {
+                    res = atob(clean).replace(/[^\x00-\x7F]/g, '');
+                } else if (OMNI_STATE.settings.charset === 'latin1') {
+                    res = atob(clean);
+                } else {
+                    res = decodeBase64(clean);
+                }
                 isDec = true;
             } else if (action === 'url-safe-encode') {
                 res = encodeUrlSafeBase64(val);
@@ -4904,79 +4953,102 @@ function togglePinTool(toolId) {
 }
 
 /**
- * Preferences Modal Handlers
+ * Preferences / Settings Modal Handlers
  */
+function openSettingsModal() {
+    const modal = document.getElementById('settingsModal');
+    if (!modal) return;
+
+    const wrapSel = document.getElementById('settingLineWrap');
+    const padSel = document.getElementById('settingPadding');
+    const charSel = document.getElementById('settingCharset');
+
+    if (wrapSel && OMNI_STATE.settings) wrapSel.value = OMNI_STATE.settings.lineWrap || 'none';
+    if (padSel && OMNI_STATE.settings) padSel.value = OMNI_STATE.settings.padding || 'standard';
+    if (charSel && OMNI_STATE.settings) charSel.value = OMNI_STATE.settings.charset || 'utf-8';
+
+    modal.removeAttribute('hidden');
+    modal.hidden = false;
+    modal.style.display = 'flex';
+    void modal.offsetWidth; // Force reflow for CSS transition
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSettingsModal() {
+    const modal = document.getElementById('settingsModal');
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    setTimeout(() => {
+        if (!modal.classList.contains('active')) {
+            modal.setAttribute('hidden', '');
+            modal.hidden = true;
+            modal.style.display = 'none';
+        }
+    }, 200);
+    document.body.style.overflow = '';
+}
+
+function saveSettingsModal() {
+    const wrapSel = document.getElementById('settingLineWrap');
+    const padSel = document.getElementById('settingPadding');
+    const charSel = document.getElementById('settingCharset');
+
+    if (wrapSel) OMNI_STATE.settings.lineWrap = wrapSel.value;
+    if (padSel) OMNI_STATE.settings.padding = padSel.value;
+    if (charSel) OMNI_STATE.settings.charset = charSel.value;
+
+    try {
+        localStorage.setItem('b64-settings', JSON.stringify(OMNI_STATE.settings));
+    } catch (e) {
+        console.warn('Failed to save settings:', e);
+    }
+
+    closeSettingsModal();
+    showToast('Preferences saved!', 'success');
+
+    const omniInput = document.getElementById('omniInput');
+    if (omniInput && omniInput.value) {
+        omniInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+}
+
 function setupSettingsModal() {
     const modal = document.getElementById('settingsModal');
     const toggle = document.getElementById('settingsToggle');
     const closeBtn = document.getElementById('closeSettingsModal');
     const saveBtn = document.getElementById('saveSettingsBtn');
-    const wrapSel = document.getElementById('settingLineWrap');
-    const padSel = document.getElementById('settingPadding');
-    const charSel = document.getElementById('settingCharset');
-
-    if (!modal) return;
-
-    function openSettings() {
-        if (wrapSel) wrapSel.value = OMNI_STATE.settings.lineWrap || 'none';
-        if (padSel) padSel.value = OMNI_STATE.settings.padding || 'standard';
-        if (charSel) charSel.value = OMNI_STATE.settings.charset || 'utf-8';
-        modal.hidden = false;
-        void modal.offsetWidth; // Force reflow for CSS transition
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeSettings() {
-        modal.classList.remove('active');
-        setTimeout(() => {
-            modal.hidden = true;
-        }, 200);
-        document.body.style.overflow = '';
-    }
 
     if (toggle) {
         toggle.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            openSettings();
+            openSettingsModal();
         });
     }
 
     closeBtn?.addEventListener('click', (e) => {
         e.preventDefault();
-        closeSettings();
+        closeSettingsModal();
     });
 
-    modal.querySelector('.modal-backdrop')?.addEventListener('click', (e) => {
+    modal?.querySelector('.modal-backdrop')?.addEventListener('click', (e) => {
         e.preventDefault();
-        closeSettings();
+        closeSettingsModal();
     });
 
     saveBtn?.addEventListener('click', (e) => {
         e.preventDefault();
-        if (wrapSel) OMNI_STATE.settings.lineWrap = wrapSel.value;
-        if (padSel) OMNI_STATE.settings.padding = padSel.value;
-        if (charSel) OMNI_STATE.settings.charset = charSel.value;
-        localStorage.setItem('b64-settings', JSON.stringify(OMNI_STATE.settings));
-        closeSettings();
-        showToast('Preferences saved!', 'success');
-
-        const omniInput = document.getElementById('omniInput');
-        if (omniInput && omniInput.value) {
-            omniInput.dispatchEvent(new Event('input', { bubbles: true }));
-        }
+        saveSettingsModal();
     });
-
-    if (typeof window !== 'undefined') {
-        window.openSettingsModal = openSettings;
-        window.closeSettingsModal = closeSettings;
-    }
 }
-
 
 // Expose functions to global window for inline onclick handlers
 if (typeof window !== 'undefined') {
+    window.openSettingsModal = openSettingsModal;
+    window.closeSettingsModal = closeSettingsModal;
+    window.saveSettingsModal = saveSettingsModal;
     window.togglePinTool = togglePinTool;
     window.openTool = openTool;
 }

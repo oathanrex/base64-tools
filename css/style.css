@@ -1341,16 +1341,18 @@ ol {
     padding: var(--spacing-8);
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
     transition: opacity var(--transition-normal), visibility var(--transition-normal);
 }
 
 .modal[hidden] {
-    display: none;
+    display: none !important;
 }
 
 .modal.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
 }
 
 .modal-backdrop {
@@ -1391,6 +1393,12 @@ ol {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
+}
+
+/* Settings Modal */
+.settings-modal {
+    max-width: 520px;
+    margin-top: 8vh;
 }
 
 /* Search Modal */
