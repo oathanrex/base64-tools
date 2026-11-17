@@ -5196,7 +5196,7 @@ function setupGuideTabs() {
             prevBtn.style.opacity = currentIdx === 0 ? '0.4' : '1';
             prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
             if (prevLabel && currentIdx > 0) {
-                prevLabel.textContent = `← ${tabs[currentIdx - 1].name}`;
+                prevLabel.textContent = tabs[currentIdx - 1].name;
             } else if (prevLabel) {
                 prevLabel.textContent = 'Previous Section';
             }
@@ -5207,16 +5207,16 @@ function setupGuideTabs() {
             nextBtn.style.opacity = currentIdx === tabs.length - 1 ? '0.4' : '1';
             nextBtn.style.pointerEvents = currentIdx === tabs.length - 1 ? 'none' : 'auto';
             if (nextLabel && currentIdx < tabs.length - 1) {
-                nextLabel.textContent = `${tabs[currentIdx + 1].name} →`;
+                nextLabel.textContent = tabs[currentIdx + 1].name;
             } else if (nextLabel) {
                 nextLabel.textContent = 'Next Section';
             }
         }
 
         if (scroll) {
-            const guideCard = document.querySelector('.guide-card');
-            if (guideCard) {
-                guideCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const guideSection = document.getElementById('practitionerGuide') || document.querySelector('.practitioner-guide');
+            if (guideSection) {
+                guideSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
     }
