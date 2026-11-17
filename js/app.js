@@ -5460,94 +5460,79 @@ if (typeof module !== 'undefined' && module.exports) {
 function setupGuideTabs() {
     const tabs = [
         { id: 'field-guide', name: 'Field Guide' },
-        { id: 'inflation-math', name: '33% Inflation Rule' },
+        { id: 'inflation-math', name: 'Inflation Math' },
         { id: 'mime-signatures', name: 'MIME Signatures' },
-        { id: 'security-privacy', name: 'Security & JWT' },
+        { id: 'security-privacy', name: 'Security & Privacy' },
         { id: 'url-safe', name: 'URL-Safe RFC 4648' },
         { id: 'faq', name: 'Developer FAQ' }
     ];
 
     let currentIdx = 0;
-    let isExpandedMode = false;
-    const guideWrapper = document.getElementById('guideWrapper');
 
     function switchGuideTab(idx, scroll) {
         if (idx < 0 || idx >= tabs.length) return;
         currentIdx = idx;
         const target = tabs[currentIdx];
 
-        if (isExpandedMode) {
-            // In expanded mode, smoothly scroll to chapter
-            const targetPane = document.getElementById(`pane-${target.id}`);
-            if (targetPane) {
-                targetPane.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        } else {
-            // Update nav chips
-            document.querySelectorAll('.guide-tab-chip').forEach((chip) => {
-                const isActive = chip.dataset.guideTab === target.id;
-                chip.classList.toggle('active', isActive);
-                chip.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            });
+        // Update nav buttons
+        document.querySelectorAll('.guide-nav-btn').forEach((b, i) => {
+            const isActive = b.dataset.guideTab === target.id;
+            b.classList.toggle('active', isActive);
+            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
 
-            // Update panes
-            document.querySelectorAll('.guide-pane').forEach((p) => {
-                p.classList.toggle('active', p.id === `pane-${target.id}`);
-            });
+        // Update panes
+        document.querySelectorAll('.guide-pane').forEach(p => {
+            p.classList.toggle('active', p.id === `pane-${target.id}`);
+        });
 
-            // Update dots
-            document.querySelectorAll('.guide-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIdx);
-            });
+        // Update dots
+        document.querySelectorAll('.guide-dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentIdx);
+        });
 
-            // Update counter
-            const counter = document.getElementById('guideCounter');
-            if (counter) counter.textContent = `Chapter ${currentIdx + 1} of ${tabs.length}`;
+        // Update counter
+        const counter = document.getElementById('guideCounter');
+        if (counter) counter.textContent = `${currentIdx + 1} / ${tabs.length}`;
 
-            // Update stepper buttons
-            const prevBtn = document.getElementById('guidePrevBtn');
-            const nextBtn = document.getElementById('guideNextBtn');
-            const prevLabel = document.getElementById('guidePrevLabel');
-            const nextLabel = document.getElementById('guideNextLabel');
+        // Update prev/next button labels & visibility
+        const prevBtn = document.getElementById('guidePrevBtn');
+        const nextBtn = document.getElementById('guideNextBtn');
+        const prevLabel = document.getElementById('guidePrevLabel');
+        const nextLabel = document.getElementById('guideNextLabel');
 
-            if (prevBtn) {
-                prevBtn.disabled = currentIdx === 0;
-                prevBtn.style.opacity = currentIdx === 0 ? '0.4' : '1';
-                prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
-                if (prevLabel && currentIdx > 0) {
-                    prevLabel.textContent = tabs[currentIdx - 1].name;
-                } else if (prevLabel) {
-                    prevLabel.textContent = 'Previous Chapter';
-                }
-            }
-
-            if (nextBtn) {
-                nextBtn.disabled = currentIdx === tabs.length - 1;
-                nextBtn.style.opacity = currentIdx === tabs.length - 1 ? '0.4' : '1';
-                nextBtn.style.pointerEvents = currentIdx === tabs.length - 1 ? 'none' : 'auto';
-                if (nextLabel && currentIdx < tabs.length - 1) {
-                    nextLabel.textContent = tabs[currentIdx + 1].name;
-                } else if (nextLabel) {
-                    nextLabel.textContent = 'Next Chapter';
-                }
+        if (prevBtn) {
+            prevBtn.disabled = currentIdx === 0;
+            prevBtn.style.opacity = currentIdx === 0 ? '0.4' : '1';
+            prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
+            if (prevLabel && currentIdx > 0) {
+                prevLabel.textContent = tabs[currentIdx - 1].name;
+            } else if (prevLabel) {
+                prevLabel.textContent = 'Previous Section';
             }
         }
 
-        // URL hash sync
-        if (history.replaceState) {
-            history.replaceState(null, '', `#pane-${target.id}`);
+        if (nextBtn) {
+            nextBtn.disabled = currentIdx === tabs.length - 1;
+            nextBtn.style.opacity = currentIdx === tabs.length - 1 ? '0.4' : '1';
+            nextBtn.style.pointerEvents = currentIdx === tabs.length - 1 ? 'none' : 'auto';
+            if (nextLabel && currentIdx < tabs.length - 1) {
+                nextLabel.textContent = tabs[currentIdx + 1].name;
+            } else if (nextLabel) {
+                nextLabel.textContent = 'Next Section';
+            }
         }
 
         if (scroll) {
-            const guideSection = document.getElementById('practitionerGuide');
+            const guideSection = document.getElementById('practitionerGuide') || document.querySelector('.practitioner-guide');
             if (guideSection) {
                 guideSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
     }
 
-    // Attach click to tab chips
-    document.querySelectorAll('.guide-tab-chip').forEach((btn, idx) => {
+    // Attach click to nav buttons
+    document.querySelectorAll('.guide-nav-btn').forEach((btn, idx) => {
         btn.addEventListener('click', () => switchGuideTab(idx, false));
     });
 
@@ -5565,40 +5550,9 @@ function setupGuideTabs() {
         dot.addEventListener('click', () => switchGuideTab(idx, false));
     });
 
-    // Dual-Mode View Switcher handlers
-    const modeTabsBtn = document.getElementById('modeTabsBtn');
-    const modeExpandBtn = document.getElementById('modeExpandBtn');
-
-    function setViewMode(expand) {
-        isExpandedMode = expand;
-        if (guideWrapper) {
-            guideWrapper.classList.toggle('view-mode-expanded', isExpandedMode);
-        }
-        if (modeTabsBtn) modeTabsBtn.classList.toggle('active', !isExpandedMode);
-        if (modeExpandBtn) modeExpandBtn.classList.toggle('active', isExpandedMode);
-
-        if (!isExpandedMode) {
-            switchGuideTab(currentIdx, false);
-        }
-    }
-
-    modeTabsBtn?.addEventListener('click', () => setViewMode(false));
-    modeExpandBtn?.addEventListener('click', () => setViewMode(true));
-
-    // Deep-linking hash detection on initial page load
-    if (window.location.hash) {
-        const hash = window.location.hash.replace('#', '').replace('pane-', '');
-        const foundIdx = tabs.findIndex(t => t.id === hash);
-        if (foundIdx !== -1) {
-            switchGuideTab(foundIdx, true);
-        } else {
-            switchGuideTab(0, false);
-        }
-    } else {
-        switchGuideTab(0, false);
-    }
+    // Initialize state
+    switchGuideTab(0, false);
 }
-
 
 function setupBatchUpload() {
     document.addEventListener('change', (e) => {
