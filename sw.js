@@ -4,7 +4,7 @@
  * Standards: 100% Client-Side In-Memory Execution
  */
 
-const CACHE_NAME = 'b64-studio-v3.9.0';
+const CACHE_NAME = 'b64-studio-v4.0.0';
 const STATIC_ASSETS = [
   './',
   './index.html',

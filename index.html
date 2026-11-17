@@ -686,70 +686,110 @@
         </section>
 
         <!-- Base64 Engineering Practitioner Guide -->
-                <!-- Base64 Engineering Practitioner Guide (Continuous Line-Wise Layout for 100% Google E-E-A-T Visibility) -->
+                <!-- Base64 Engineering Practitioner Guide (Professional Dual-Mode E-E-A-T Architecture) -->
         <section class="practitioner-guide" id="practitionerGuide" aria-label="Base64 Engineering Practitioner Guide">
-            <div class="guide-wrapper">
+            <div class="guide-wrapper" id="guideWrapper">
+                
+                <!-- Guide Section Header -->
                 <header class="guide-header">
-                    <div class="guide-badge-row">
-                        <span class="guide-badge">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                            </svg>
-                            100% Client-Side In-Memory Privacy
-                        </span>
-                        <span class="guide-badge secondary">
-                            RFC 4648 &amp; RFC 2045 Standard
-                        </span>
+                    <div class="guide-header-top">
+                        <div class="guide-badge-group">
+                            <span class="guide-badge">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                                100% In-Memory Privacy
+                            </span>
+                            <span class="guide-badge secondary">
+                                IETF RFC 4648 &amp; RFC 2045 Standard
+                            </span>
+                        </div>
+
+                        <!-- Dual-Mode Layout Switcher -->
+                        <div class="guide-view-switcher" role="group" aria-label="Documentation Display Mode">
+                            <button type="button" class="view-switch-btn active" id="modeTabsBtn" title="Interactive Chapter Tabs">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                                <span>Tabs</span>
+                            </button>
+                            <button type="button" class="view-switch-btn" id="modeExpandBtn" title="View Full Continuous Manual (Line-by-Line)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                </svg>
+                                <span>Expand All</span>
+                            </button>
+                        </div>
                     </div>
+
                     <h2 class="guide-title">Base64 Engineering Practitioner Guide &amp; Technical Manual</h2>
-                    <p class="guide-subtitle">A comprehensive, production-grade engineering manual covering binary chunking bitwise mathematics, the 33.34% payload inflation overhead, forensic MIME magic byte detection, JWT security risks, and cross-platform production implementations.</p>
+                    <p class="guide-subtitle">An authoritative, production-grade engineering manual covering 6-bit chunking mathematics, the 33.34% payload inflation penalty, forensic MIME magic byte signatures, JWT token security, and cross-platform production recipes.</p>
                 </header>
 
-                <!-- Sticky Quick-Jump Table of Contents -->
-                <nav class="guide-toc-bar" id="guideTocBar" aria-label="Quick Jump Table of Contents">
-                    <span class="guide-toc-label">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="8" y1="6" x2="21" y2="6"></line>
-                            <line x1="8" y1="12" x2="21" y2="12"></line>
-                            <line x1="8" y1="18" x2="21" y2="18"></line>
-                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                        </svg>
-                        Contents:
-                    </span>
-                    <div class="guide-toc-list">
-                        <a href="#field-guide" class="guide-toc-btn active">1. Field Guide</a>
-                        <a href="#inflation-math" class="guide-toc-btn">2. 33% Inflation Rule</a>
-                        <a href="#mime-signatures" class="guide-toc-btn">3. MIME Signatures</a>
-                        <a href="#security-privacy" class="guide-toc-btn">4. Security &amp; JWT</a>
-                        <a href="#url-safe" class="guide-toc-btn">5. URL-Safe Cookbook</a>
-                        <a href="#faq" class="guide-toc-btn">6. Developer FAQ</a>
-                    </div>
+                <!-- Professional Segmented Navigation Tabs -->
+                <nav class="guide-segmented-nav" id="guideSegmentedNav" role="tablist" aria-label="Engineering Guide Chapters">
+                    <button class="guide-tab-chip active" id="tab-field-guide" data-guide-tab="field-guide" type="button" role="tab" aria-selected="true" aria-controls="pane-field-guide">
+                        <span class="tab-chip-num">01</span>
+                        <span class="tab-chip-title">Field Guide</span>
+                    </button>
+                    <button class="guide-tab-chip" id="tab-inflation-math" data-guide-tab="inflation-math" type="button" role="tab" aria-selected="false" aria-controls="pane-inflation-math">
+                        <span class="tab-chip-num">02</span>
+                        <span class="tab-chip-title">33% Inflation Rule</span>
+                    </button>
+                    <button class="guide-tab-chip" id="tab-mime-signatures" data-guide-tab="mime-signatures" type="button" role="tab" aria-selected="false" aria-controls="pane-mime-signatures">
+                        <span class="tab-chip-num">03</span>
+                        <span class="tab-chip-title">MIME Signatures</span>
+                    </button>
+                    <button class="guide-tab-chip" id="tab-security-privacy" data-guide-tab="security-privacy" type="button" role="tab" aria-selected="false" aria-controls="pane-security-privacy">
+                        <span class="tab-chip-num">04</span>
+                        <span class="tab-chip-title">Security &amp; JWT</span>
+                    </button>
+                    <button class="guide-tab-chip" id="tab-url-safe" data-guide-tab="url-safe" type="button" role="tab" aria-selected="false" aria-controls="pane-url-safe">
+                        <span class="tab-chip-num">05</span>
+                        <span class="tab-chip-title">URL-Safe RFC 4648</span>
+                    </button>
+                    <button class="guide-tab-chip" id="tab-faq" data-guide-tab="faq" type="button" role="tab" aria-selected="false" aria-controls="pane-faq">
+                        <span class="tab-chip-num">06</span>
+                        <span class="tab-chip-title">Developer FAQ</span>
+                    </button>
                 </nav>
 
-                <!-- Chapter 1: Field Guide -->
-                <article class="guide-chapter" id="field-guide">
-                    <div class="guide-chapter-header">
-                        <span class="chapter-badge">Chapter 1 • Core Specification</span>
-                        <h3 class="chapter-title">1. Modern Base64 Architecture &amp; The RFC 4648 Standard</h3>
-                    </div>
-                    <div class="guide-prose">
-                        <p><strong>Base64</strong> is a standardized binary-to-text serialization algorithm specified formally in <strong>IETF RFC 4648</strong> (and historically defined in RFC 2045 for MIME transmission). Its fundamental engineering purpose is to transport arbitrary sequences of 8-bit binary octets—such as raw compiled executables, cryptographic keys, compressed archives, and bitmap imagery—safely across legacy transport layers and protocol channels designed exclusively for printable 7-bit US-ASCII text.</p>
-                        <p>Protocols including SMTP (Simple Mail Transfer Protocol), HTTP request header values, REST JSON payloads, XML document models, and CSS stylesheets treat certain control bytes (like null bytes <code>0x00</code>, line feeds <code>\n</code>, and EOF markers) as protocol terminators or delimiters. Base64 guarantees safe, lossless transport by restricting its output to an unambiguous alphabet of 64 printable characters:</p>
-                        <ul>
-                            <li><code>A–Z</code> (ASCII 65–90, mapping to 6-bit values <code>0</code> through <code>25</code>)</li>
-                            <li><code>a–z</code> (ASCII 97–122, mapping to 6-bit values <code>26</code> through <code>51</code>)</li>
-                            <li><code>0–9</code> (ASCII 48–57, mapping to 6-bit values <code>52</code> through <code>61</code>)</li>
-                            <li><code>+</code> (ASCII 43, mapping to 6-bit value <code>62</code>)</li>
-                            <li><code>/</code> (ASCII 47, mapping to 6-bit value <code>63</code>)</li>
-                        </ul>
+                <!-- Guide Chapters Container -->
+                <div class="guide-panes-wrapper">
 
-                        <h4>The Bitwise Mechanics: 8-Bit Octets to 6-Bit Sextets</h4>
-                        <p>Standard computer memory architecture operates on <strong>8-bit bytes (octets)</strong>, representing integer values from 0 to 255. Because <strong>2<sup>6</sup> = 64</strong>, each Base64 printable glyph conveys exactly <strong>6 bits of information (a sextet)</strong>. To convert raw binary into printable text, the algorithm concatenates 3 consecutive 8-bit bytes into a continuous 24-bit bitstream, and then divides that stream into 4 distinct 6-bit chunks:</p>
+                    <!-- Chapter 1: Field Guide -->
+                    <article class="guide-pane active" id="pane-field-guide" role="tabpanel" aria-labelledby="tab-field-guide">
+                        <div class="pane-banner">
+                            <div class="pane-meta">
+                                <span class="pane-chapter-tag">Chapter 01 of 06</span>
+                                <span class="pane-read-time">3 min read • RFC 4648 §4</span>
+                            </div>
+                            <h3 class="pane-heading">1. Modern Base64 Architecture &amp; The RFC 4648 Standard</h3>
+                        </div>
+                        <div class="guide-prose">
+                            <p><strong>Base64</strong> is a standardized binary-to-text serialization algorithm specified formally in <strong>IETF RFC 4648</strong> (and historically defined in RFC 2045 for MIME transmission). Its fundamental engineering purpose is to transport arbitrary sequences of 8-bit binary octets—such as raw compiled executables, cryptographic keys, compressed archives, and bitmap imagery—safely across legacy transport layers and protocol channels designed exclusively for printable 7-bit US-ASCII text.</p>
+                            <p>Protocols including SMTP (Simple Mail Transfer Protocol), HTTP request header values, REST JSON payloads, XML document models, and CSS stylesheets treat certain control bytes (like null bytes <code>0x00</code>, line feeds <code>\n</code>, and EOF markers) as protocol terminators or delimiters. Base64 guarantees safe, lossless transport by restricting its output to an unambiguous alphabet of 64 printable characters:</p>
+                            <ul>
+                                <li><code>A–Z</code> (ASCII 65–90, mapping to 6-bit values <code>0</code> through <code>25</code>)</li>
+                                <li><code>a–z</code> (ASCII 97–122, mapping to 6-bit values <code>26</code> through <code>51</code>)</li>
+                                <li><code>0–9</code> (ASCII 48–57, mapping to 6-bit values <code>52</code> through <code>61</code>)</li>
+                                <li><code>+</code> (ASCII 43, mapping to 6-bit value <code>62</code>)</li>
+                                <li><code>/</code> (ASCII 47, mapping to 6-bit value <code>63</code>)</li>
+                            </ul>
 
-                        <div class="guide-code-block">
+                            <h4>The Bitwise Mechanics: 8-Bit Octets to 6-Bit Sextets</h4>
+                            <p>Standard computer memory architecture operates on <strong>8-bit bytes (octets)</strong>, representing integer values from 0 to 255. Because <strong>2<sup>6</sup> = 64</strong>, each Base64 printable glyph conveys exactly <strong>6 bits of information (a sextet)</strong>. To convert raw binary into printable text, the algorithm concatenates 3 consecutive 8-bit bytes into a continuous 24-bit bitstream, and then divides that stream into 4 distinct 6-bit chunks:</p>
+
+                            <div class="guide-code-block">
 Binary Bitstream Transformation (3 Bytes in → 4 Glyphs out):
 ========================================================================================
 Source Bytes:          [  Byte 0 (8 bits)  ]   [  Byte 1 (8 bits)  ]   [  Byte 2 (8 bits)  ]
@@ -757,91 +797,94 @@ Bitstream:             b7 b6 b5 b4 b3 b2 b1 b0 c7 c6 c5 c4 c3 c2 c1 c0 d7 d6 d5 
 Bit Division:          |--- 6 bits ---|--- 6 bits ---|--- 6 bits ---|--- 6 bits ---|
 Base64 Sextets:        [  Sextet 0  ]   [  Sextet 1  ]   [  Sextet 2  ]   [  Sextet 3  ]
 Output Characters:          Char 0           Char 1           Char 2           Char 3
-                        </div>
+                            </div>
 
-                        <p>The bitwise shifting operations implemented in low-level systems (C, Go, Rust, V8 engine) are derived as follows:</p>
-                        <div class="guide-code-block">
+                            <p>The bitwise shifting operations implemented in low-level systems (C, Go, Rust, V8 engine) are derived as follows:</p>
+                            <div class="guide-code-block">
 uint8_t sextet0 = (byte0 &gt;&gt; 2) &amp; 0x3F;
 uint8_t sextet1 = ((byte0 &amp; 0x03) &lt;&lt; 4) | ((byte1 &gt;&gt; 4) &amp; 0x0F);
 uint8_t sextet2 = ((byte1 &amp; 0x0F) &lt;&lt; 2) | ((byte2 &gt;&gt; 6) &amp; 0x03);
 uint8_t sextet3 = byte2 &amp; 0x3F;
+                            </div>
+
+                            <h4>Concrete Execution Trace: Encoding "Man" → "TWFu"</h4>
+                            <table class="guide-table">
+                                <thead>
+                                    <tr>
+                                        <th>Step</th>
+                                        <th>Component 1</th>
+                                        <th>Component 2</th>
+                                        <th>Component 3</th>
+                                        <th>Component 4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Original Text</strong></td>
+                                        <td><code>'M'</code></td>
+                                        <td><code>'a'</code></td>
+                                        <td><code>'n'</code></td>
+                                        <td>—</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ASCII / Decimal</strong></td>
+                                        <td><code>77</code></td>
+                                        <td><code>97</code></td>
+                                        <td><code>110</code></td>
+                                        <td>—</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Binary (8-bit)</strong></td>
+                                        <td><code>01001101</code></td>
+                                        <td><code>01100001</code></td>
+                                        <td><code>01101110</code></td>
+                                        <td>Combined: <code>010011010110000101101110</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Sextets (6-bit)</strong></td>
+                                        <td><code>010011</code> (19)</td>
+                                        <td><code>010110</code> (22)</td>
+                                        <td><code>000101</code> (5)</td>
+                                        <td><code>101110</code> (46)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Base64 Character</strong></td>
+                                        <td><code>'T'</code></td>
+                                        <td><code>'W'</code></td>
+                                        <td><code>'F'</code></td>
+                                        <td><code>'u'</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h4>Boundary Alignment &amp; Padding Semantics (= and ==)</h4>
+                            <p>Because real-world payloads rarely divide evenly into multiples of 3 bytes, the stream remainder modulo 3 determines trailing padding characters:</p>
+                            <ul>
+                                <li><strong>Remainder = 0 bytes (Len % 3 == 0):</strong> The binary stream terminates cleanly on a 24-bit boundary. Exactly zero <code>=</code> padding characters are appended.</li>
+                                <li><strong>Remainder = 1 byte (Len % 3 == 1):</strong> 8 bits of data remain. Two 6-bit sextets are formed by right-padding 4 zero bits. The missing 2 sextets are filled with two <code>==</code> padding characters (e.g., <code>"M"</code> → <code>"TQ=="</code>).</li>
+                                <li><strong>Remainder = 2 bytes (Len % 3 == 2):</strong> 16 bits of data remain. Three 6-bit sextets are formed by right-padding 2 zero bits. The single missing sextet is filled with one <code>=</code> padding character (e.g., <code>"Ma"</code> → <code>"TWE="</code>).</li>
+                            </ul>
+
+                            <div class="guide-callout warning">
+                                <strong>The JavaScript UTF-8 Multibyte Trap:</strong> Standard browser <code>window.btoa()</code> expects binary Latin-1 characters (code points 0 to 255). Passing multibyte Unicode characters like emojis (<code>🔥</code>, <code>🚀</code>) or international scripts (e.g. Hindi, Japanese, Cyrillic) triggers a fatal <code>DOMException: The string to be encoded contains characters outside of the Latin1 range</code>. Our Studio bypasses this using modern <code>new TextEncoder().encode(input)</code> byte chunking, guaranteeing 100% crash-free Unicode conversion.
+                            </div>
                         </div>
+                    </article>
 
-                        <h4>Concrete Execution Trace: Encoding "Man" → "TWFu"</h4>
-                        <table class="guide-table">
-                            <thead>
-                                <tr>
-                                    <th>Step</th>
-                                    <th>Component 1</th>
-                                    <th>Component 2</th>
-                                    <th>Component 3</th>
-                                    <th>Component 4</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Original Text</strong></td>
-                                    <td><code>'M'</code></td>
-                                    <td><code>'a'</code></td>
-                                    <td><code>'n'</code></td>
-                                    <td>—</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>ASCII / Decimal</strong></td>
-                                    <td><code>77</code></td>
-                                    <td><code>97</code></td>
-                                    <td><code>110</code></td>
-                                    <td>—</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Binary (8-bit)</strong></td>
-                                    <td><code>01001101</code></td>
-                                    <td><code>01100001</code></td>
-                                    <td><code>01101110</code></td>
-                                    <td>Combined: <code>010011010110000101101110</code></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Sextets (6-bit)</strong></td>
-                                    <td><code>010011</code> (19)</td>
-                                    <td><code>010110</code> (22)</td>
-                                    <td><code>000101</code> (5)</td>
-                                    <td><code>101110</code> (46)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Base64 Character</strong></td>
-                                    <td><code>'T'</code></td>
-                                    <td><code>'W'</code></td>
-                                    <td><code>'F'</code></td>
-                                    <td><code>'u'</code></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h4>Boundary Alignment &amp; Padding Semantics (= and ==)</h4>
-                        <p>Because real-world payloads rarely divide evenly into multiples of 3 bytes, the stream remainder modulo 3 determines trailing padding characters:</p>
-                        <ul>
-                            <li><strong>Remainder = 0 bytes (Len % 3 == 0):</strong> The binary stream terminates cleanly on a 24-bit boundary. Exactly zero <code>=</code> padding characters are appended.</li>
-                            <li><strong>Remainder = 1 byte (Len % 3 == 1):</strong> 8 bits of data remain. Two 6-bit sextets are formed by right-padding 4 zero bits. The missing 2 sextets are filled with two <code>==</code> padding characters (e.g., <code>"M"</code> → <code>"TQ=="</code>).</li>
-                            <li><strong>Remainder = 2 bytes (Len % 3 == 2):</strong> 16 bits of data remain. Three 6-bit sextets are formed by right-padding 2 zero bits. The single missing sextet is filled with one <code>=</code> padding character (e.g., <code>"Ma"</code> → <code>"TWE="</code>).</li>
-                        </ul>
-
-                        <div class="guide-callout warning">
-                            <strong>The JavaScript UTF-8 Multibyte Trap:</strong> Standard browser <code>window.btoa()</code> expects binary Latin-1 characters (code points 0 to 255). Passing multibyte Unicode characters like emojis (<code>🔥</code>, <code>🚀</code>) or international scripts (e.g. Hindi, Japanese, Cyrillic) triggers a fatal <code>DOMException: The string to be encoded contains characters outside of the Latin1 range</code>. Our Studio bypasses this using modern <code>new TextEncoder().encode(input)</code> byte chunking, guaranteeing 100% crash-free Unicode conversion.
+                    <!-- Chapter 2: Inflation Math -->
+                    <article class="guide-pane" id="pane-inflation-math" role="tabpanel" aria-labelledby="tab-inflation-math">
+                        <div class="pane-banner">
+                            <div class="pane-meta">
+                                <span class="pane-chapter-tag">Chapter 02 of 06</span>
+                                <span class="pane-read-time">4 min read • Network Calculus</span>
+                            </div>
+                            <h3 class="pane-heading">2. The 33.34% Data Inflation Rule &amp; Network Calculus</h3>
                         </div>
-                    </div>
-                </article>
+                        <div class="guide-prose">
+                            <h4>The Mathematical Law of Base64 Data Expansion</h4>
+                            <p>Every software architect must understand the immutable mathematical cost of Base64 serialization: <strong>Base64 strings consume exactly 33.34% more bytes than the raw binary source</strong>. This expansion is governed by the ratio of 6-bit encoding to 8-bit byte representation:</p>
 
-                <!-- Chapter 2: Inflation Math -->
-                <article class="guide-chapter" id="inflation-math">
-                    <div class="guide-chapter-header">
-                        <span class="chapter-badge">Chapter 2 • Network Calculus</span>
-                        <h3 class="chapter-title">2. The 33.34% Data Inflation Rule &amp; Network Calculus</h3>
-                    </div>
-                    <div class="guide-prose">
-                        <h4>The Mathematical Law of Base64 Data Expansion</h4>
-                        <p>Every software architect must understand the immutable mathematical cost of Base64 serialization: <strong>Base64 strings consume exactly 33.34% more bytes than the raw binary source</strong>. This expansion is governed by the ratio of 6-bit encoding to 8-bit byte representation:</p>
-
-                        <div class="guide-code-block">
+                            <div class="guide-code-block">
 Mathematical Derivation:
 ----------------------------------------------------------------------------------------
 Input Data Size:      3 binary octets = 3 bytes × 8 bits/byte = 24 bits
@@ -849,177 +892,180 @@ Output Data Size:     4 ASCII glyphs  = 4 bytes × 8 bits/byte = 32 bits
 
 Size Expansion Ratio = 4 / 3 = 1.33333333... (133.34% of original size)
 Net Inflation Rate   = (32 - 24) / 24 = 8 / 24 = 1 / 3 ≈ +33.333%
-                        </div>
+                            </div>
 
-                        <p>For any binary payload of <code>n</code> bytes, the exact output character length (including padding) is calculated as:</p>
-                        <div class="guide-code-block">
+                            <p>For any binary payload of <code>n</code> bytes, the exact output character length (including padding) is calculated as:</p>
+                            <div class="guide-code-block">
 OutputLength = 4 * ceil(n / 3) bytes
+                            </div>
+
+                            <h4>Hidden Payload Multipliers in Web Applications</h4>
+                            <p>In web browsers and production microservices, real-world overhead frequently exceeds 33.34% due to secondary serialization factors:</p>
+                            <ul>
+                                <li><strong>Data URI Scheme Prefix:</strong> Prepending <code>data:image/webp;base64,</code> or <code>data:application/pdf;base64,</code> injects an additional 21 to 32 bytes of static string overhead.</li>
+                                <li><strong>MIME / RFC 2045 Line Wrapping:</strong> Legacy MIME specifications mandate a Carriage Return + Line Feed (<code>\r\n</code>) after every 76 characters. For a 1 MB file, this inserts approximately 13,800 delimiter bytes (~2.6% additional bloat).</li>
+                                <li><strong>JSON Escaping:</strong> When embedding Base64 strings inside JSON payloads, quote delimiters and potential escape characters further inflate token boundaries.</li>
+                            </ul>
+
+                            <h4>Architectural Decision Matrix: When to Inline vs CDN Asset</h4>
+                            <table class="guide-table">
+                                <thead>
+                                    <tr>
+                                        <th>Resource Archetype</th>
+                                        <th>Payload Threshold</th>
+                                        <th>Recommended Strategy</th>
+                                        <th>Performance &amp; Caching Rationale</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Micro-Icons &amp; Spinners</strong></td>
+                                        <td>&lt; 2 KB</td>
+                                        <td><span style="color:var(--primary); font-weight:600;">Inline Data URI</span></td>
+                                        <td>Eliminates TCP connection handshake and DNS latency. RTT savings dwarf the 33% byte penalty.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Critical Hero Photos</strong></td>
+                                        <td>&gt; 15 KB</td>
+                                        <td><span style="color:#ef4444; font-weight:600;">External CDN Asset</span></td>
+                                        <td>Inlining bloats HTML/CSS download time, delaying First Contentful Paint (FCP) and blocking DOM parsing.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>LQIP / BlurHash Placeholders</strong></td>
+                                        <td>&lt; 500 Bytes</td>
+                                        <td><span style="color:var(--primary); font-weight:600;">Inline Data URI</span></td>
+                                        <td>Renders immediate visual structure before the high-res external asset streams into memory.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Web Fonts (WOFF2)</strong></td>
+                                        <td>20 KB – 120 KB</td>
+                                        <td><span style="color:#ef4444; font-weight:600;">External Preload</span></td>
+                                        <td>Inlined fonts in CSS cannot be cached independently when stylesheet rules change.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Audio, Video &amp; WASM</strong></td>
+                                        <td>&gt; 100 KB</td>
+                                        <td><span style="color:#ef4444; font-weight:600;">Streamed Fetch</span></td>
+                                        <td>Large Base64 strings trigger severe V8 heap fragmentation and garbage collection pauses.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="guide-callout">
+                                <strong>HTTP/2 &amp; HTTP/3 Multiplexing Impact:</strong> In the era of HTTP/1.1, developers inlined images to circumvent the browser limit of 6 concurrent TCP connections per domain. Modern HTTP/2 and HTTP/3 protocols support fully multiplexed binary streams over a single connection with zero head-of-line blocking. Consequently, inlining assets larger than 2 KB is an obsolete practice that harms Core Web Vitals (LCP, FID, CLS).
+                            </div>
                         </div>
+                    </article>
 
-                        <h4>Hidden Payload Multipliers in Web Applications</h4>
-                        <p>In web browsers and production microservices, real-world overhead frequently exceeds 33.34% due to secondary serialization factors:</p>
-                        <ul>
-                            <li><strong>Data URI Scheme Prefix:</strong> Prepending <code>data:image/webp;base64,</code> or <code>data:application/pdf;base64,</code> injects an additional 21 to 32 bytes of static string overhead.</li>
-                            <li><strong>MIME / RFC 2045 Line Wrapping:</strong> Legacy MIME specifications mandate a Carriage Return + Line Feed (<code>\r\n</code>) after every 76 characters. For a 1 MB file, this inserts approximately 13,800 delimiter bytes (~2.6% additional bloat).</li>
-                            <li><strong>JSON Escaping:</strong> When embedding Base64 strings inside JSON payloads, quote delimiters and potential escape characters further inflate token boundaries.</li>
-                        </ul>
-
-                        <h4>Architectural Decision Matrix: When to Inline vs CDN Asset</h4>
-                        <table class="guide-table">
-                            <thead>
-                                <tr>
-                                    <th>Resource Archetype</th>
-                                    <th>Payload Threshold</th>
-                                    <th>Recommended Strategy</th>
-                                    <th>Performance &amp; Caching Rationale</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Micro-Icons &amp; Spinners</strong></td>
-                                    <td>&lt; 2 KB</td>
-                                    <td><span style="color:var(--primary); font-weight:600;">Inline Data URI</span></td>
-                                    <td>Eliminates TCP connection handshake and DNS latency. RTT savings dwarf the 33% byte penalty.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Critical Hero Photos</strong></td>
-                                    <td>&gt; 15 KB</td>
-                                    <td><span style="color:#ef4444; font-weight:600;">External CDN Asset</span></td>
-                                    <td>Inlining bloats HTML/CSS download time, delaying First Contentful Paint (FCP) and blocking DOM parsing.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>LQIP / BlurHash Placeholders</strong></td>
-                                    <td>&lt; 500 Bytes</td>
-                                    <td><span style="color:var(--primary); font-weight:600;">Inline Data URI</span></td>
-                                    <td>Renders immediate visual structure before the high-res external asset streams into memory.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Web Fonts (WOFF2)</strong></td>
-                                    <td>20 KB – 120 KB</td>
-                                    <td><span style="color:#ef4444; font-weight:600;">External Preload</span></td>
-                                    <td>Inlined fonts in CSS cannot be cached independently when stylesheet rules change.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Audio, Video &amp; WASM</strong></td>
-                                    <td>&gt; 100 KB</td>
-                                    <td><span style="color:#ef4444; font-weight:600;">Streamed Fetch</span></td>
-                                    <td>Large Base64 strings trigger severe V8 heap fragmentation and garbage collection pauses.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="guide-callout">
-                            <strong>HTTP/2 &amp; HTTP/3 Multiplexing Impact:</strong> In the era of HTTP/1.1, developers inlined images to circumvent the browser limit of 6 concurrent TCP connections per domain. Modern HTTP/2 and HTTP/3 protocols support fully multiplexed binary streams over a single connection with zero head-of-line blocking. Consequently, inlining assets larger than 2 KB is an obsolete practice that harms Core Web Vitals (LCP, FID, CLS).
+                    <!-- Chapter 3: MIME Signatures -->
+                    <article class="guide-pane" id="pane-mime-signatures" role="tabpanel" aria-labelledby="tab-mime-signatures">
+                        <div class="pane-banner">
+                            <div class="pane-meta">
+                                <span class="pane-chapter-tag">Chapter 03 of 06</span>
+                                <span class="pane-read-time">5 min read • Binary Forensics</span>
+                            </div>
+                            <h3 class="pane-heading">3. MIME Magic Signatures &amp; Binary Header Forensics</h3>
                         </div>
-                    </div>
-                </article>
+                        <div class="guide-prose">
+                            <h4>How Magic Numbers Survive Base64 Serialization</h4>
+                            <p>Every standard binary file format begins with a unique, immutable sequence of identifier bytes known as <strong>Magic Bytes (or File Signatures)</strong>. Because Base64 deterministically transforms groups of 3 binary bytes into groups of 4 characters, the initial 3 to 6 bytes of any file format map to predictable starting prefixes in the resulting Base64 string.</p>
+                            <p>This allows forensic systems, firewalls, and our client-side Studio to instantly inspect and identify the underlying MIME type of an encoded string without relying on arbitrary file extensions or server headers.</p>
 
-                <!-- Chapter 3: MIME Signatures -->
-                <article class="guide-chapter" id="mime-signatures">
-                    <div class="guide-chapter-header">
-                        <span class="chapter-badge">Chapter 3 • Binary Forensics</span>
-                        <h3 class="chapter-title">3. MIME Magic Signatures &amp; Binary Header Forensics</h3>
-                    </div>
-                    <div class="guide-prose">
-                        <h4>How Magic Numbers Survive Base64 Serialization</h4>
-                        <p>Every standard binary file format begins with a unique, immutable sequence of identifier bytes known as <strong>Magic Bytes (or File Signatures)</strong>. Because Base64 deterministically transforms groups of 3 binary bytes into groups of 4 characters, the initial 3 to 6 bytes of any file format map to predictable starting prefixes in the resulting Base64 string.</p>
-                        <p>This allows forensic systems, firewalls, and our client-side Studio to instantly inspect and identify the underlying MIME type of an encoded string without relying on arbitrary file extensions or server headers.</p>
+                            <h4>The Universal Forensic Magic Byte Reference Matrix</h4>
+                            <table class="guide-table">
+                                <thead>
+                                    <tr>
+                                        <th>File Type</th>
+                                        <th>MIME Type</th>
+                                        <th>Magic Bytes (Hex)</th>
+                                        <th>Base64 Header Signature</th>
+                                        <th>Byte Offset / Specification</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>PNG Image</strong></td>
+                                        <td><code>image/png</code></td>
+                                        <td><code>89 50 4E 47 0D 0A 1A 0A</code></td>
+                                        <td><code>iVBORw0K...</code></td>
+                                        <td>Bytes 0–7: <code>.PNG\r\n\x1a\n</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>JPEG Image</strong></td>
+                                        <td><code>image/jpeg</code></td>
+                                        <td><code>FF D8 FF E0 / E1 / EE</code></td>
+                                        <td><code>/9j/4...</code> or <code>/9j/</code></td>
+                                        <td>Bytes 0–2: Start of Image (SOI) marker</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>WebP Image</strong></td>
+                                        <td><code>image/webp</code></td>
+                                        <td><code>52 49 46 46 ... 57 45 42 50</code></td>
+                                        <td><code>UklGR...V0VCUA</code></td>
+                                        <td>RIFF container with WEBP chunk signature</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>GIF Image</strong></td>
+                                        <td><code>image/gif</code></td>
+                                        <td><code>47 49 46 38 37 61 / 39 61</code></td>
+                                        <td><code>R0lGODlh</code> or <code>R0lGODdh</code></td>
+                                        <td>Bytes 0–5: <code>GIF87a</code> or <code>GIF89a</code> ASCII</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>PDF Document</strong></td>
+                                        <td><code>application/pdf</code></td>
+                                        <td><code>25 50 44 46 2D</code></td>
+                                        <td><code>JVBERi0...</code></td>
+                                        <td>Bytes 0–4: <code>%PDF-</code> header version</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ZIP / DOCX / XLSX</strong></td>
+                                        <td><code>application/zip</code></td>
+                                        <td><code>50 4B 03 04</code></td>
+                                        <td><code>UEsDBBQ...</code></td>
+                                        <td>PKZip local file header signature</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>GZIP Archive</strong></td>
+                                        <td><code>application/gzip</code></td>
+                                        <td><code>1F 8B 08</code></td>
+                                        <td><code>H4sIC...</code></td>
+                                        <td>RFC 1952 compression identification</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>MP3 Audio</strong></td>
+                                        <td><code>audio/mpeg</code></td>
+                                        <td><code>49 44 33</code> or <code>FF FB</code></td>
+                                        <td><code>SUQz...</code> or <code>//+...</code></td>
+                                        <td>ID3v2 metadata header or MPEG frame sync</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>MP4 / MOV Video</strong></td>
+                                        <td><code>video/mp4</code></td>
+                                        <td><code>00 00 00 ... 66 74 79 70</code></td>
+                                        <td><code>AAAA... / ftyp</code></td>
+                                        <td>ISO Base Media File Format box structure</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>WebAssembly</strong></td>
+                                        <td><code>application/wasm</code></td>
+                                        <td><code>00 61 73 6D 01 00 00 00</code></td>
+                                        <td><code>AGFzbQEAAAA...</code></td>
+                                        <td>Bytes 0–7: <code>\0asm</code> + WASM binary version 1</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>WOFF2 Font</strong></td>
+                                        <td><code>font/woff2</code></td>
+                                        <td><code>77 4F 46 32</code></td>
+                                        <td><code>d09GMg...</code></td>
+                                        <td>Bytes 0–3: <code>wOF2</code> ASCII identifier</td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                        <h4>The Universal Forensic Magic Byte Reference Matrix</h4>
-                        <table class="guide-table">
-                            <thead>
-                                <tr>
-                                    <th>File Type</th>
-                                    <th>MIME Type</th>
-                                    <th>Magic Bytes (Hex)</th>
-                                    <th>Base64 Header Signature</th>
-                                    <th>Byte Offset / Specification</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>PNG Image</strong></td>
-                                    <td><code>image/png</code></td>
-                                    <td><code>89 50 4E 47 0D 0A 1A 0A</code></td>
-                                    <td><code>iVBORw0K...</code></td>
-                                    <td>Bytes 0–7: <code>.PNG\r\n\x1a\n</code></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>JPEG Image</strong></td>
-                                    <td><code>image/jpeg</code></td>
-                                    <td><code>FF D8 FF E0 / E1 / EE</code></td>
-                                    <td><code>/9j/4...</code> or <code>/9j/</code></td>
-                                    <td>Bytes 0–2: Start of Image (SOI) marker</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>WebP Image</strong></td>
-                                    <td><code>image/webp</code></td>
-                                    <td><code>52 49 46 46 ... 57 45 42 50</code></td>
-                                    <td><code>UklGR...V0VCUA</code></td>
-                                    <td>RIFF container with WEBP chunk signature</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>GIF Image</strong></td>
-                                    <td><code>image/gif</code></td>
-                                    <td><code>47 49 46 38 37 61 / 39 61</code></td>
-                                    <td><code>R0lGODlh</code> or <code>R0lGODdh</code></td>
-                                    <td>Bytes 0–5: <code>GIF87a</code> or <code>GIF89a</code> ASCII</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>PDF Document</strong></td>
-                                    <td><code>application/pdf</code></td>
-                                    <td><code>25 50 44 46 2D</code></td>
-                                    <td><code>JVBERi0...</code></td>
-                                    <td>Bytes 0–4: <code>%PDF-</code> header version</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>ZIP / DOCX / XLSX</strong></td>
-                                    <td><code>application/zip</code></td>
-                                    <td><code>50 4B 03 04</code></td>
-                                    <td><code>UEsDBBQ...</code></td>
-                                    <td>PKZip local file header signature</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>GZIP Archive</strong></td>
-                                    <td><code>application/gzip</code></td>
-                                    <td><code>1F 8B 08</code></td>
-                                    <td><code>H4sIC...</code></td>
-                                    <td>RFC 1952 compression identification</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>MP3 Audio</strong></td>
-                                    <td><code>audio/mpeg</code></td>
-                                    <td><code>49 44 33</code> or <code>FF FB</code></td>
-                                    <td><code>SUQz...</code> or <code>//+...</code></td>
-                                    <td>ID3v2 metadata header or MPEG frame sync</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>MP4 / MOV Video</strong></td>
-                                    <td><code>video/mp4</code></td>
-                                    <td><code>00 00 00 ... 66 74 79 70</code></td>
-                                    <td><code>AAAA... / ftyp</code></td>
-                                    <td>ISO Base Media File Format box structure</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>WebAssembly</strong></td>
-                                    <td><code>application/wasm</code></td>
-                                    <td><code>00 61 73 6D 01 00 00 00</code></td>
-                                    <td><code>AGFzbQEAAAA...</code></td>
-                                    <td>Bytes 0–7: <code>\0asm</code> + WASM binary version 1</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>WOFF2 Font</strong></td>
-                                    <td><code>font/woff2</code></td>
-                                    <td><code>77 4F 46 32</code></td>
-                                    <td><code>d09GMg...</code></td>
-                                    <td>Bytes 0–3: <code>wOF2</code> ASCII identifier</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h4>Forensic Sniffing in Client-Side JavaScript</h4>
-                        <p>To inspect binary signatures without allocating full object strings, use modern typed byte slicing:</p>
-                        <div class="guide-code-block">
+                            <h4>Forensic Sniffing in Client-Side JavaScript</h4>
+                            <p>To inspect binary signatures without allocating full object strings, use modern typed byte slicing:</p>
+                            <div class="guide-code-block">
 function detectMimeType(uint8Array) {
     const hex = Array.from(uint8Array.subarray(0, 8))
         .map(b =&gt; b.toString(16).padStart(2, '0').toUpperCase())
@@ -1033,92 +1079,98 @@ function detectMimeType(uint8Array) {
     if (hex.startsWith('00 61 73 6D')) return 'application/wasm';
     return 'application/octet-stream';
 }
+                            </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Chapter 4: Security & Privacy -->
-                <article class="guide-chapter" id="security-privacy">
-                    <div class="guide-chapter-header">
-                        <span class="chapter-badge">Chapter 4 • Security &amp; Compliance</span>
-                        <h3 class="chapter-title">4. Security, Tokenomics &amp; Privacy Whitepaper</h3>
-                    </div>
-                    <div class="guide-prose">
-                        <h4>The Fundamental Security Axiom: Encoding is NOT Encryption</h4>
-                        <div class="guide-callout warning">
-                            <strong>Critical Vulnerability Advisory:</strong> Base64 is a deterministic serialization format, NOT an encryption algorithm. It provides <strong>zero cryptographic confidentiality, zero authentication, and zero mathematical security</strong>. Any actor who intercepts a Base64 string can decode it back to plaintext in microseconds without a decryption key.
+                    <!-- Chapter 4: Security & Privacy -->
+                    <article class="guide-pane" id="pane-security-privacy" role="tabpanel" aria-labelledby="tab-security-privacy">
+                        <div class="pane-banner">
+                            <div class="pane-meta">
+                                <span class="pane-chapter-tag">Chapter 04 of 06</span>
+                                <span class="pane-read-time">4 min read • Security &amp; Compliance</span>
+                            </div>
+                            <h3 class="pane-heading">4. Security, Tokenomics &amp; Privacy Whitepaper</h3>
                         </div>
-                        <p>Transmitting passwords, API access keys, social security numbers, or health information in Base64 violates core compliance regulations including <strong>GDPR Article 32</strong>, <strong>PCI-DSS Requirement 3</strong>, and <strong>HIPAA Security Standards</strong>. Confidential data must always be encrypted with authenticated cryptographic ciphers (such as AES-256-GCM, ChaCha20-Poly1305, or RSA-OAEP) before serialization.</p>
+                        <div class="guide-prose">
+                            <h4>The Fundamental Security Axiom: Encoding is NOT Encryption</h4>
+                            <div class="guide-callout warning">
+                                <strong>Critical Vulnerability Advisory:</strong> Base64 is a deterministic serialization format, NOT an encryption algorithm. It provides <strong>zero cryptographic confidentiality, zero authentication, and zero mathematical security</strong>. Any actor who intercepts a Base64 string can decode it back to plaintext in microseconds without a decryption key.
+                            </div>
+                            <p>Transmitting passwords, API access keys, social security numbers, or health information in Base64 violates core compliance regulations including <strong>GDPR Article 32</strong>, <strong>PCI-DSS Requirement 3</strong>, and <strong>HIPAA Security Standards</strong>. Confidential data must always be encrypted with authenticated cryptographic ciphers (such as AES-256-GCM, ChaCha20-Poly1305, or RSA-OAEP) before serialization.</p>
 
-                        <h4>JWT (JSON Web Token) Security &amp; Token Snooping</h4>
-                        <p>JSON Web Tokens (RFC 7519) format access credentials into three Base64URL-encoded segments separated by periods:</p>
-                        <div class="guide-code-block">
+                            <h4>JWT (JSON Web Token) Security &amp; Token Snooping</h4>
+                            <p>JSON Web Tokens (RFC 7519) format access credentials into three Base64URL-encoded segments separated by periods:</p>
+                            <div class="guide-code-block">
 &lt;Header: Base64URL(JSON)&gt; . &lt;Payload: Base64URL(JSON)&gt; . &lt;Cryptographic Signature&gt;
+                            </div>
+                            <p>Because the middle segment (the payload) is merely encoded and <strong>not encrypted</strong>, any client, proxy, or reverse-proxy caching layer can inspect user emails, internal roles, and permissions. Ensure your backend never embeds sensitive secrets inside JWT claims, enforce strict signature verification, and use short expiration timestamps (<code>exp</code>).</p>
+
+                            <h4>Modern Base64 Attack Vectors &amp; Defenses</h4>
+                            <ul>
+                                <li><strong>Stored XSS via SVG Data URIs:</strong> An attacker uploading <code>data:image/svg+xml;base64,PHN2ZyBvbmxvYWQ9ImFsZXJ0KDEpIj4...</code> can execute arbitrary JavaScript within the domain's execution origin. Defend against this by serving user uploads via a dedicated, sandboxed domain (e.g. <code>usercontent.domain.com</code>) with header <code>Content-Security-Policy: sandbox;</code>.</li>
+                                <li><strong>Insecure Deserialization (RCE):</strong> APIs that accept Base64-encoded serialized binary objects (e.g., Python <code>pickle</code>, PHP <code>unserialize()</code>, Java <code>readObject()</code>) are vulnerable to remote code execution. Always validate schemas with strict JSON models rather than binary language serializers.</li>
+                                <li><strong>WAF Evasion via Chunking:</strong> Attackers frequently split malicious payloads across Base64 strings to evade legacy pattern-matching web application firewalls. Modern zero-trust gateways decode Base64 before evaluating threat heuristics.</li>
+                            </ul>
+
+                            <h4>Our Zero-Trust Client-Side Privacy Guarantee</h4>
+                            <p>Unlike conventional web utilities that transmit your files and clipboard contents to remote backend servers for processing, <strong>Base64 Tools Studio executes 100% inside your local web browser's RAM</strong>. We leverage native client APIs—<code>window.crypto.subtle</code> for SHA-256 hashing, <code>FileReader</code> for streaming files, and <code>TextEncoder</code> for UTF-8 conversion.</p>
+                            <p>Zero payloads leave your machine. You can verify this independently by opening your browser's Developer Tools (F12) → Network Tab: no outgoing HTTP requests are dispatched during any encoding or decoding operation.</p>
                         </div>
-                        <p>Because the middle segment (the payload) is merely encoded and <strong>not encrypted</strong>, any client, proxy, or reverse-proxy caching layer can inspect user emails, internal roles, and permissions. Ensure your backend never embeds sensitive secrets inside JWT claims, enforce strict signature verification, and use short expiration timestamps (<code>exp</code>).</p>
+                    </article>
 
-                        <h4>Modern Base64 Attack Vectors &amp; Defenses</h4>
-                        <ul>
-                            <li><strong>Stored XSS via SVG Data URIs:</strong> An attacker uploading <code>data:image/svg+xml;base64,PHN2ZyBvbmxvYWQ9ImFsZXJ0KDEpIj4...</code> can execute arbitrary JavaScript within the domain's execution origin. Defend against this by serving user uploads via a dedicated, sandboxed domain (e.g. <code>usercontent.domain.com</code>) with header <code>Content-Security-Policy: sandbox;</code>.</li>
-                            <li><strong>Insecure Deserialization (RCE):</strong> APIs that accept Base64-encoded serialized binary objects (e.g., Python <code>pickle</code>, PHP <code>unserialize()</code>, Java <code>readObject()</code>) are vulnerable to remote code execution. Always validate schemas with strict JSON models rather than binary language serializers.</li>
-                            <li><strong>WAF Evasion via Chunking:</strong> Attackers frequently split malicious payloads across Base64 strings to evade legacy pattern-matching web application firewalls. Modern zero-trust gateways decode Base64 before evaluating threat heuristics.</li>
-                        </ul>
+                    <!-- Chapter 5: URL-Safe RFC 4648 -->
+                    <article class="guide-pane" id="pane-url-safe" role="tabpanel" aria-labelledby="tab-url-safe">
+                        <div class="pane-banner">
+                            <div class="pane-meta">
+                                <span class="pane-chapter-tag">Chapter 05 of 06</span>
+                                <span class="pane-read-time">5 min read • Engineering Cookbook</span>
+                            </div>
+                            <h3 class="pane-heading">5. URL-Safe RFC 4648 §5 &amp; Cross-Platform Cookbook</h3>
+                        </div>
+                        <div class="guide-prose">
+                            <h4>Why Standard Base64 Breaks URLs, REST APIs, &amp; Paths</h4>
+                            <p>Standard Base64 (RFC 4648 §4) utilizes two characters that possess reserved semantic behaviors in web protocols:</p>
+                            <ul>
+                                <li><strong>The <code>+</code> (plus) character:</strong> In URL query parameters (RFC 1866 / <code>application/x-www-form-urlencoded</code>), the plus sign is formally decoded as a whitespace character (ASCII 32). Transmitting <code>token=a+b</code> causes the backend to receive <code>a b</code>, corrupting your payload.</li>
+                                <li><strong>The <code>/</code> (forward slash) character:</strong> Web servers, routing libraries, and reverse proxies parse slashes as filesystem directory delimiters, destroying RESTful routes (e.g., <code>/api/verify/TWF/u</code>).</li>
+                                <li><strong>The <code>=</code> (equals) character:</strong> In query strings and OAuth redirect URIs, <code>=</code> is reserved for key-value pair separation, causing HTTP parameter pollution vulnerabilities.</li>
+                            </ul>
 
-                        <h4>Our Zero-Trust Client-Side Privacy Guarantee</h4>
-                        <p>Unlike conventional web utilities that transmit your files and clipboard contents to remote backend servers for processing, <strong>Base64 Tools Studio executes 100% inside your local web browser's RAM</strong>. We leverage native client APIs—<code>window.crypto.subtle</code> for SHA-256 hashing, <code>FileReader</code> for streaming files, and <code>TextEncoder</code> for UTF-8 conversion.</p>
-                        <p>Zero payloads leave your machine. You can verify this independently by opening your browser's Developer Tools (F12) → Network Tab: no outgoing HTTP requests are dispatched during any encoding or decoding operation.</p>
-                    </div>
-                </article>
+                            <h4>The RFC 4648 §5 (Base64URL) Specification</h4>
+                            <p>To eliminate URL and filename collisions, RFC 4648 Section 5 establishes the <strong>Base64URL</strong> standard by modifying the final two alphabet entries and dispensing with padding:</p>
+                            <table class="guide-table">
+                                <thead>
+                                    <tr>
+                                        <th>Standard Base64 (RFC 4648 §4)</th>
+                                        <th>URL-Safe Base64 (RFC 4648 §5)</th>
+                                        <th>Architectural Necessity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>+</code> (ASCII 43)</td>
+                                        <td><code>-</code> (Hyphen, ASCII 45)</td>
+                                        <td>Prevents query string deserializers from converting data into whitespace.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>/</code> (ASCII 47)</td>
+                                        <td><code>_</code> (Underscore, ASCII 95)</td>
+                                        <td>Guarantees compatibility with filesystem paths, URIs, and REST routes.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>=</code> (Padding)</td>
+                                        <td><strong>Omitted / Stripped</strong></td>
+                                        <td>Prevents parsing conflicts with query parameter key-value assignment operators.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                <!-- Chapter 5: URL-Safe RFC 4648 -->
-                <article class="guide-chapter" id="url-safe">
-                    <div class="guide-chapter-header">
-                        <span class="chapter-badge">Chapter 5 • Production Engineering</span>
-                        <h3 class="chapter-title">5. URL-Safe RFC 4648 §5 &amp; Cross-Platform Cookbook</h3>
-                    </div>
-                    <div class="guide-prose">
-                        <h4>Why Standard Base64 Breaks URLs, REST APIs, &amp; Paths</h4>
-                        <p>Standard Base64 (RFC 4648 §4) utilizes two characters that possess reserved semantic behaviors in web protocols:</p>
-                        <ul>
-                            <li><strong>The <code>+</code> (plus) character:</strong> In URL query parameters (RFC 1866 / <code>application/x-www-form-urlencoded</code>), the plus sign is formally decoded as a whitespace character (ASCII 32). Transmitting <code>token=a+b</code> causes the backend to receive <code>a b</code>, corrupting your payload.</li>
-                            <li><strong>The <code>/</code> (forward slash) character:</strong> Web servers, routing libraries, and reverse proxies parse slashes as filesystem directory delimiters, destroying RESTful routes (e.g., <code>/api/verify/TWF/u</code>).</li>
-                            <li><strong>The <code>=</code> (equals) character:</strong> In query strings and OAuth redirect URIs, <code>=</code> is reserved for key-value pair separation, causing HTTP parameter pollution vulnerabilities.</li>
-                        </ul>
+                            <h4>Cross-Platform Production Engineering Cookbook</h4>
+                            <p>Production-ready, battle-tested code snippets implementing RFC 4648 Section 5 URL-safe encoding with error resilience across major enterprise stacks:</p>
 
-                        <h4>The RFC 4648 §5 (Base64URL) Specification</h4>
-                        <p>To eliminate URL and filename collisions, RFC 4648 Section 5 establishes the <strong>Base64URL</strong> standard by modifying the final two alphabet entries and dispensing with padding:</p>
-                        <table class="guide-table">
-                            <thead>
-                                <tr>
-                                    <th>Standard Base64 (RFC 4648 §4)</th>
-                                    <th>URL-Safe Base64 (RFC 4648 §5)</th>
-                                    <th>Architectural Necessity</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><code>+</code> (ASCII 43)</td>
-                                    <td><code>-</code> (Hyphen, ASCII 45)</td>
-                                    <td>Prevents query string deserializers from converting data into whitespace.</td>
-                                </tr>
-                                <tr>
-                                    <td><code>/</code> (ASCII 47)</td>
-                                    <td><code>_</code> (Underscore, ASCII 95)</td>
-                                    <td>Guarantees compatibility with filesystem paths, URIs, and REST routes.</td>
-                                </tr>
-                                <tr>
-                                    <td><code>=</code> (Padding)</td>
-                                    <td><strong>Omitted / Stripped</strong></td>
-                                    <td>Prevents parsing conflicts with query parameter key-value assignment operators.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h4>Cross-Platform Production Engineering Cookbook</h4>
-                        <p>Production-ready, battle-tested code snippets implementing RFC 4648 Section 5 URL-safe encoding with error resilience across major enterprise stacks:</p>
-
-                        <p><strong>JavaScript / TypeScript (Browser &amp; Node.js):</strong></p>
-                        <div class="guide-code-block">
+                            <p><strong>JavaScript / TypeScript (Browser &amp; Node.js):</strong></p>
+                            <div class="guide-code-block">
 // Node.js (v14.18+) Native Buffer Base64URL
 const toBase64Url = (str) =&gt; Buffer.from(str, 'utf-8').toString('base64url');
 const fromBase64Url = (b64url) =&gt; Buffer.from(b64url, 'base64url').toString('utf-8');
@@ -1129,10 +1181,10 @@ function base64UrlEncode(str) {
     const binStr = Array.from(bytes, b =&gt; String.fromCharCode(b)).join('');
     return btoa(binStr).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
-                        </div>
+                            </div>
 
-                        <p><strong>Python 3:</strong></p>
-                        <div class="guide-code-block">
+                            <p><strong>Python 3:</strong></p>
+                            <div class="guide-code-block">
 import base64
 
 def to_base64_url(data: bytes) -&gt; str:
@@ -1142,10 +1194,10 @@ def from_base64_url(s: str) -&gt; bytes:
     # Restore missing '=' padding before decoding
     padding = '=' * (-len(s) % 4)
     return base64.urlsafe_b64decode(s + padding)
-                        </div>
+                            </div>
 
-                        <p><strong>Go (Golang):</strong></p>
-                        <div class="guide-code-block">
+                            <p><strong>Go (Golang):</strong></p>
+                            <div class="guide-code-block">
 package main
 import "encoding/base64"
 
@@ -1157,10 +1209,10 @@ func ToBase64URL(data []byte) string {
 func FromBase64URL(s string) ([]byte, error) {
     return base64.RawURLEncoding.DecodeString(s)
 }
-                        </div>
+                            </div>
 
-                        <p><strong>Rust:</strong></p>
-                        <div class="guide-code-block">
+                            <p><strong>Rust:</strong></p>
+                            <div class="guide-code-block">
 use base64::prelude::*;
 
 fn encode_url_safe(data: &amp;[u8]) -&gt; String {
@@ -1170,73 +1222,158 @@ fn encode_url_safe(data: &amp;[u8]) -&gt; String {
 fn decode_url_safe(s: &amp;str) -&gt; Result&lt;Vec&lt;u8&gt;, base64::DecodeError&gt; {
     BASE64_URL_SAFE_NO_PAD.decode(s)
 }
-                        </div>
+                            </div>
 
-                        <p><strong>Bash / Linux Terminal:</strong></p>
-                        <div class="guide-code-block">
+                            <p><strong>Bash / Linux Terminal:</strong></p>
+                            <div class="guide-code-block">
 # Encode standard string to URL-Safe Base64 without padding
 echo -n "Hello World" | base64 -w 0 | tr '+/' '-_' | tr -d '='
 
 # Decode URL-Safe Base64 string in Linux CLI
 echo -n "SGVsbG8gV29ybGQ" | tr -- '-_' '+/' | base64 -d
+                            </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Chapter 6: Developer FAQ -->
-                <article class="guide-chapter" id="faq">
-                    <div class="guide-chapter-header">
-                        <span class="chapter-badge">Chapter 6 • People Also Ask</span>
-                        <h3 class="chapter-title">6. Frequently Asked Engineering Questions (Developer FAQ)</h3>
-                    </div>
-                    <div class="guide-prose">
-                        <p><strong>Q1: What is Base64 encoding and why is it used instead of raw binary?</strong><br>
-                        A: Base64 is an RFC 4648 binary-to-text algorithm that represents raw 8-bit bytes using 64 printable US-ASCII characters (<code>A-Z</code>, <code>a-z</code>, <code>0-9</code>, <code>+</code>, <code>/</code>). It prevents binary data corruption across transmission channels historically designed for text, such as SMTP email headers, JSON payloads, XML nodes, and HTTP cookies.</p>
+                    <!-- Chapter 6: Developer FAQ -->
+                    <article class="guide-pane" id="pane-faq" role="tabpanel" aria-labelledby="tab-faq">
+                        <div class="pane-banner">
+                            <div class="pane-meta">
+                                <span class="pane-chapter-tag">Chapter 06 of 06</span>
+                                <span class="pane-read-time">6 min read • 12 Questions</span>
+                            </div>
+                            <h3 class="pane-heading">6. Frequently Asked Engineering Questions (Developer FAQ)</h3>
+                        </div>
+                        <div class="guide-prose">
+                            <div class="faq-cards-grid">
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q01</span>
+                                        <h4 class="faq-question-title">What is Base64 encoding and why is it used instead of raw binary?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">Base64 is an RFC 4648 binary-to-text algorithm that represents raw 8-bit bytes using 64 printable US-ASCII characters (<code>A-Z</code>, <code>a-z</code>, <code>0-9</code>, <code>+</code>, <code>/</code>). It prevents binary data corruption across transmission channels historically designed for text, such as SMTP email headers, JSON payloads, XML nodes, and HTTP cookies.</p>
+                                </div>
 
-                        <p><strong>Q2: Why does Base64 increase file size by exactly 33.34%?</strong><br>
-                        A: Computers store data in 8-bit bytes. Because each Base64 character only holds 6 bits of entropy (2<sup>6</sup> = 64), 4 Base64 characters (4 bytes = 32 bits) are mathematically required to encode 3 binary bytes (24 bits). The ratio is <code>4 / 3 = 1.3333...</code>, representing a net 33.34% data inflation penalty.</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q02</span>
+                                        <h4 class="faq-question-title">Why does Base64 increase file size by exactly 33.34%?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">Computers store data in 8-bit bytes. Because each Base64 character only holds 6 bits of entropy (2<sup>6</sup> = 64), 4 Base64 characters (4 bytes = 32 bits) are mathematically required to encode 3 binary bytes (24 bits). The ratio is <code>4 / 3 = 1.3333...</code>, representing a net 33.34% data inflation penalty.</p>
+                                </div>
 
-                        <p><strong>Q3: What is the difference between standard Base64 and URL-Safe Base64?</strong><br>
-                        A: Standard Base64 (RFC 4648 §4) uses <code>+</code> and <code>/</code> with <code>=</code> padding. URL-Safe Base64 (RFC 4648 §5 / Base64URL) substitutes <code>+</code> with <code>-</code> (hyphen) and <code>/</code> with <code>_</code> (underscore), and omits trailing <code>=</code> padding. This prevents URL query parameter collisions and REST path delimiter breakage in tokens and JWTs.</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q03</span>
+                                        <h4 class="faq-question-title">What is the difference between standard Base64 and URL-Safe Base64?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">Standard Base64 (RFC 4648 §4) uses <code>+</code> and <code>/</code> with <code>=</code> padding. URL-Safe Base64 (RFC 4648 §5 / Base64URL) substitutes <code>+</code> with <code>-</code> (hyphen) and <code>/</code> with <code>_</code> (underscore), and omits trailing <code>=</code> padding. This prevents URL query parameter collisions and REST path delimiter breakage in tokens and JWTs.</p>
+                                </div>
 
-                        <p><strong>Q4: Why does window.btoa() throw a DOMException on UTF-8 strings or emojis?</strong><br>
-                        A: The browser built-in <code>btoa()</code> expects 8-bit Latin-1 strings (code points 0 to 255). Multibyte UTF-8 characters like emojis (<code>🔥</code>) or Asian/Arabic/Indic alphabets exceed code point 255 and trigger <code>DOMException: The string to be encoded contains characters outside of the Latin1 range</code>. Use <code>new TextEncoder().encode(str)</code> with typed byte chunking to encode Unicode safely.</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q04</span>
+                                        <h4 class="faq-question-title">Why does window.btoa() throw a DOMException on UTF-8 strings or emojis?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">The browser built-in <code>btoa()</code> expects 8-bit Latin-1 strings (code points 0 to 255). Multibyte UTF-8 characters like emojis (<code>🔥</code>) or Asian/Arabic/Indic alphabets exceed code point 255 and trigger <code>DOMException: The string to be encoded contains characters outside of the Latin1 range</code>. Use <code>new TextEncoder().encode(str)</code> with typed byte chunking to encode Unicode safely.</p>
+                                </div>
 
-                        <p><strong>Q5: Can corrupted Base64 strings with missing padding (= or ==) be repaired automatically?</strong><br>
-                        A: Yes, if the only defect is missing padding. In Base64, string length modulo 4 must equal 0. If <code>len % 4 === 2</code>, append <code>==</code>. If <code>len % 4 === 3</code>, append <code>=</code>. If internal characters have been mutated or dropped, binary integrity cannot be mathematically recovered.</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q05</span>
+                                        <h4 class="faq-question-title">Can corrupted Base64 strings with missing padding (= or ==) be repaired automatically?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">Yes, if the only defect is missing padding. In Base64, string length modulo 4 must equal 0. If <code>len % 4 === 2</code>, append <code>==</code>. If <code>len % 4 === 3</code>, append <code>=</code>. If internal characters have been mutated or dropped, binary integrity cannot be mathematically recovered.</p>
+                                </div>
 
-                        <p><strong>Q6: Is it safe to store passwords or sensitive data in Base64?</strong><br>
-                        A: Absolutely not. Base64 is an open encoding scheme, NOT encryption. Anyone with access to the string can decode it back to plaintext instantly without a secret key. Never store passwords, tokens, or PII in raw Base64 without using authenticated encryption (e.g. AES-256-GCM).</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q06</span>
+                                        <h4 class="faq-question-title">Is it safe to store passwords or sensitive data in Base64?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">Absolutely not. Base64 is an open encoding scheme, NOT encryption. Anyone with access to the string can decode it back to plaintext instantly without a secret key. Never store passwords, tokens, or PII in raw Base64 without using authenticated encryption (e.g. AES-256-GCM).</p>
+                                </div>
 
-                        <p><strong>Q7: How do I decode a Base64 image back into a downloadable binary Blob in JavaScript?</strong><br>
-                        A: Strip the <code>data:*/*;base64,</code> prefix, decode the Base64 string into a byte array, populate a <code>Uint8Array</code>, and wrap it with <code>new Blob([uint8Array], { type: mimeType })</code>. Generate an ephemeral object URL via <code>URL.createObjectURL(blob)</code> to prompt a file download or set an <code>&lt;img src&gt;</code>.</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q07</span>
+                                        <h4 class="faq-question-title">How do I decode a Base64 image back into a downloadable binary Blob in JavaScript?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">Strip the <code>data:*/*;base64,</code> prefix, decode the Base64 string into a byte array, populate a <code>Uint8Array</code>, and wrap it with <code>new Blob([uint8Array], { type: mimeType })</code>. Generate an ephemeral object URL via <code>URL.createObjectURL(blob)</code> to prompt a file download or set an <code>&lt;img src&gt;</code>.</p>
+                                </div>
 
-                        <p><strong>Q8: When should I inline images using Base64 Data URIs in CSS, and when should I avoid it?</strong><br>
-                        A: Inline micro-assets (&lt; 2 KB) such as SVG icons or placeholder blurhashes to eliminate network round-trip overhead. Avoid inlining photos or assets larger than 10 KB, as they inflate stylesheet sizes, block First Contentful Paint (FCP), degrade parser performance, and bypass browser asset caching.</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q08</span>
+                                        <h4 class="faq-question-title">When should I inline images using Base64 Data URIs in CSS, and when should I avoid it?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">Inline micro-assets (&lt; 2 KB) such as SVG icons or placeholder blurhashes to eliminate network round-trip overhead. Avoid inlining photos or assets larger than 10 KB, as they inflate stylesheet sizes, block First Contentful Paint (FCP), degrade parser performance, and bypass browser asset caching.</p>
+                                </div>
 
-                        <p><strong>Q9: How can I identify file MIME types (PNG, JPEG, WebP, PDF) from Base64 strings without a server?</strong><br>
-                        A: By inspecting magic byte headers. The first 3 to 6 bytes of a binary file map deterministically to the first 4 to 8 characters of its Base64 string: <code>iVBORw0K</code> = PNG, <code>/9j/</code> = JPEG, <code>R0lGOD</code> = GIF, <code>UklGR</code> = WebP, and <code>JVBERi</code> = PDF. Our studio performs this client-side inspection in real time.</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q09</span>
+                                        <h4 class="faq-question-title">How can I identify file MIME types (PNG, JPEG, WebP, PDF) from Base64 strings without a server?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">By inspecting magic byte headers. The first 3 to 6 bytes of a binary file map deterministically to the first 4 to 8 characters of its Base64 string: <code>iVBORw0K</code> = PNG, <code>/9j/</code> = JPEG, <code>R0lGOD</code> = GIF, <code>UklGR</code> = WebP, and <code>JVBERi</code> = PDF. Our studio performs this client-side inspection in real time.</p>
+                                </div>
 
-                        <p><strong>Q10: What is the maximum file size I can encode in this Base64 Studio?</strong><br>
-                        A: Up to 50MB per file. Because all encoding and decoding runs in-memory inside the browser's JavaScript engine, capacity is determined by your system RAM. We utilize non-blocking HTML5 <code>FileReader</code> streaming to prevent UI freezes.</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q10</span>
+                                        <h4 class="faq-question-title">What is the maximum file size I can encode in this Base64 Studio?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">Up to 50MB per file. Because all encoding and decoding runs in-memory inside the browser's JavaScript engine, capacity is determined by your system RAM. We utilize non-blocking HTML5 <code>FileReader</code> streaming to prevent UI freezes.</p>
+                                </div>
 
-                        <p><strong>Q11: Is my data uploaded or sent to any server when using this Base64 tool?</strong><br>
-                        A: Zero bytes are ever transmitted to any external server. 100% of data processing, cryptographic hashing, and media reconstruction occurs exclusively inside your browser's local RAM. Our architecture is verifiable via browser DevTools network inspection.</p>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q11</span>
+                                        <h4 class="faq-question-title">Is my data uploaded or sent to any server when using this Base64 tool?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">Zero bytes are ever transmitted to any external server. 100% of data processing, cryptographic hashing, and media reconstruction occurs exclusively inside your browser's local RAM. Our architecture is verifiable via browser DevTools network inspection.</p>
+                                </div>
 
-                        <p><strong>Q12: How do I handle Base64 decoding in CLI / terminal scripts on Linux and macOS?</strong><br>
-                        A: On Linux, execute: <code>echo -n "payload" | base64 -d</code>. On macOS (BSD base64), execute: <code>echo -n "payload" | base64 -D</code>. For URL-Safe strings without padding, normalize with <code>tr -- '-_' '+/'</code> before piping to <code>base64 -d</code>.</p>
-                    </div>
-                </article>
+                                <div class="faq-card">
+                                    <div class="faq-card-header">
+                                        <span class="faq-q-badge">Q12</span>
+                                        <h4 class="faq-question-title">How do I handle Base64 decoding in CLI / terminal scripts on Linux and macOS?</h4>
+                                    </div>
+                                    <p class="faq-answer-text">On Linux, execute: <code>echo -n "payload" | base64 -d</code>. On macOS (BSD base64), execute: <code>echo -n "payload" | base64 -D</code>. For URL-Safe strings without padding, normalize with <code>tr -- '-_' '+/'</code> before piping to <code>base64 -d</code>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
 
-                <!-- Guide Footer / Quick Return -->
-                <div class="guide-footer-bar">
-                    <a href="#main-content" class="btn btn-secondary guide-back-top-btn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="19" x2="12" y2="5"></line>
-                            <polyline points="5 12 12 5 19 12"></polyline>
+                </div>
+
+                <!-- Guide Stepper Bar (Next / Prev Navigation) -->
+                <div class="guide-stepper" id="guideStepper">
+                    <button class="btn btn-secondary guide-step-btn" id="guidePrevBtn" type="button" aria-label="Previous Chapter">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
                         </svg>
-                        Back to Universal Omni-Workbench
-                    </a>
+                        <span id="guidePrevLabel">Previous Chapter</span>
+                    </button>
+
+                    <div class="guide-dots-indicator" id="guideDotsIndicator" aria-hidden="true">
+                        <span class="guide-dot active" data-dot="0"></span>
+                        <span class="guide-dot" data-dot="1"></span>
+                        <span class="guide-dot" data-dot="2"></span>
+                        <span class="guide-dot" data-dot="3"></span>
+                        <span class="guide-dot" data-dot="4"></span>
+                        <span class="guide-dot" data-dot="5"></span>
+                        <span class="guide-counter" id="guideCounter">Chapter 1 of 6</span>
+                    </div>
+
+                    <button class="btn btn-primary guide-step-btn" id="guideNextBtn" type="button" aria-label="Next Chapter">
+                        <span id="guideNextLabel">Next Chapter</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </section>
