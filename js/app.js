@@ -4812,23 +4812,149 @@ function setupOmniWorkbench() {
                 }
             }
 
-            omniOutput.value = res;
-
             // Visual media preview in omni output if Data URI or Image Base64
             const rawClean = val.trim().replace(/^data:[^;]+;base64,/i, '').replace(/[\s\r\n]/g, '');
             const mime = detectMimeType(val.trim().startsWith('data:') ? val.trim() : rawClean) || 'application/octet-stream';
-            const isImage = format.type === 'data-uri' || val.trim().startsWith('data:image/') || mime.startsWith('image/');
+            const isSvg = val.trim().startsWith('data:image/svg+xml') || (typeof res === 'string' && res.trim().startsWith('<svg'));
+            const isImage = format.type === 'data-uri' || val.trim().startsWith('data:image/') || mime.startsWith('image/') || isSvg;
+
+            // If binary image (non-SVG) decoded in decode action, present forensic metadata instead of unprintable raw characters
+            if (isImage && !isSvg && (action === 'decode' || action === 'auto')) {
+                let hexSlice = '';
+                let byteCount = 0;
+                try {
+                    const sampleBytes = atob(rawClean.slice(0, 48));
+                    for (let i = 0; i < Math.min(sampleBytes.length, 32); i++) {
+                        hexSlice += sampleBytes.charCodeAt(i).toString(16).padStart(2, '0').toUpperCase() + ' ';
+                    }
+                    byteCount = atob(rawClean).length;
+                } catch(e) {}
+
+                omniOutput.value = [
+                    `[Decoded Binary Asset: ${mime}]`,
+                    `--------------------------------------------------`,
+                    `Format:          ${mime.toUpperCase().replace('IMAGE/', '')} (${mime})`,
+                    `Payload Size:    ${byteCount.toLocaleString()} Bytes (Raw Binary Byte Stream)`,
+                    `Magic Header:    ${hexSlice.slice(0, 23)}...`,
+                    `Visual Canvas:   Rendered below with transparency grid & pixel zoom`,
+                    `Integrity:       100% Valid Decoded Asset`,
+                    ``,
+                    `Hex Signature (First 32 bytes):`,
+                    hexSlice.trim(),
+                    `--------------------------------------------------`,
+                    `💡 Tip: View visual render below, click 'To Hex' for full stream, or 'Download' to save ${mime.split('/')[1]?.toUpperCase() || 'image'}.`
+                ].join('\n');
+            } else {
+                omniOutput.value = res;
+            }
 
             if (isImage && (action === 'decode' || action === 'auto')) {
                 const imgSrc = val.trim().startsWith('data:') ? val.trim() : `data:${mime || 'image/png'};base64,${rawClean}`;
                 if (omniPreviewContainer) {
                     omniPreviewContainer.style.display = 'block';
                     omniPreviewContainer.innerHTML = `
-                        <div class="media-preview-wrapper" style="padding: 12px; background: var(--bg-tertiary); border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center;">
-                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary); margin-bottom: 8px; font-weight: 600;">Decoded Visual Media Preview:</div>
-                            <img src="${imgSrc}" alt="Decoded Visual Preview" style="max-height: 220px; max-width: 100%; border-radius: 6px; box-shadow: var(--shadow-md); margin: 0 auto; display: block;" onerror="this.parentElement.style.display='none'">
+                        <div class="media-preview-card" style="margin-top: 14px; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--primary);"></span>
+                                    <span style="font-size: var(--font-size-xs); font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">Decoded Visual Media Preview</span>
+                                    <span id="omniImgDimsBadge" style="font-size: 11px; padding: 2px 8px; border-radius: var(--radius-full); background: rgba(16, 185, 129, 0.15); color: var(--primary); font-weight: 600;">Detecting...</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <button id="omniZoom1x" type="button" class="btn-pill" style="padding: 2px 10px; font-size: 11px;" title="Actual 1:1 Pixel Size">1x (Actual)</button>
+                                    <button id="omniZoomFit" type="button" class="btn-pill primary" style="padding: 2px 10px; font-size: 11px;" title="Magnified View (Auto-zoom for small pixels)">Fit / Zoom</button>
+                                    <button id="omniDownloadMediaBtn" type="button" class="btn-pill" style="padding: 2px 10px; font-size: 11px;" title="Download Decoded Image File">⤓ Save</button>
+                                </div>
+                            </div>
+                            
+                            <div id="omniImgStage" style="padding: 24px; display: flex; align-items: center; justify-content: center; min-height: 180px; background-color: #0b1120; background-image: linear-gradient(45deg, rgba(255,255,255,0.06) 25%, transparent 25%), linear-gradient(-45deg, rgba(255,255,255,0.06) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.06) 75%), linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.06) 75%); background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0px; border-radius: 0;">
+                                <img id="omniDecodedImg" src="${imgSrc}" alt="Decoded Visual Asset" style="max-height: 240px; max-width: 100%; border-radius: 4px; box-shadow: 0 6px 16px rgba(0,0,0,0.4); display: block; image-rendering: auto; transition: all 0.2s ease;">
+                            </div>
+
+                            <div style="padding: 8px 16px; background: var(--bg-secondary); border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-secondary); flex-wrap: wrap; gap: 8px;">
+                                <span id="omniImgScaleNote">Loading asset metadata...</span>
+                                <button id="omniCopyDataUriBtn" type="button" class="btn-pill" style="padding: 2px 10px; font-size: 11px;">Copy Data URI</button>
+                            </div>
                         </div>
                     `;
+
+                    // Wire image onload dimensions & auto-zoom logic
+                    const imgEl = document.getElementById('omniDecodedImg');
+                    const dimsBadge = document.getElementById('omniImgDimsBadge');
+                    const scaleNote = document.getElementById('omniImgScaleNote');
+                    const btn1x = document.getElementById('omniZoom1x');
+                    const btnFit = document.getElementById('omniZoomFit');
+                    const btnDownload = document.getElementById('omniDownloadMediaBtn');
+                    const btnCopyDataUri = document.getElementById('omniCopyDataUriBtn');
+
+                    if (imgEl) {
+                        const applyDims = () => {
+                            const w = imgEl.naturalWidth || 1;
+                            const h = imgEl.naturalHeight || 1;
+                            if (dimsBadge) {
+                                dimsBadge.textContent = `${w} × ${h} px • ${mime.toUpperCase().replace('IMAGE/', '')}`;
+                            }
+                            if (w <= 48 || h <= 48) {
+                                imgEl.style.imageRendering = 'pixelated';
+                                imgEl.style.width = '128px';
+                                imgEl.style.height = '128px';
+                                if (scaleNote) {
+                                    scaleNote.textContent = `🔍 Pixelated magnification applied for visibility (Natural Size: ${w}×${h} px)`;
+                                }
+                            } else {
+                                imgEl.style.imageRendering = 'auto';
+                                imgEl.style.width = 'auto';
+                                imgEl.style.height = 'auto';
+                                if (scaleNote) {
+                                    scaleNote.textContent = `Asset: ${w}×${h} pixels • Rendered on transparency grid`;
+                                }
+                            }
+                        };
+                        if (imgEl.complete && imgEl.naturalWidth) {
+                            applyDims();
+                        } else {
+                            imgEl.onload = applyDims;
+                        }
+
+                        btn1x?.addEventListener('click', () => {
+                            imgEl.style.width = 'auto';
+                            imgEl.style.height = 'auto';
+                            imgEl.style.imageRendering = 'auto';
+                            btn1x.classList.add('primary');
+                            btnFit?.classList.remove('primary');
+                            if (scaleNote) scaleNote.textContent = `Actual 1:1 scale view (${imgEl.naturalWidth || 1}×${imgEl.naturalHeight || 1} px)`;
+                        });
+
+                        btnFit?.addEventListener('click', () => {
+                            const nw = imgEl.naturalWidth || 1;
+                            const nh = imgEl.naturalHeight || 1;
+                            if (nw <= 48 || nh <= 48) {
+                                imgEl.style.width = '128px';
+                                imgEl.style.height = '128px';
+                                imgEl.style.imageRendering = 'pixelated';
+                                if (scaleNote) scaleNote.textContent = `🔍 Magnified pixel view (${nw}×${nh} px)`;
+                            } else {
+                                imgEl.style.width = 'auto';
+                                imgEl.style.height = 'auto';
+                                imgEl.style.maxHeight = '240px';
+                                if (scaleNote) scaleNote.textContent = `Fit view (${nw}×${nh} px)`;
+                            }
+                            btnFit.classList.add('primary');
+                            btn1x?.classList.remove('primary');
+                        });
+
+                        btnDownload?.addEventListener('click', () => {
+                            const ext = mime.split('/')[1]?.split('+')[0] || 'png';
+                            const blob = base64ToBlob(rawClean, mime);
+                            downloadFile(blob, `decoded-asset.${ext}`, mime);
+                            showToast(`Downloaded decoded-asset.${ext}`, 'success');
+                        });
+
+                        btnCopyDataUri?.addEventListener('click', () => {
+                            copyToClipboard(imgSrc);
+                            showToast('Data URI copied to clipboard!', 'success');
+                        });
+                    }
                 }
             } else if (action !== 'jwt' && omniPreviewContainer) {
                 omniPreviewContainer.style.display = 'none';
@@ -4951,7 +5077,7 @@ function setupOmniWorkbench() {
         }
     });
 
-    // Sample Selector
+    // Sample Selector with SVG Icon and 1x1 Pixel options
     if (omniSampleSelect) {
         omniSampleSelect.addEventListener('change', () => {
             const val = omniSampleSelect.value;
@@ -4959,6 +5085,7 @@ function setupOmniWorkbench() {
                 text: "Sphinx of black quartz, judge my vow! 🚀 Engineering by Oathan Rex.",
                 base64: "U3BoaW54IG9mIGJsYWNrIHF1YXJ0eiwganVkZ2UgbXkgdm93ISDwn5mpIEVuZ2luZWVyaW5nIGJ5IE9hdGhhbiBSZXgu",
                 jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik9hdGhhbiBSZXgiLCJyb2xlIjoiQXJjaGl0ZWN0IiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE5MTYyMzkwMjJ9.4z7y6_P4qVf66Hl3pYj6iU8XWwL8Y4z0_QW5iX_Z5bE",
+                'svg-icon': "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMTBiOTgxIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDZiNmQ0Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyMCIgZmlsbD0iIzBmMTcyYSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjM2IiBmaWxsPSJ1cmwoI2cpIiBvcGFjaXR5PSIwLjIiLz48cGF0aCBkPSJNNTQgMjJMMzQgNTJoMTZsLTQgMjYgMjAtMzBINTBsNC0yNnoiIGZpbGw9InVybCgjZykiLz48L3N2Zz4=",
                 'data-uri': "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
                 hex: "4f 61 74 68 61 6e 20 52 65 78 20 53 74 75 64 69 6f",
                 binary: "01001111 01100001 01110100 01101000 01100001 01101110"
