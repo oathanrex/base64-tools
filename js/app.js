@@ -5396,7 +5396,7 @@ function init() {
         // Cache DOM elements
         cacheElements();
 
-        setupGuideTabs();
+        setupGuideTOC();
         setupBatchUpload();
 // Load saved preferences
         loadTheme();
@@ -5457,101 +5457,69 @@ if (typeof module !== 'undefined' && module.exports) {
     };
 }
 
-function setupGuideTabs() {
-    const tabs = [
-        { id: 'field-guide', name: 'Field Guide' },
-        { id: 'inflation-math', name: 'Inflation Math' },
-        { id: 'mime-signatures', name: 'MIME Signatures' },
-        { id: 'security-privacy', name: 'Security & Privacy' },
-        { id: 'url-safe', name: 'URL-Safe RFC 4648' },
-        { id: 'faq', name: 'Developer FAQ' }
+function setupGuideTOC() {
+    const chapters = [
+        'field-guide',
+        'inflation-math',
+        'mime-signatures',
+        'security-privacy',
+        'url-safe',
+        'faq'
     ];
 
-    let currentIdx = 0;
+    const tocLinks = document.querySelectorAll('.guide-toc-btn');
+    if (!tocLinks.length) return;
 
-    function switchGuideTab(idx, scroll) {
-        if (idx < 0 || idx >= tabs.length) return;
-        currentIdx = idx;
-        const target = tabs[currentIdx];
+    // Smooth click handler with offset scrolling
+    tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    history.pushState(null, '', href);
+                    tocLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            }
+        });
+    });
 
-        // Update nav buttons
-        document.querySelectorAll('.guide-nav-btn').forEach((b, i) => {
-            const isActive = b.dataset.guideTab === target.id;
-            b.classList.toggle('active', isActive);
-            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    // IntersectionObserver for active scroll-spy
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    tocLinks.forEach(link => {
+                        const href = link.getAttribute('href');
+                        const isActive = href === `#${id}`;
+                        link.classList.toggle('active', isActive);
+                    });
+                }
+            });
+        }, {
+            rootMargin: '-15% 0px -65% 0px',
+            threshold: 0.1
         });
 
-        // Update panes
-        document.querySelectorAll('.guide-pane').forEach(p => {
-            p.classList.toggle('active', p.id === `pane-${target.id}`);
+        chapters.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) observer.observe(el);
         });
-
-        // Update dots
-        document.querySelectorAll('.guide-dot').forEach((dot, i) => {
-            dot.classList.toggle('active', i === currentIdx);
-        });
-
-        // Update counter
-        const counter = document.getElementById('guideCounter');
-        if (counter) counter.textContent = `${currentIdx + 1} / ${tabs.length}`;
-
-        // Update prev/next button labels & visibility
-        const prevBtn = document.getElementById('guidePrevBtn');
-        const nextBtn = document.getElementById('guideNextBtn');
-        const prevLabel = document.getElementById('guidePrevLabel');
-        const nextLabel = document.getElementById('guideNextLabel');
-
-        if (prevBtn) {
-            prevBtn.disabled = currentIdx === 0;
-            prevBtn.style.opacity = currentIdx === 0 ? '0.4' : '1';
-            prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
-            if (prevLabel && currentIdx > 0) {
-                prevLabel.textContent = tabs[currentIdx - 1].name;
-            } else if (prevLabel) {
-                prevLabel.textContent = 'Previous Section';
-            }
-        }
-
-        if (nextBtn) {
-            nextBtn.disabled = currentIdx === tabs.length - 1;
-            nextBtn.style.opacity = currentIdx === tabs.length - 1 ? '0.4' : '1';
-            nextBtn.style.pointerEvents = currentIdx === tabs.length - 1 ? 'none' : 'auto';
-            if (nextLabel && currentIdx < tabs.length - 1) {
-                nextLabel.textContent = tabs[currentIdx + 1].name;
-            } else if (nextLabel) {
-                nextLabel.textContent = 'Next Section';
-            }
-        }
-
-        if (scroll) {
-            const guideSection = document.getElementById('practitionerGuide') || document.querySelector('.practitioner-guide');
-            if (guideSection) {
-                guideSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
     }
 
-    // Attach click to nav buttons
-    document.querySelectorAll('.guide-nav-btn').forEach((btn, idx) => {
-        btn.addEventListener('click', () => switchGuideTab(idx, false));
-    });
-
-    // Attach click to prev/next buttons
-    document.getElementById('guidePrevBtn')?.addEventListener('click', () => {
-        if (currentIdx > 0) switchGuideTab(currentIdx - 1, true);
-    });
-
-    document.getElementById('guideNextBtn')?.addEventListener('click', () => {
-        if (currentIdx < tabs.length - 1) switchGuideTab(currentIdx + 1, true);
-    });
-
-    // Attach click to dots
-    document.querySelectorAll('.guide-dot').forEach((dot, idx) => {
-        dot.addEventListener('click', () => switchGuideTab(idx, false));
-    });
-
-    // Initialize state
-    switchGuideTab(0, false);
+    // Auto-scroll on initial load if URL has hash (deep-linking)
+    if (window.location.hash) {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+            setTimeout(() => {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+    }
 }
 
 function setupBatchUpload() {
