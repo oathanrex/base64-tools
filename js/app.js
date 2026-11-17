@@ -4180,6 +4180,8 @@ function setupKeyboardShortcuts() {
                 closeSearch();
             } else if (elements.shortcutsModal?.classList.contains('active')) {
                 closeShortcutsModal();
+            } else if (document.getElementById('settingsModal')?.classList.contains('active')) {
+                window.closeSettingsModal && window.closeSettingsModal();
             } else if (elements.historySidebar?.classList.contains('active')) {
                 closeSidebar();
             } else if (state.currentTool) {
@@ -4913,26 +4915,63 @@ function setupSettingsModal() {
     const padSel = document.getElementById('settingPadding');
     const charSel = document.getElementById('settingCharset');
 
-    if (!modal || !toggle) return;
+    if (!modal) return;
 
-    toggle.addEventListener('click', () => {
-        if (wrapSel) wrapSel.value = OMNI_STATE.settings.lineWrap;
-        if (padSel) padSel.value = OMNI_STATE.settings.padding;
-        if (charSel) charSel.value = OMNI_STATE.settings.charset;
+    function openSettings() {
+        if (wrapSel) wrapSel.value = OMNI_STATE.settings.lineWrap || 'none';
+        if (padSel) padSel.value = OMNI_STATE.settings.padding || 'standard';
+        if (charSel) charSel.value = OMNI_STATE.settings.charset || 'utf-8';
         modal.hidden = false;
+        void modal.offsetWidth; // Force reflow for CSS transition
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSettings() {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.hidden = true;
+        }, 200);
+        document.body.style.overflow = '';
+    }
+
+    if (toggle) {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openSettings();
+        });
+    }
+
+    closeBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeSettings();
     });
 
-    closeBtn?.addEventListener('click', () => modal.hidden = true);
-    modal.querySelector('.modal-backdrop')?.addEventListener('click', () => modal.hidden = true);
+    modal.querySelector('.modal-backdrop')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeSettings();
+    });
 
-    saveBtn?.addEventListener('click', () => {
+    saveBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
         if (wrapSel) OMNI_STATE.settings.lineWrap = wrapSel.value;
         if (padSel) OMNI_STATE.settings.padding = padSel.value;
         if (charSel) OMNI_STATE.settings.charset = charSel.value;
         localStorage.setItem('b64-settings', JSON.stringify(OMNI_STATE.settings));
-        modal.hidden = true;
+        closeSettings();
         showToast('Preferences saved!', 'success');
+
+        const omniInput = document.getElementById('omniInput');
+        if (omniInput && omniInput.value) {
+            omniInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
     });
+
+    if (typeof window !== 'undefined') {
+        window.openSettingsModal = openSettings;
+        window.closeSettingsModal = closeSettings;
+    }
 }
 
 

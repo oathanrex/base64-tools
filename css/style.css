@@ -522,6 +522,10 @@ ol {
     flex-shrink: 0;
 }
 
+.btn-icon svg {
+    pointer-events: none;
+}
+
 .btn-icon:hover {
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
